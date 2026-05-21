@@ -1,0 +1,78 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+@Test
+component MacUnitTest
+{
+	mac: MacUnit
+
+	new()
+	{
+		mac = new MacUnit()
+	}
+
+	@Test
+	fn StartsAtZero()
+	{
+		assert mac.GetResult() == 0
+	}
+
+	@Test
+	fn AccumulatesProducts()
+	{
+		mac.Reset()
+		mac.Accumulate(3, 4)
+		mac.Accumulate(2, 5)
+
+		assert mac.GetResult() == 22
+	}
+
+	@Test
+	fn HandlesZeroInput()
+	{
+		mac.Reset()
+		mac.Accumulate(0, 255)
+
+		assert mac.GetResult() == 0
+	}
+
+	@Test
+	fn ResetsAccumulator()
+	{
+		mac.Reset()
+		mac.Accumulate(3, 4)
+		mac.Reset()
+
+		assert mac.GetResult() == 0
+	}
+
+	@Test
+	fn SaturatesAccumulator()
+	{
+		mac.Reset()
+		mac.Accumulate(200, 200)
+
+		assert mac.GetResult() == MacUnit.ACC_MAX
+	}
+
+	@Test
+	fn SaturatesNegativeAccumulator()
+	{
+		mac.Reset()
+		mac.Accumulate(-200, 200)
+
+		assert mac.GetResult() == MacUnit.ACC_MIN
+	}
+
+	@Test
+	fn SupportsDotProductPattern()
+	{
+		mac.Reset()
+		mac.Accumulate(1, 4)
+		mac.Accumulate(2, 5)
+		mac.Accumulate(3, 6)
+
+		assert mac.GetResult() == 32
+	}
+}

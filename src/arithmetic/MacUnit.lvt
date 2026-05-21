@@ -1,0 +1,51 @@
+namespace Livt.Math.Arithmetic
+
+using Livt.Convert
+
+/**
+ * Accumulates integer products into a signed 16-bit saturating result.
+ */
+component MacUnit
+{
+	// Minimum signed 16-bit accumulator value.
+	public const ACC_MIN: int = -32768
+	// Maximum signed 16-bit accumulator value.
+	public const ACC_MAX: int = 32767
+
+	accumulator: int
+	conv: Convert
+
+	/**
+	 * Initializes conversion support for saturating accumulator updates.
+	 */
+	new()
+	{
+		conv = new Convert()
+	}
+
+	/**
+	 * Adds a * b to the accumulator and clamps the result to int16 range.
+	 */
+	public fn Accumulate(a: int, b: int)
+	{
+		var product: int = a * b
+		var sum: int = accumulator + product
+		accumulator = conv.ToInt16Clamped(sum)
+	}
+
+	/**
+	 * Returns the current saturated accumulator value.
+	 */
+	public fn GetResult() int
+	{
+		return accumulator
+	}
+
+	/**
+	 * Resets the accumulator to zero.
+	 */
+	public fn Reset()
+	{
+		accumulator = 0
+	}
+}

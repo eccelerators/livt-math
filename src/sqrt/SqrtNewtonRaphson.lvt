@@ -1,0 +1,43 @@
+namespace Livt.Math.Sqrt
+
+/**
+ * Computes floor square roots for integer inputs up to MAX_INPUT.
+ */
+component SqrtNewtonRaphson
+{
+	// Largest input accepted before clamping.
+	public const MAX_INPUT: int = 32767
+	// Fixed Newton-Raphson iteration count.
+	public const ITERATIONS: int = 16
+
+	/**
+	 * Returns floor(sqrt(n)) after clamping n into the supported range.
+	 */
+	public fn Compute(n: int) int
+	{
+		if (n <= 0) {
+			return 0
+		}
+
+		var bounded: int = n
+		if (bounded > MAX_INPUT) {
+			bounded = MAX_INPUT
+		}
+
+		if (bounded == 1) {
+			return 1
+		}
+
+		var x: int = bounded / 2 + 1
+
+		for (var i = 0; i < ITERATIONS; i++) {
+			x = (x + bounded / x) / 2
+		}
+
+		if (x * x > bounded) {
+			x = x - 1
+		}
+
+		return x
+	}
+}

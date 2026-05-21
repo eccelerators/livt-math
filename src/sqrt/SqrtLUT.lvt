@@ -1,0 +1,296 @@
+namespace Livt.Math.Sqrt
+
+/**
+ * Computes floor square roots for 8-bit integer inputs using a lookup table.
+ */
+component SqrtLUT
+{
+	// Largest input accepted before clamping.
+	public const MAX_INPUT: int = 255
+	// Number of entries in the lookup table.
+	const LUT_SIZE: int = 256
+
+	// Lookup table mapping n to floor(sqrt(n)).
+	lut: int[256]
+
+	/**
+	 * Initializes the square-root lookup table.
+	 */
+	new()
+	{
+		lut[0] = 0
+		lut[1] = 1
+		lut[2] = 1
+		lut[3] = 1
+		lut[4] = 2
+		lut[5] = 2
+		lut[6] = 2
+		lut[7] = 2
+		lut[8] = 2
+		lut[9] = 3
+		lut[10] = 3
+		lut[11] = 3
+		lut[12] = 3
+		lut[13] = 3
+		lut[14] = 3
+		lut[15] = 3
+		lut[16] = 4
+		lut[17] = 4
+		lut[18] = 4
+		lut[19] = 4
+		lut[20] = 4
+		lut[21] = 4
+		lut[22] = 4
+		lut[23] = 4
+		lut[24] = 4
+		lut[25] = 5
+		lut[26] = 5
+		lut[27] = 5
+		lut[28] = 5
+		lut[29] = 5
+		lut[30] = 5
+		lut[31] = 5
+		lut[32] = 5
+		lut[33] = 5
+		lut[34] = 5
+		lut[35] = 5
+		lut[36] = 6
+		lut[37] = 6
+		lut[38] = 6
+		lut[39] = 6
+		lut[40] = 6
+		lut[41] = 6
+		lut[42] = 6
+		lut[43] = 6
+		lut[44] = 6
+		lut[45] = 6
+		lut[46] = 6
+		lut[47] = 6
+		lut[48] = 6
+		lut[49] = 7
+		lut[50] = 7
+		lut[51] = 7
+		lut[52] = 7
+		lut[53] = 7
+		lut[54] = 7
+		lut[55] = 7
+		lut[56] = 7
+		lut[57] = 7
+		lut[58] = 7
+		lut[59] = 7
+		lut[60] = 7
+		lut[61] = 7
+		lut[62] = 7
+		lut[63] = 7
+		lut[64] = 8
+		lut[65] = 8
+		lut[66] = 8
+		lut[67] = 8
+		lut[68] = 8
+		lut[69] = 8
+		lut[70] = 8
+		lut[71] = 8
+		lut[72] = 8
+		lut[73] = 8
+		lut[74] = 8
+		lut[75] = 8
+		lut[76] = 8
+		lut[77] = 8
+		lut[78] = 8
+		lut[79] = 8
+		lut[80] = 8
+		lut[81] = 9
+		lut[82] = 9
+		lut[83] = 9
+		lut[84] = 9
+		lut[85] = 9
+		lut[86] = 9
+		lut[87] = 9
+		lut[88] = 9
+		lut[89] = 9
+		lut[90] = 9
+		lut[91] = 9
+		lut[92] = 9
+		lut[93] = 9
+		lut[94] = 9
+		lut[95] = 9
+		lut[96] = 9
+		lut[97] = 9
+		lut[98] = 9
+		lut[99] = 9
+		lut[100] = 10
+		lut[101] = 10
+		lut[102] = 10
+		lut[103] = 10
+		lut[104] = 10
+		lut[105] = 10
+		lut[106] = 10
+		lut[107] = 10
+		lut[108] = 10
+		lut[109] = 10
+		lut[110] = 10
+		lut[111] = 10
+		lut[112] = 10
+		lut[113] = 10
+		lut[114] = 10
+		lut[115] = 10
+		lut[116] = 10
+		lut[117] = 10
+		lut[118] = 10
+		lut[119] = 10
+		lut[120] = 10
+		lut[121] = 11
+		lut[122] = 11
+		lut[123] = 11
+		lut[124] = 11
+		lut[125] = 11
+		lut[126] = 11
+		lut[127] = 11
+		lut[128] = 11
+		lut[129] = 11
+		lut[130] = 11
+		lut[131] = 11
+		lut[132] = 11
+		lut[133] = 11
+		lut[134] = 11
+		lut[135] = 11
+		lut[136] = 11
+		lut[137] = 11
+		lut[138] = 11
+		lut[139] = 11
+		lut[140] = 11
+		lut[141] = 11
+		lut[142] = 11
+		lut[143] = 11
+		lut[144] = 12
+		lut[145] = 12
+		lut[146] = 12
+		lut[147] = 12
+		lut[148] = 12
+		lut[149] = 12
+		lut[150] = 12
+		lut[151] = 12
+		lut[152] = 12
+		lut[153] = 12
+		lut[154] = 12
+		lut[155] = 12
+		lut[156] = 12
+		lut[157] = 12
+		lut[158] = 12
+		lut[159] = 12
+		lut[160] = 12
+		lut[161] = 12
+		lut[162] = 12
+		lut[163] = 12
+		lut[164] = 12
+		lut[165] = 12
+		lut[166] = 12
+		lut[167] = 12
+		lut[168] = 12
+		lut[169] = 13
+		lut[170] = 13
+		lut[171] = 13
+		lut[172] = 13
+		lut[173] = 13
+		lut[174] = 13
+		lut[175] = 13
+		lut[176] = 13
+		lut[177] = 13
+		lut[178] = 13
+		lut[179] = 13
+		lut[180] = 13
+		lut[181] = 13
+		lut[182] = 13
+		lut[183] = 13
+		lut[184] = 13
+		lut[185] = 13
+		lut[186] = 13
+		lut[187] = 13
+		lut[188] = 13
+		lut[189] = 13
+		lut[190] = 13
+		lut[191] = 13
+		lut[192] = 13
+		lut[193] = 13
+		lut[194] = 13
+		lut[195] = 13
+		lut[196] = 14
+		lut[197] = 14
+		lut[198] = 14
+		lut[199] = 14
+		lut[200] = 14
+		lut[201] = 14
+		lut[202] = 14
+		lut[203] = 14
+		lut[204] = 14
+		lut[205] = 14
+		lut[206] = 14
+		lut[207] = 14
+		lut[208] = 14
+		lut[209] = 14
+		lut[210] = 14
+		lut[211] = 14
+		lut[212] = 14
+		lut[213] = 14
+		lut[214] = 14
+		lut[215] = 14
+		lut[216] = 14
+		lut[217] = 14
+		lut[218] = 14
+		lut[219] = 14
+		lut[220] = 14
+		lut[221] = 14
+		lut[222] = 14
+		lut[223] = 14
+		lut[224] = 14
+		lut[225] = 15
+		lut[226] = 15
+		lut[227] = 15
+		lut[228] = 15
+		lut[229] = 15
+		lut[230] = 15
+		lut[231] = 15
+		lut[232] = 15
+		lut[233] = 15
+		lut[234] = 15
+		lut[235] = 15
+		lut[236] = 15
+		lut[237] = 15
+		lut[238] = 15
+		lut[239] = 15
+		lut[240] = 15
+		lut[241] = 15
+		lut[242] = 15
+		lut[243] = 15
+		lut[244] = 15
+		lut[245] = 15
+		lut[246] = 15
+		lut[247] = 15
+		lut[248] = 15
+		lut[249] = 15
+		lut[250] = 15
+		lut[251] = 15
+		lut[252] = 15
+		lut[253] = 15
+		lut[254] = 15
+		lut[255] = 15
+	}
+
+	/**
+	 * Returns floor(sqrt(n)) after clamping n into the supported range.
+	 */
+	public fn Compute(n: int) int
+	{
+		var index = n
+
+		if (index < 0) {
+			index = 0
+		}
+
+		if (index > MAX_INPUT) {
+			index = MAX_INPUT
+		}
+
+		return lut[index]
+	}
+}

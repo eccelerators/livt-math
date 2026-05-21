@@ -1,0 +1,105 @@
+namespace Livt.Math.Tests.Sqrt
+
+using Livt.Math.Sqrt
+
+@Test
+component SqrtNewtonRaphsonTest
+{
+	sqrt: SqrtNewtonRaphson
+
+	new()
+	{
+		sqrt = new SqrtNewtonRaphson()
+	}
+
+	@Test
+	fn TestZero()
+	{
+		var result = sqrt.Compute(0)
+		assert result == 0
+	}
+
+	@Test
+	fn TestOne()
+	{
+		var result = sqrt.Compute(1)
+		assert result == 1
+	}
+
+	@Test
+	fn TestNonPerfectSquare2()
+	{
+		var result = sqrt.Compute(2)
+		assert result == 1
+	}
+
+	@Test
+	fn TestNonPerfectSquare3()
+	{
+		var result = sqrt.Compute(3)
+		assert result == 1
+	}
+
+	@Test
+	fn TestPerfectSquare4()
+	{
+		var result = sqrt.Compute(4)
+		assert result == 2
+	}
+
+	@Test
+	fn TestPerfectSquare9()
+	{
+		var result = sqrt.Compute(9)
+		assert result == 3
+	}
+
+	@Test
+	fn TestPerfectSquare100()
+	{
+		var result = sqrt.Compute(100)
+		assert result == 10
+	}
+
+	@Test
+	fn TestNonPerfectSquare99()
+	{
+		var result = sqrt.Compute(99)
+		assert result == 9
+	}
+
+	@Test
+	fn TestPerfectSquare16129()
+	{
+		var result = sqrt.Compute(16129)
+		assert result == 127
+	}
+
+	@Test
+	fn TestNonPerfectSquare32766()
+	{
+		var result = sqrt.Compute(32766)
+		assert result == 181
+	}
+
+	@Test
+	fn TestMax()
+	{
+		var result = sqrt.Compute(SqrtNewtonRaphson.MAX_INPUT)
+		assert result == 181
+	}
+
+	@Test
+	fn TestClampAboveMax()
+	{
+		var result = sqrt.Compute(40000)
+		assert result == 181
+	}
+
+	@Test
+	fn TestClampBelowZero()
+	{
+		var result = sqrt.Compute(-1)
+		assert result == 0
+	}
+}

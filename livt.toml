@@ -1,0 +1,16 @@
+[project]
+name = "Livt.Math"
+version = "0.1.0"
+path = "src"
+outdir = "out"
+
+[tests]
+path = "tests"
+components = [
+    "SqrtLUTTest",
+    "SqrtNewtonRaphsonTest",
+    "MacUnitTest"
+]
+
+[dependencies]
+Livt.Base = "0.1.0"
