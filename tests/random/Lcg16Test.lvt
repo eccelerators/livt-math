@@ -1,0 +1,64 @@
+namespace Livt.Math.Tests.Random
+
+using Livt.Math.Random
+
+@Test
+component Lcg16Test
+{
+	lcg: Lcg16
+
+	new()
+	{
+		// Standard 16-bit LCG: a=25173, c=13849, m=65536, seed=0.
+		lcg = new Lcg16(0, 25173, 13849, 65536)
+	}
+
+	// Verify the deterministic output sequence from seed=0.
+	@Test
+	fn TestGetNextSequence()
+	{
+		assert this.lcg.GetNext() == 13849
+		assert this.lcg.GetNext() == 48742
+		assert this.lcg.GetNext() == 31223
+		assert this.lcg.GetNext() == 17180
+		assert this.lcg.GetNext() == 13925
+	}
+
+	// Verify GetNextInRange returns values in [0, n-1].
+	@Test
+	fn TestGetNextInRangeIsInBounds()
+	{
+		var i: int = 0
+		var v: int = 0
+		while (i < 20)
+		{
+			v = this.lcg.GetNextInRange(100)
+			assert v >= 0
+			assert v < 100
+			i = i + 1
+		}
+	}
+
+	// Verify Seed() resets the sequence reproducibly.
+	@Test
+	fn TestSeedResetsSequence()
+	{
+		this.lcg.Seed(42)
+		assert this.lcg.GetNext() == 22539
+
+		this.lcg.Seed(42)
+		assert this.lcg.GetNext() == 22539
+	}
+
+	// Verify distinct seeds produce distinct first values.
+	@Test
+	fn TestDifferentSeeds()
+	{
+		this.lcg.Seed(0)
+		var v0: int = this.lcg.GetNext()
+		this.lcg.Seed(42)
+		var v42: int = this.lcg.GetNext()
+		assert v0 == 13849
+		assert v42 == 22539
+	}
+}

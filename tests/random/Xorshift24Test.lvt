@@ -1,0 +1,74 @@
+namespace Livt.Math.Tests.Random
+
+using Livt.Math.Random
+
+@Test
+component Xorshift24Test
+{
+	xs: Xorshift24
+
+	new()
+	{
+		xs = new Xorshift24(1)
+	}
+
+	// Verify the deterministic output sequence from seed=1.
+	// Reference: Python xorshift24(a=3, b=7, c=5) with 24-bit mask.
+	@Test
+	fn TestGetNextSequence()
+	{
+		assert this.xs.GetNext() == 297
+		assert this.xs.GetNext() == 67153
+		assert this.xs.GetNext() == 3010736
+		assert this.xs.GetNext() == 1886874
+		assert this.xs.GetNext() == 9831862
+	}
+
+	// Verify GetNextInRange returns values in [0, n-1].
+	@Test
+	fn TestGetNextInRangeIsInBounds()
+	{
+		var i: int = 0
+		var v: int = 0
+		while (i < 20)
+		{
+			v = this.xs.GetNextInRange(100)
+			assert v >= 0
+			assert v < 100
+			i = i + 1
+		}
+	}
+
+	// Verify Seed() resets the sequence reproducibly.
+	@Test
+	fn TestSeedResetsSequence()
+	{
+		this.xs.Seed(42)
+		assert this.xs.GetNext() == 11896
+
+		this.xs.Seed(42)
+		assert this.xs.GetNext() == 11896
+	}
+
+	// Verify distinct seeds produce distinct first values.
+	@Test
+	fn TestDifferentSeeds()
+	{
+		this.xs.Seed(1)
+		var v1: int = this.xs.GetNext()
+		this.xs.Seed(42)
+		var v42: int = this.xs.GetNext()
+		assert v1 == 297
+		assert v42 == 11896
+	}
+
+	// Verify seed=0 is corrected to 1 (zero is a fixed point).
+	@Test
+	fn TestZeroSeedCorrected()
+	{
+		this.xs.Seed(0)
+		var v: int = this.xs.GetNext()
+		// Should produce same as seed=1.
+		assert v == 297
+	}
+}

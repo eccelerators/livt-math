@@ -1,0 +1,87 @@
+namespace Livt.Math.Random
+
+/**
+ * 24-bit Xorshift pseudo-random number generator.
+ *
+ * Algorithm: Marsaglia xorshift with triplet (a=3, b=7, c=5).
+ *   state ^= (state << 3) & MASK
+ *   state ^= state >> 7
+ *   state ^= (state << 5) & MASK
+ *
+ * Properties:
+ *   - Full period: 2^24 - 1 = 16,777,215.
+ *   - Hardware-safe: max intermediate = 16,777,215 * 32 = 536,870,880 < 2^31.
+ *   - Better statistical quality than LCG (passes most randomness tests).
+ *   - State must never be zero (zero is a fixed point of xorshift).
+ *
+ * Use cases: weight initialization, Monte Carlo sampling, test fixture seeding.
+ * Not cryptographically secure — use Livt.Crypto for security applications.
+ */
+component Xorshift24
+{
+	// 24-bit mask: 2^24 - 1 = 16,777,215.
+	public const MASK: int = 16777215
+
+	// Current generator state in [1, MASK].
+	current_state: int
+
+	/**
+	 * Construct with the given seed. Seed must be in [1, 16777215].
+	 * If seed is 0, it is replaced with 1 (zero is a fixed point).
+	 */
+	new(seed: int)
+	{
+		this.current_state = seed & MASK
+		if (this.current_state == 0)
+		{
+			this.current_state = 1
+		}
+	}
+
+	/**
+	 * Re-seed the generator. Seed must be in [1, 16777215].
+	 * If seed is 0, it is replaced with 1.
+	 */
+	public fn Seed(seed: int)
+	{
+		this.current_state = seed & MASK
+		if (this.current_state == 0)
+		{
+			this.current_state = 1
+		}
+	}
+
+	/**
+	 * Return the next pseudo-random integer in [1, 16777215].
+	 */
+	public fn GetNext() int
+	{
+		var s: int = this.current_state
+		var t: int = 0
+
+		// Step 1: s ^= (s << 3) & MASK — split to avoid ^ and & in one expression
+		t = (s * 8) & MASK
+		s = s ^ t
+		s = s & MASK
+
+		// Step 2: s ^= s >> 7
+		t = s / 128
+		s = s ^ t
+
+		// Step 3: s ^= (s << 5) & MASK
+		t = (s * 32) & MASK
+		s = s ^ t
+		s = s & MASK
+
+		this.current_state = s
+		return this.current_state
+	}
+
+	/**
+	 * Return the next pseudo-random integer in [0, n-1].
+	 */
+	public fn GetNextInRange(n: int) int
+	{
+		return this.GetNext() % n
+	}
+}

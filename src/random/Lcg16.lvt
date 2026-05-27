@@ -1,0 +1,68 @@
+namespace Livt.Math.Random
+
+/**
+ * 16-bit Linear Congruential Generator (LCG).
+ *
+ * Formula: state = (a * state + c) & mask, where mask = m - 1.
+ * Default parameters: a=25173, c=13849, m=65536.
+ * Period: 65536 (full period via Hull-Dobell theorem).
+ *
+ * Hardware-safe: max intermediate = a * (m-1) + c = 1,649,726,404 < 2^31.
+ * No int32 overflow on any platform.
+ *
+ * Use cases: weight initialization, test fixture seeding, small simulations.
+ * Not cryptographically secure — use Livt.Crypto for security applications.
+ * Not suitable for sequences longer than 65,536 values (the period).
+ */
+component Lcg16
+{
+	// LCG multiplier.
+	a: int
+
+	// LCG increment.
+	c: int
+
+	// Bit mask applied after each step: mask = m - 1.
+	mask: int
+
+	// Current generator state in [0, mask].
+	current_state: int
+
+	/**
+	 * Construct with explicit LCG parameters.
+	 * m must be a power of 2 and a * (m - 1) + c must be < 2^31.
+	 */
+	new(seed: int, a: int, c: int, m: int)
+	{
+		this.a = a
+		this.c = c
+		this.mask = m - 1
+		this.current_state = seed & this.mask
+	}
+
+	/**
+	 * Re-seed the generator. Produces the same sequence as constructing
+	 * a fresh instance with this seed and the same a, c, m.
+	 */
+	public fn Seed(seed: int)
+	{
+		this.current_state = seed & this.mask
+	}
+
+	/**
+	 * Return the next pseudo-random integer in [0, m-1].
+	 */
+	public fn GetNext() int
+	{
+		this.current_state = (this.a * this.current_state + this.c) & this.mask
+		return this.current_state
+	}
+
+	/**
+	 * Return the next pseudo-random integer in [0, n-1].
+	 */
+	public fn GetNextInRange(n: int) int
+	{
+		return this.GetNext() % n
+	}
+}
