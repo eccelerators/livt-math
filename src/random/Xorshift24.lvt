@@ -1,7 +1,9 @@
 namespace Livt.Math.Random
 
 /**
- * 24-bit Xorshift pseudo-random number generator.
+ * 24-bit xorshift PRNG, period 2^24-1.
+ *
+ * For simulation and test stimulus, not cryptographic use.
  *
  * Algorithm: Marsaglia xorshift with triplet (a=3, b=7, c=5).
  *   state ^= (state << 3) & MASK
