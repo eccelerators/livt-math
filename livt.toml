@@ -16,3 +16,9 @@ components = [
 
 [dependencies]
 Livt.Base = "0.1.0"
+
+[build.debug]
+warnings = ["all", "no-variable-divisor"]
+
+[build.release]
+warnings = ["all"]
