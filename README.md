@@ -142,3 +142,7 @@ building blocks that are not tied to one application domain.
 Domain-specific math should remain in its owning package: ML layer operations in
 `Livt.ML`, activation functions in `Livt.ML.Activation`, crypto arithmetic in
 `Livt.Crypto`, and FFT or FIR primitives in signal-processing packages.
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
