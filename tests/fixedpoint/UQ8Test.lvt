@@ -1,0 +1,45 @@
+namespace Livt.Math.Tests.FixedPoint
+
+using Livt.Math.FixedPoint
+
+@Test
+component UQ8Test
+{
+	uq8: UQ8
+
+	new()
+	{
+		uq8 = new UQ8()
+	}
+
+	@Test
+	fn ClampsBoundaries()
+	{
+		uq8.Clamp(300)
+		assert uq8.GetResult() == 255
+		uq8.Clamp(-1)
+		assert uq8.GetResult() == 0
+		uq8.Clamp(42)
+		assert uq8.GetResult() == 42
+	}
+
+	@Test
+	fn AddsAndSubtractsSaturating()
+	{
+		uq8.AddSaturating(250, 10)
+		assert uq8.GetResult() == 255
+		uq8.SubSaturating(4, 10)
+		assert uq8.GetResult() == 0
+		uq8.AddSaturating(20, 7)
+		assert uq8.GetResult() == 27
+	}
+
+	@Test
+	fn MultipliesWithRescale()
+	{
+		uq8.Mul(128, 128)
+		assert uq8.GetResult() == 64
+		uq8.Mul(255, 255)
+		assert uq8.GetResult() == 254
+	}
+}

@@ -1,0 +1,67 @@
+namespace Livt.Math.FixedPoint
+
+/**
+ * Unsigned Q0.8 fixed-point helper for normalized values in [0, 1].
+ * Operations clamp to [0, 255] and store the latest value for GetResult().
+ */
+component UQ8
+{
+	public const MIN: int = 0
+	public const MAX: int = 255
+	public const ZERO: int = 0
+	public const ONE: int = 255
+	public const HALF: int = 128
+
+	result: int
+
+	new()
+	{
+		result = 0
+	}
+
+	/**
+	 * Clamp value into UQ8 range and store it as the latest result.
+	 */
+	public fn Clamp(value: int)
+	{
+		if (value < 0) { result = 0 }
+		elif (value > 255) { result = 255 }
+		else { result = value }
+	}
+
+	/**
+	 * Add two UQ8-scaled values, saturate, and store the latest result.
+	 */
+	public fn AddSaturating(a: int, b: int)
+	{
+		var sum: int = a + b
+		this.Clamp(sum)
+	}
+
+	/**
+	 * Subtract two UQ8-scaled values, saturate, and store the latest result.
+	 */
+	public fn SubSaturating(a: int, b: int)
+	{
+		var difference: int = a - b
+		this.Clamp(difference)
+	}
+
+	/**
+	 * Multiply two UQ8-scaled values, rescale by 256, saturate, and store the result.
+	 */
+	public fn Mul(a: int, b: int)
+	{
+		var product: int = a * b
+		var scaled: int = product / 256
+		this.Clamp(scaled)
+	}
+
+	/**
+	 * Return the latest stored UQ8 result.
+	 */
+	public fn GetResult() int
+	{
+		return result
+	}
+}

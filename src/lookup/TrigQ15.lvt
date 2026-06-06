@@ -1,0 +1,160 @@
+namespace Livt.Math.Lookup
+
+/**
+ * Small Q1.15 sine/cosine lookup values for common DSP examples.
+ * Supports size 4 and size 8 tables for deterministic examples.
+ */
+component TrigQ15
+{
+	public const SCALE: int = 32768
+	public const NEG_ONE: int = -32768
+	public const ZERO: int = 0
+	public const ONE: int = 32767
+	public const SQRT_HALF: int = 23170
+
+	/**
+	 * Return cos(index * 2*pi / size) in Q15 for size 4 or 8.
+	 */
+	public fn Cos(index: int, size: int) int
+	{
+		if (size == 4)
+		{
+			return this.Cos4(index)
+		}
+		if (size == 8)
+		{
+			return this.Cos8(index)
+		}
+		return 32767
+	}
+
+	/**
+	 * Return sin(index * 2*pi / size) in Q15 for size 4 or 8.
+	 */
+	public fn Sin(index: int, size: int) int
+	{
+		if (size == 4)
+		{
+			return this.Sin4(index)
+		}
+		if (size == 8)
+		{
+			return this.Sin8(index)
+		}
+		return 0
+	}
+
+	fn NormalizeIndex(index: int, size: int) int
+	{
+		var value: int = index % size
+		if (value < 0)
+		{
+			value = value + size
+		}
+		return value
+	}
+
+	fn Cos4(index: int) int
+	{
+		var value: int = this.NormalizeIndex(index, 4)
+		if (value == 0)
+		{
+			return 32767
+		}
+		if (value == 1)
+		{
+			return 0
+		}
+		if (value == 2)
+		{
+			return -32768
+		}
+		return 0
+	}
+
+	fn Sin4(index: int) int
+	{
+		var value: int = this.NormalizeIndex(index, 4)
+		if (value == 0)
+		{
+			return 0
+		}
+		if (value == 1)
+		{
+			return 32767
+		}
+		if (value == 2)
+		{
+			return 0
+		}
+		return -32768
+	}
+
+	fn Cos8(index: int) int
+	{
+		var value: int = this.NormalizeIndex(index, 8)
+		if (value == 0)
+		{
+			return 32767
+		}
+		if (value == 1)
+		{
+			return 23170
+		}
+		if (value == 2)
+		{
+			return 0
+		}
+		if (value == 3)
+		{
+			return -23170
+		}
+		if (value == 4)
+		{
+			return -32768
+		}
+		if (value == 5)
+		{
+			return -23170
+		}
+		if (value == 6)
+		{
+			return 0
+		}
+		return 23170
+	}
+
+	fn Sin8(index: int) int
+	{
+		var value: int = this.NormalizeIndex(index, 8)
+		if (value == 0)
+		{
+			return 0
+		}
+		if (value == 1)
+		{
+			return 23170
+		}
+		if (value == 2)
+		{
+			return 32767
+		}
+		if (value == 3)
+		{
+			return 23170
+		}
+		if (value == 4)
+		{
+			return 0
+		}
+		if (value == 5)
+		{
+			return -23170
+		}
+		if (value == 6)
+		{
+			return -32768
+		}
+		return -23170
+	}
+}

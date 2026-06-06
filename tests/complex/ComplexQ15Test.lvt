@@ -1,0 +1,69 @@
+namespace Livt.Math.Tests.Complex
+
+using Livt.Math.Complex
+using Livt.Math.FixedPoint
+
+@Test
+component ComplexQ15Test
+{
+	value: ComplexQ15
+
+	new()
+	{
+		value = new ComplexQ15()
+	}
+
+	@Test
+	fn SetsAndClampsValues()
+	{
+		value.Set(40000, -40000)
+
+		assert value.GetReal() == 32767
+		assert value.GetImag() == -32768
+	}
+
+	@Test
+	fn AddsAndSubtracts()
+	{
+		value.Set(1000, -2000)
+		value.Add(300, 500)
+
+		assert value.GetResultReal() == 1300
+		assert value.GetResultImag() == -1500
+
+		value.Sub(300, 500)
+
+		assert value.GetResultReal() == 700
+		assert value.GetResultImag() == -2500
+	}
+
+	@Test
+	fn MultipliesByOne()
+	{
+		value.Set(16384, 0)
+		value.Mul(32767, 0)
+
+		assert value.GetResultReal() == 16383
+		assert value.GetResultImag() == 0
+	}
+
+	@Test
+	fn MultipliesByImaginaryUnit()
+	{
+		value.Set(16384, 0)
+		value.Mul(0, 32767)
+
+		assert value.GetResultReal() == 0
+		assert value.GetResultImag() == 16383
+	}
+
+	@Test
+	fn RotatesSimpleQuarterTurn()
+	{
+		value.Set(16384, 16384)
+		value.MulByTwiddle(0, 32767)
+
+		assert value.GetResultReal() == -16383
+		assert value.GetResultImag() == 16383
+	}
+}

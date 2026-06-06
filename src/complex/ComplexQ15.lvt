@@ -1,0 +1,109 @@
+namespace Livt.Math.Complex
+
+using Livt.Math.FixedPoint
+
+/**
+ * Stateful helper for signed Q1.15 complex arithmetic.
+ * Set stores the input value. Add/Sub/Mul write their latest value to result fields.
+ */
+component ComplexQ15
+{
+	real: int
+	imag: int
+	resultReal: int
+	resultImag: int
+
+	new()
+	{
+		this.real = 0
+		this.imag = 0
+		this.resultReal = 0
+		this.resultImag = 0
+	}
+
+	/**
+	 * Store a complex value after clamping both parts to Q15 range.
+	 */
+	public fn Set(real: int, imag: int)
+	{
+		this.real = this.ClampQ15(real)
+		this.imag = this.ClampQ15(imag)
+	}
+
+	public fn GetReal() int
+	{
+		return this.real
+	}
+
+	public fn GetImag() int
+	{
+		return this.imag
+	}
+
+	public fn GetResultReal() int
+	{
+		return this.resultReal
+	}
+
+	public fn GetResultImag() int
+	{
+		return this.resultImag
+	}
+
+	/**
+	 * Add another Q15 complex value to the stored value.
+	 */
+	public fn Add(otherReal: int, otherImag: int)
+	{
+		var nextReal: int = this.real + otherReal
+		var nextImag: int = this.imag + otherImag
+		this.resultReal = this.ClampQ15(nextReal)
+		this.resultImag = this.ClampQ15(nextImag)
+	}
+
+	/**
+	 * Subtract another Q15 complex value from the stored value.
+	 */
+	public fn Sub(otherReal: int, otherImag: int)
+	{
+		var nextReal: int = this.real - otherReal
+		var nextImag: int = this.imag - otherImag
+		this.resultReal = this.ClampQ15(nextReal)
+		this.resultImag = this.ClampQ15(nextImag)
+	}
+
+	/**
+	 * Multiply the stored value by another Q15 complex value.
+	 */
+	public fn Mul(otherReal: int, otherImag: int)
+	{
+		var acProduct: int = this.real * otherReal
+		var bdProduct: int = this.imag * otherImag
+		var adProduct: int = this.real * otherImag
+		var bcProduct: int = this.imag * otherReal
+		var ac: int = this.ClampQ15(acProduct / 32768)
+		var bd: int = this.ClampQ15(bdProduct / 32768)
+		var ad: int = this.ClampQ15(adProduct / 32768)
+		var bc: int = this.ClampQ15(bcProduct / 32768)
+
+		var nextReal: int = ac - bd
+		var nextImag: int = ad + bc
+		this.resultReal = this.ClampQ15(nextReal)
+		this.resultImag = this.ClampQ15(nextImag)
+	}
+
+	/**
+	 * Multiply the stored value by a precomputed Q15 twiddle.
+	 */
+	public fn MulByTwiddle(twiddleReal: int, twiddleImag: int)
+	{
+		this.Mul(twiddleReal, twiddleImag)
+	}
+
+	fn ClampQ15(value: int) int
+	{
+		if (value < -32768) { return -32768 }
+		if (value > 32767) { return 32767 }
+		return value
+	}
+}

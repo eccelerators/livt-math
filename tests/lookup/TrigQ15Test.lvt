@@ -1,0 +1,46 @@
+namespace Livt.Math.Tests.Lookup
+
+using Livt.Math.Lookup
+
+@Test
+component TrigQ15Test
+{
+	trig: TrigQ15
+
+	new()
+	{
+		trig = new TrigQ15()
+	}
+
+	@Test
+	fn ReturnsKnownSizeFourValues()
+	{
+		assert trig.Cos(0, 4) == 32767
+		assert trig.Sin(1, 4) == 32767
+		assert trig.Cos(2, 4) == -32768
+		assert trig.Sin(3, 4) == -32768
+	}
+
+	@Test
+	fn ReturnsKnownSizeEightValues()
+	{
+		assert trig.Cos(1, 8) == 23170
+		assert trig.Sin(1, 8) == 23170
+		assert trig.Cos(5, 8) == -23170
+		assert trig.Sin(7, 8) == -23170
+	}
+
+	@Test
+	fn WrapsIndexes()
+	{
+		assert trig.Cos(8, 8) == 32767
+		assert trig.Sin(-1, 4) == -32768
+	}
+
+	@Test
+	fn UsesSafeDefaultsForUnsupportedSize()
+	{
+		assert trig.Cos(1, 16) == 32767
+		assert trig.Sin(1, 16) == 0
+	}
+}

@@ -5,13 +5,20 @@ packages. It collects reusable arithmetic components that are useful across
 application domains but are not specific to ML, crypto, networking, or signal
 processing.
 
-The 0.1.0 package surface is intentionally small:
+The 0.3.0 package surface is intentionally small and practical:
 
 - `Livt.Math.Sqrt.SqrtLUT`: 8-bit lookup-table integer square root.
 - `Livt.Math.Sqrt.SqrtNewtonRaphson`: iterative integer square root for larger
   inputs.
 - `Livt.Math.Arithmetic.MacUnit`: signed 16-bit saturating
   multiply-accumulate helper.
+- `Livt.Math.FixedPoint.Q7`: compact signed Q1.7 fixed-point helpers.
+- `Livt.Math.FixedPoint.Q15`: signed Q1.15 fixed-point helpers for normalized
+  DSP coefficients.
+- `Livt.Math.FixedPoint.UQ8`: unsigned Q0.8 fixed-point helpers for normalized
+  values.
+- `Livt.Math.Complex.ComplexQ15`: reusable Q15 complex arithmetic helper.
+- `Livt.Math.Lookup.TrigQ15`: small Q15 sine/cosine lookup for common angles.
 - `Livt.Math.Random.Lcg16`: 16-bit linear congruential generator (period 65 536).
 - `Livt.Math.Random.Xorshift24`: 24-bit xorshift generator (period 2^24 − 1).
 
@@ -33,6 +40,30 @@ Square-root components return the floor of the mathematical square root:
 - `GetResult()` returns the current accumulator.
 - `Reset()` clears the accumulator.
 - Results are clamped to `[-32768, 32767]` after each accumulation step.
+
+Fixed-point helpers use explicit named formats instead of a generic framework:
+
+- `Q7` stores compact signed normalized values with 7 fractional bits.
+- `Q15` stores signed normalized values with 15 fractional bits and is suitable
+  for DSP coefficients, twiddle constants, and phasors.
+- `UQ8` stores unsigned normalized values with 8 fractional bits and is useful
+  for duty cycles, brightness, and probability-like values.
+
+Each format documents its scale/range convention and exposes public constants
+for the range and common values. Operations are stateful component calls:
+`Clamp`, `AddSaturating`, `SubSaturating`, and `Mul` write the latest value into
+the component result, and `GetResult()` reads it back. This shape is intentional
+for the 0.3.0 release because it is the implementation that currently builds and
+simulates reliably.
+
+`ComplexQ15` stores one Q15 complex value and writes operation results into
+readable result fields. It supports set/read of the stored value, add, subtract,
+complex multiply, and multiply by precomputed twiddle values.
+
+`TrigQ15` provides deterministic precomputed sine/cosine constants for common
+size-4 and size-8 examples. Unsupported table sizes fall back to `cos = 1` and
+`sin = 0` in Q15 form. Larger transform orchestration belongs in a
+signal-processing package rather than in `Livt.Math`.
 
 `SqrtNewtonRaphson` uses variable integer division. That keeps the component
 compact and straightforward for simulation and early hardware exploration, but
@@ -67,7 +98,8 @@ packages can reuse directly:
 - multiply-accumulate
 - pseudo-random number generators
 - integer/fixed-point helper functions
-- saturating arithmetic
+- complex arithmetic over fixed-point values
+- saturating arithmetic exposed by concrete fixed-point formats
 - small reusable lookup tables
 
 Projects that are more domain-specific should stay elsewhere:
@@ -76,16 +108,23 @@ Projects that are more domain-specific should stay elsewhere:
   layer building blocks.
 - `Sigmoid`, `Softmax`, `SiLU`, and `ReLU` stay in `Livt.ML.Activation`.
 - FFT and FIR filter packages are better treated as signal-processing packages,
-  not base math.
+  not base math. They can reuse `Livt.Math.FixedPoint`, `Livt.Math.Complex`,
+  and `Livt.Math.Lookup` primitives.
 
 ## Layout
 
 ```text
 src/sqrt/         square-root implementations
 src/arithmetic/   small arithmetic primitives
+src/fixedpoint/   named fixed-point formats
+src/complex/      fixed-point complex arithmetic
+src/lookup/       small reusable lookup constants
 src/random/       pseudo-random number generators
 tests/sqrt/       tests mirroring the source domain
 tests/arithmetic/
+tests/fixedpoint/
+tests/complex/
+tests/lookup/
 tests/random/
 docs/             short usage examples and package notes
 ```
@@ -128,16 +167,23 @@ The test list is defined in `livt.toml`. Short call-order examples live in
   matching tests under the same domain folder in `tests/`.
 - Use nested `Livt.Math.<Domain>` namespaces for source components and
   `Livt.Math.Tests.<Domain>` for tests.
-- Make component range and overflow behavior visible in public constants,
-  documentation, and boundary tests.
+- Make range and overflow behavior visible in public constants where components
+  expose them, plus documentation and boundary tests for every helper.
 - Prefer deterministic fixed-size APIs over implicit variable-length behavior.
+- Keep direct value-returning fixed-point helpers out of the public API until
+  Livt context-free functions (`fn Name[]`) and `inline int` return lowering are
+  compiler-verified.
 
 ## Outlook
 
 This package is intended to grow slowly around low-level arithmetic that is
-reusable across Livt packages. Good future additions include fixed-point helper
-components, reusable saturating arithmetic, small lookup tables, and integer
-building blocks that are not tied to one application domain.
+reusable across Livt packages. Future additions should extend the practical
+named-format approach before introducing a generic configurable fixed-point
+framework.
+
+The next API cleanup target is direct, context-free fixed-point helpers such as
+`Q15.Mul(a, b)`. That should wait until the compiler supports `fn Name[]` and
+`static inline fn ... int` reliably for signed integer return values.
 
 Domain-specific math should remain in its owning package: ML layer operations in
 `Livt.ML`, activation functions in `Livt.ML.Activation`, crypto arithmetic in

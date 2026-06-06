@@ -1,0 +1,47 @@
+namespace Livt.Math.Tests.FixedPoint
+
+using Livt.Math.FixedPoint
+
+@Test
+component Q7Test
+{
+	q7: Q7
+
+	new()
+	{
+		q7 = new Q7()
+	}
+
+	@Test
+	fn ClampsBoundaries()
+	{
+		q7.Clamp(200)
+		assert q7.GetResult() == 127
+		q7.Clamp(-200)
+		assert q7.GetResult() == -128
+		q7.Clamp(12)
+		assert q7.GetResult() == 12
+	}
+
+	@Test
+	fn AddsAndSubtractsSaturating()
+	{
+		q7.AddSaturating(120, 20)
+		assert q7.GetResult() == 127
+		q7.SubSaturating(-120, 20)
+		assert q7.GetResult() == -128
+		q7.AddSaturating(20, 7)
+		assert q7.GetResult() == 27
+	}
+
+	@Test
+	fn MultipliesWithRescale()
+	{
+		q7.Mul(64, 64)
+		assert q7.GetResult() == 32
+		q7.Mul(127, 127)
+		assert q7.GetResult() == 126
+		q7.Mul(-128, 127)
+		assert q7.GetResult() == -127
+	}
+}
