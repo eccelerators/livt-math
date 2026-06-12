@@ -50,15 +50,25 @@ Fixed-point helpers use explicit named formats instead of a generic framework:
   for duty cycles, brightness, and probability-like values.
 
 Each format documents its scale/range convention and exposes public constants
-for the range and common values. Operations are stateful component calls:
-`Clamp`, `AddSaturating`, `SubSaturating`, and `Mul` write the latest value into
-the component result, and `GetResult()` reads it back. This shape is intentional
-for the 0.3.0 release because it is the implementation that currently builds and
-simulates reliably.
+for the range and common values. The public API has two practical forms:
+
+- stateful component calls: `Clamp`, `AddSaturating`, `SubSaturating`, and `Mul`
+  write the latest value into the component result, and `GetResult()` reads it
+  back;
+- direct static context-free helpers: `Q15.ClampValue(x)`, `Q15.MulValue(a, b)`,
+  `Q7.AddSaturatingValue(a, b)`, and `UQ8.SubSaturatingValue(a, b)` return values
+  without instantiating a helper component.
+
+This keeps the package centered on small named formats instead of a generic
+Q-format abstraction while still giving users and agents direct value APIs for
+combinational helper logic.
 
 `ComplexQ15` stores one Q15 complex value and writes operation results into
 readable result fields. It supports set/read of the stored value, add, subtract,
-complex multiply, and multiply by precomputed twiddle values.
+complex multiply, and multiply by precomputed twiddle values. It also exposes
+static context-free helpers such as `ComplexQ15.MulReal(...)`,
+`ComplexQ15.MulImag(...)`, and `ComplexQ15.ClampPart(...)` for package-level
+composition.
 
 `TrigQ15` provides deterministic precomputed sine/cosine constants for common
 size-4 and size-8 examples. Unsupported table sizes fall back to `cos = 1` and
@@ -170,9 +180,9 @@ The test list is defined in `livt.toml`. Short call-order examples live in
 - Make range and overflow behavior visible in public constants where components
   expose them, plus documentation and boundary tests for every helper.
 - Prefer deterministic fixed-size APIs over implicit variable-length behavior.
-- Keep direct value-returning fixed-point helpers out of the public API until
-  Livt context-free functions (`fn Name[]`) and `inline int` return lowering are
-  compiler-verified.
+- Prefer direct static context-free helpers for reusable arithmetic that does not
+  need component state, and keep stateful component methods where sequencing or
+  stored results are part of the contract.
 
 ## Outlook
 
@@ -181,13 +191,16 @@ reusable across Livt packages. Future additions should extend the practical
 named-format approach before introducing a generic configurable fixed-point
 framework.
 
-The next API cleanup target is direct, context-free fixed-point helpers such as
-`Q15.Mul(a, b)`. That should wait until the compiler supports `fn Name[]` and
-`static inline fn ... int` reliably for signed integer return values.
+Direct context-free fixed-point helpers are now part of the package API through
+small named formats such as `Q15`, `Q7`, `UQ8`, and `ComplexQ15`. Future work
+should extend this named-format approach before adding a configurable generic
+Q-format framework.
 
 Domain-specific math should remain in its owning package: ML layer operations in
 `Livt.ML`, activation functions in `Livt.ML.Activation`, crypto arithmetic in
-`Livt.Crypto`, and FFT or FIR primitives in signal-processing packages.
+`Livt.Crypto`, and FFT or FIR orchestration in signal-processing packages.
+`Livt.Math` should provide the reusable primitives those packages build on, such
+as Q15 arithmetic, complex multiply parts, lookup constants, and MAC units.
 
 ## 📄 License
 

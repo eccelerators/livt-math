@@ -44,4 +44,21 @@ component Q15Test
 		q15.Mul(-32768, 32767)
 		assert q15.GetResult() == -32767
 	}
+
+	@Test
+	fn DirectContextFreeHelpers()
+	{
+		var high: int = Q15.ClampValue(40000)
+		var low: int = Q15.ClampValue(-40000)
+		var added: int = Q15.AddSaturatingValue(30000, 4000)
+		var subtracted: int = Q15.SubSaturatingValue(10, 3)
+		var multiplied: int = Q15.MulValue(16384, 16384)
+
+		assert high == 32767
+		assert low == -32768
+		assert added == 32767
+		assert subtracted == 7
+		assert multiplied == 8192
+	}
+
 }

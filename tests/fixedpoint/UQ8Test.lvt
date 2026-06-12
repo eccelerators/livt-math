@@ -42,4 +42,21 @@ component UQ8Test
 		uq8.Mul(255, 255)
 		assert uq8.GetResult() == 254
 	}
+
+	@Test
+	fn DirectContextFreeHelpers()
+	{
+		var high: int = UQ8.ClampValue(300)
+		var low: int = UQ8.ClampValue(-1)
+		var added: int = UQ8.AddSaturatingValue(250, 10)
+		var subtracted: int = UQ8.SubSaturatingValue(4, 10)
+		var multiplied: int = UQ8.MulValue(128, 128)
+
+		assert high == 255
+		assert low == 0
+		assert added == 255
+		assert subtracted == 0
+		assert multiplied == 64
+	}
+
 }

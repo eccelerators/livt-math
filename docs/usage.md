@@ -89,9 +89,10 @@ component MacExample
 
 Use named fixed-point helpers when values have a clear scale. `Q15` is the
 default choice for normalized signed DSP coefficients, while `Q7` is compact and
-`UQ8` is useful for unsigned normalized values such as duty cycles. Fixed-point
-operations store their latest value in the helper component; call `GetResult()`
-after each operation that you want to read.
+`UQ8` is useful for unsigned normalized values such as duty cycles.
+
+For reusable combinational arithmetic, call the static context-free helpers
+directly. They return values and do not require a component instance.
 
 ```livt
 namespace Example
@@ -100,24 +101,36 @@ using Livt.Math.FixedPoint
 
 component FixedPointExample
 {
+    public fn Run()
+    {
+        var half: int = 16384
+        var quarter: int = Q15.MulValue(half, half)
+        var saturated: int = Q15.AddSaturatingValue(32767, 10)
+        var brightness: int = UQ8.MulValue(128, 128)
+    }
+}
+```
+
+Stateful calls remain available when a component should store the latest result.
+
+```livt
+namespace Example
+
+using Livt.Math.FixedPoint
+
+component StatefulFixedPointExample
+{
     q15: Q15
-    uq8: UQ8
 
     new()
     {
         q15 = new Q15()
-        uq8 = new UQ8()
     }
 
     public fn Run()
     {
-        var half: int = 16384
-        q15.Mul(half, half)
+        q15.Mul(16384, 16384)
         var quarter: int = q15.GetResult()
-        q15.AddSaturating(32767, 10)
-        var saturated: int = q15.GetResult()
-        uq8.Mul(128, 128)
-        var brightness: int = uq8.GetResult()
     }
 }
 ```
@@ -125,7 +138,8 @@ component FixedPointExample
 ## Q15 Complex Arithmetic
 
 `ComplexQ15` stores a complex value in Q15 format and exposes the latest result
-through explicit read methods.
+through explicit read methods. Static helpers are available for direct complex
+composition when an algorithm wants real and imaginary parts as values.
 
 ```livt
 namespace Example
@@ -148,6 +162,9 @@ component ComplexExample
         value.MulByTwiddle(0, 32767)
         var real: int = value.GetResultReal()
         var imag: int = value.GetResultImag()
+
+        var directReal: int = ComplexQ15.MulReal(16384, 0, 0, 32767)
+        var directImag: int = ComplexQ15.MulImag(16384, 0, 0, 32767)
     }
 }
 ```
@@ -155,7 +172,8 @@ component ComplexExample
 ## Q15 Lookup Constants
 
 Use `TrigQ15` for small deterministic sine/cosine values. It is intentionally a
-lookup helper, not a full transform implementation.
+lookup helper, not a full transform implementation. FFT orchestration belongs in
+a DSP/signal-processing package that depends on these primitives.
 
 ```livt
 namespace Example

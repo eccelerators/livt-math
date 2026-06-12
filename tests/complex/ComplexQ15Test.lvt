@@ -66,4 +66,31 @@ component ComplexQ15Test
 		assert value.GetResultReal() == -16383
 		assert value.GetResultImag() == 16383
 	}
+
+	@Test
+	fn DirectContextFreeHelpers()
+	{
+		var high: int = ComplexQ15.ClampPart(40000)
+		var low: int = ComplexQ15.ClampPart(-40000)
+		var addReal: int = ComplexQ15.AddReal(32000, -32000, 2000, -2000)
+		var addImag: int = ComplexQ15.AddImag(32000, -32000, 2000, -2000)
+		var subReal: int = ComplexQ15.SubReal(-32000, 32000, 2000, -2000)
+		var subImag: int = ComplexQ15.SubImag(-32000, 32000, 2000, -2000)
+		var mulRealOne: int = ComplexQ15.MulReal(16384, 0, 32767, 0)
+		var mulImagOne: int = ComplexQ15.MulImag(16384, 0, 0, 32767)
+		var mulRealQuarter: int = ComplexQ15.MulReal(16384, 16384, 0, 32767)
+		var mulImagQuarter: int = ComplexQ15.MulImag(16384, 16384, 0, 32767)
+
+		assert high == 32767
+		assert low == -32768
+		assert addReal == 32767
+		assert addImag == -32768
+		assert subReal == -32768
+		assert subImag == 32767
+		assert mulRealOne == 16383
+		assert mulImagOne == 16383
+		assert mulRealQuarter == -16383
+		assert mulImagQuarter == 16383
+	}
+
 }

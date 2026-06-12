@@ -21,6 +21,45 @@ component ComplexQ15
 		this.resultImag = 0
 	}
 
+	public static fn ClampPart[](value: int) int
+	{
+		return Q15.ClampValue(value)
+	}
+
+	public static fn AddReal[](real: int, imag: int, otherReal: int, otherImag: int) int
+	{
+		return Q15.AddSaturatingValue(real, otherReal)
+	}
+
+	public static fn AddImag[](real: int, imag: int, otherReal: int, otherImag: int) int
+	{
+		return Q15.AddSaturatingValue(imag, otherImag)
+	}
+
+	public static fn SubReal[](real: int, imag: int, otherReal: int, otherImag: int) int
+	{
+		return Q15.SubSaturatingValue(real, otherReal)
+	}
+
+	public static fn SubImag[](real: int, imag: int, otherReal: int, otherImag: int) int
+	{
+		return Q15.SubSaturatingValue(imag, otherImag)
+	}
+
+	public static fn MulReal[](real: int, imag: int, otherReal: int, otherImag: int) int
+	{
+		var ac: int = Q15.MulValue(real, otherReal)
+		var bd: int = Q15.MulValue(imag, otherImag)
+		return Q15.SubSaturatingValue(ac, bd)
+	}
+
+	public static fn MulImag[](real: int, imag: int, otherReal: int, otherImag: int) int
+	{
+		var ad: int = Q15.MulValue(real, otherImag)
+		var bc: int = Q15.MulValue(imag, otherReal)
+		return Q15.AddSaturatingValue(ad, bc)
+	}
+
 	/**
 	 * Store a complex value after clamping both parts to Q15 range.
 	 */

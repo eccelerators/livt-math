@@ -19,6 +19,32 @@ component UQ8
 		result = 0
 	}
 
+	public static fn ClampValue[](value: int) int
+	{
+		if (value < 0) { return 0 }
+		if (value > 255) { return 255 }
+		return value
+	}
+
+	public static fn AddSaturatingValue[](a: int, b: int) int
+	{
+		var sum: int = a + b
+		return UQ8.ClampValue(sum)
+	}
+
+	public static fn SubSaturatingValue[](a: int, b: int) int
+	{
+		var difference: int = a - b
+		return UQ8.ClampValue(difference)
+	}
+
+	public static fn MulValue[](a: int, b: int) int
+	{
+		var product: int = a * b
+		var scaled: int = product / 256
+		return UQ8.ClampValue(scaled)
+	}
+
 	/**
 	 * Clamp value into UQ8 range and store it as the latest result.
 	 */

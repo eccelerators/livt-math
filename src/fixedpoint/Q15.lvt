@@ -19,6 +19,32 @@ component Q15
 		result = 0
 	}
 
+	public static fn ClampValue[](value: int) int
+	{
+		if (value < -32768) { return -32768 }
+		if (value > 32767) { return 32767 }
+		return value
+	}
+
+	public static fn AddSaturatingValue[](a: int, b: int) int
+	{
+		var sum: int = a + b
+		return Q15.ClampValue(sum)
+	}
+
+	public static fn SubSaturatingValue[](a: int, b: int) int
+	{
+		var difference: int = a - b
+		return Q15.ClampValue(difference)
+	}
+
+	public static fn MulValue[](a: int, b: int) int
+	{
+		var product: int = a * b
+		var scaled: int = product / 32768
+		return Q15.ClampValue(scaled)
+	}
+
 	/**
 	 * Clamp value into Q15 range and store it as the latest result.
 	 */
