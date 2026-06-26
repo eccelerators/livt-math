@@ -1,5 +1,7 @@
 namespace Livt.Math.Random
 
+using Livt.Lang.Annotations
+
 /**
  * 16-bit LCG PRNG, period 65536.
  *
@@ -63,6 +65,7 @@ component Lcg16
 	/**
 	 * Return the next pseudo-random integer in [0, n-1].
 	 */
+	@SuppressWarning("variable-divisor")
 	public fn GetNextInRange(n: int) int
 	{
 		return this.GetNext() % n

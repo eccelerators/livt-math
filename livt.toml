@@ -23,7 +23,7 @@ components = [
 Livt.Base = "0.1.1"
 
 [build.debug]
-warnings = ["all", "no-variable-divisor"]
+warnings = ["all"]
 
 [build.release]
 warnings = ["all"]

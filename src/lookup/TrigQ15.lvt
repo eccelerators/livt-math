@@ -1,5 +1,7 @@
 namespace Livt.Math.Lookup
 
+using Livt.Lang.Annotations
+
 /**
  * Small Q1.15 sine/cosine lookup values for common DSP examples.
  * Supports size 4 and size 8 tables for deterministic examples.
@@ -44,6 +46,7 @@ component TrigQ15
 		return 0
 	}
 
+	@SuppressWarning("variable-divisor")
 	fn NormalizeIndex(index: int, size: int) int
 	{
 		var value: int = index % size

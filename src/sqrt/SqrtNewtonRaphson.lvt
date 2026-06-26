@@ -1,5 +1,7 @@
 namespace Livt.Math.Sqrt
 
+using Livt.Lang.Annotations
+
 /**
  * Computes floor square roots for integer inputs up to MAX_INPUT.
  */
@@ -13,6 +15,7 @@ component SqrtNewtonRaphson
 	/**
 	 * Returns floor(sqrt(n)) after clamping n into the supported range.
 	 */
+	@SuppressWarning("variable-divisor")
 	public fn Compute(n: int) int
 	{
 		if (n <= 0) {
