@@ -1,0 +1,94 @@
+namespace BitUtils
+
+component BitManipulation {
+
+    public fn ReverseBits(value: int, width: int) int
+    {
+        var pw: int = this.Pow2(width)
+        var result: int = 0
+        var remaining: int = value % pw
+        for (var i = 0; i < width; i++)
+        {
+            var bit: int = remaining % 2
+            var shift: int = width - 1 - i
+            var p: int = this.Pow2(shift)
+            result = result + bit * p
+            remaining = remaining / 2
+        }
+        return result
+    }
+
+     public fn Pow2(n: int) int
+    {
+        var result: int = 1
+        for (var i = 0; i < n; i++)
+        {
+            result = result * 2
+        }
+        return result
+    }
+
+
+    public fn CountLeadingZeros(value: uint) int
+    {
+        if (value == 0) {
+            return 32
+        }
+        var count: int = 0
+        if ((value & 0xFFFF0000) == 0){
+            count += 16
+            value = value << 16
+        }
+        if ((value & 0xFF000000) == 0){
+            count += 8
+           value = value << 8
+        }
+        if ((value & 0xF0000000) == 0){
+            count += 4
+            value = value << 4
+        }
+        if ((value & 0xC0000000) == 0){
+            count += 2
+            value = value << 2
+        }
+        if ((value & 0x80000000) == 0){
+            count += 1
+        }
+        return count
+    }
+    
+
+    public fn PopCount(value: int) int 
+    {
+        var x: int = value >> 1
+        x = x & 0x55555555
+        var stepOne: int = value - x
+
+        var y: int = stepOne & 0x33333333
+        var z: int = stepOne >> 2
+        z = z & 0x33333333
+        var stepTwo: int = y + z
+
+        var a: int = stepTwo >> 4
+        a = stepTwo + a
+        var stepThree: int = a & 0x0F0F0F0F
+
+        var stepFour = stepThree * 0x01010101
+        return stepFour >> 24
+    }
+    
+
+    public fn rotateLeft(value: int, distance: int) int
+    {
+        distance = distance & 31
+        return (value << distance) | (value >> (32 - distance))
+    }
+      
+
+    public fn rotateRight(value: int, distance: int) int
+    {
+        var y: int = distance & 31
+        return (value >> distance) | (value << (32 - distance))
+    }
+}
+

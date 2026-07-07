@@ -1,0 +1,94 @@
+namespace BitUtils.Tests
+
+using BitUtils
+
+@Test
+component BitManipulationTest {
+
+    bm: BitManipulation
+
+    new(){
+        this.bm = new BitManipulation()
+    }
+    
+    
+ 
+    @Test
+    fn ReverseBitsOnOneBit()
+    {
+        assert this.bm.ReverseBits(1, 1) == 1
+    }
+
+    @Test
+    fn ReverseBitsByteLevel()
+    {
+        assert this.bm.ReverseBits(1, 8) == 128
+        assert this.bm.ReverseBits(128, 8) == 1
+    }
+
+    @Test
+    fn ReverseBitsAlternating()
+    {
+        assert this.bm.ReverseBits(85, 8) == 170
+        assert this.bm.ReverseBits(170, 8) == 85
+    }
+
+    @Test
+    fn ReverseBitsPalindrome()
+    {
+        assert this.bm.ReverseBits(102, 8) == 102
+    }
+
+    @Test
+    fn TestCountLeadingZeros() {
+        assert this.bm.CountLeadingZeros(0) == 32
+        assert this.bm.CountLeadingZeros(1) == 31
+        assert this.bm.CountLeadingZeros(2) == 30
+        assert this.bm.CountLeadingZeros(64) == 25
+        assert this.bm.CountLeadingZeros(512) == 22
+        assert this.bm.CountLeadingZeros(2048) == 20
+        assert this.bm.CountLeadingZeros(1073741824) == 1
+        assert this.bm.CountLeadingZeros(2147483648) == 0
+    }
+
+    @Test
+    fn TestPopCount() {
+        assert this.bm.PopCount(0) == 0
+        assert this.bm.PopCount(1) == 1
+        assert this.bm.PopCount(2) == 1
+        assert this.bm.PopCount(3) == 2
+        assert this.bm.PopCount(4) == 1
+        assert this.bm.PopCount(5) == 2
+        assert this.bm.PopCount(6) == 2
+        assert this.bm.PopCount(7) == 3
+        assert this.bm.PopCount(8) == 1
+        assert this.bm.PopCount(15) == 4
+        assert this.bm.PopCount(16) == 1
+        assert this.bm.PopCount(31) == 5
+        assert this.bm.PopCount(128) == 1
+        assert this.bm.PopCount(255) == 8
+    }
+   
+
+    @Test
+    fn TestRotateLeft() {
+        assert this.bm.rotateLeft(1, 1) == 2
+        assert this.bm.rotateLeft(1, 2) == 4
+        assert this.bm.rotateLeft(1, 3) == 8
+        assert this.bm.rotateLeft(1, 4) == 16
+        assert this.bm.rotateLeft(4, 5) == 128
+        assert this.bm.rotateLeft(4, 6) == 256
+    }
+
+
+    @Test
+    fn TestRotateRight() {
+        assert this.bm.rotateRight(16, 1) == 8
+        assert this.bm.rotateRight(16, 2) == 4
+        assert this.bm.rotateRight(16, 3) == 2
+        assert this.bm.rotateRight(16, 4) == 1
+        assert this.bm.rotateRight(128, 5) == 4
+        assert this.bm.rotateRight(256, 6) == 4
+        
+    }
+}
