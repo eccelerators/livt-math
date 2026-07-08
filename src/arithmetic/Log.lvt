@@ -1,0 +1,42 @@
+namespace Logarithm
+
+component Log {
+
+    public fn Log2(value: int) int
+    {
+        if (value <= 0)
+        {
+            return -1
+        }
+
+        var result: int = 0
+        var tempValue: int = value
+
+        while (tempValue > 1)
+        {
+            tempValue = tempValue >> 1
+            result = result + 1
+        }
+
+        return result
+    }
+
+     public fn Log(value: int, base: int) int
+    {
+        if (value <= 0 || base <= 1)
+        {
+            return -1
+        }
+
+        var result: int = 0
+        var tempValue: int = value
+
+        while (tempValue >= base)
+        {
+            tempValue = tempValue / base
+            result = result + 1
+        }
+
+        return result
+    }
+}
