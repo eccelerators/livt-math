@@ -1,0 +1,161 @@
+namespace Statistics
+
+component Stats {
+
+    public fn meanInt(myarray: int[8]) int {
+        var sum: int = 0
+        var length: int = myarray.Length()
+        for (var i: int = 0; i < length; i++) {
+            sum += myarray[i]
+        }
+        return sum / length
+    }
+ 
+    public fn meanUInt(myarray: uint[8]) uint {
+        var sum: uint = 0
+        var length: int = myarray.Length()
+        for (var i: int = 0; i < length; i++) {
+            sum += myarray[i]
+        }
+        var lengthUInt: uint = length as uint
+        return sum / lengthUInt
+    }
+
+    public fn meanByte(myarray: byte[8]) byte {
+        var sum: int = 0
+        var length: int = myarray.Length()
+        for (var i: int = 0; i < length; i++) {
+            sum += myarray[i] as int
+        }
+        return (sum / length) as byte
+    }
+   
+    public fn medianInt(myarray: int[7]) int {
+        var length: int = myarray.Length()
+        var sortedArray: int[] = myarray
+        for (var i: int = 0; i < length - 1; i++) {
+            for (var j: int = 0; j < length - 1 - i; j++) {
+                if (sortedArray[j] > sortedArray[j + 1]) {
+                    var temp: int = sortedArray[j]
+                    sortedArray[j] = sortedArray[j + 1]
+                    sortedArray[j + 1] = temp
+                }
+            }
+        }
+        if (length % 2 == 1) {
+            return sortedArray[length / 2]
+        } else {
+            return (sortedArray[length / 2 - 1] + sortedArray[length / 2]) / 2
+        }
+    }
+
+    public fn medianUInt(myarray: uint[7]) uint {
+        var length: int = myarray.Length()
+        var sortedArray: uint[] = myarray
+        for (var i: int = 0; i < length - 1; i++) {
+            for (var j: int = 0; j < length - 1 - i; j++) {
+                if (sortedArray[j] > sortedArray[j + 1]) {
+                    var temp: uint = sortedArray[j]
+                    sortedArray[j] = sortedArray[j + 1]
+                    sortedArray[j + 1] = temp
+                }
+            }
+        }
+        if (length % 2 == 1) {
+            return sortedArray[length / 2]
+        } else {
+            return (sortedArray[length / 2 - 1] + sortedArray[length / 2]) / 2
+        }
+    }
+ 
+    public fn medianByte(myarray: byte[7]) byte {
+        var length: int = myarray.Length()
+        var sortedArray: byte[] = myarray
+        for (var i: int = 0; i < length - 1; i++) {
+            for (var j: int = 0; j < length - 1 - i; j++) {
+                if (sortedArray[j] > sortedArray[j + 1]) {
+                    var temp: byte = sortedArray[j]
+                    sortedArray[j] = sortedArray[j + 1]
+                    sortedArray[j + 1] = temp
+                }
+            }
+        }
+        if (length % 2 == 1) {
+            return sortedArray[length / 2]
+        } else {
+            var mid1: byte = sortedArray[length / 2 - 1]
+            var mid2: byte = sortedArray[length / 2]
+            var result: int = (mid1 as int + mid2 as int) / 2
+            return result as byte
+        }
+    }
+
+    public fn varianceInt(myarray: int[8]) int {
+        var length: int = myarray.Length()
+        var meanValue: int = meanInt(myarray)
+        var sumOfSquares: int = 0
+        for (var i: int = 0; i < length; i++) {
+            var diff: int = myarray[i] - meanValue
+            sumOfSquares += diff * diff
+        }
+        return sumOfSquares / length
+    }
+
+    public fn varianceUInt(myarray: uint[8]) uint {
+        var length: int = myarray.Length()
+        var meanValue: uint = meanUInt(myarray)
+        var sumOfSquares: uint = 0
+        for (var i: int = 0; i < length; i++) {
+            var diff: int = myarray[i] as int - meanValue as int
+            sumOfSquares += (diff * diff) as uint
+        }
+        var lengthUInt: uint = length as uint
+        return sumOfSquares / lengthUInt
+    }
+
+    public fn varianceByte(myarray: byte[8]) byte {
+        var length: int = myarray.Length()
+        var meanValue: byte = meanByte(myarray)
+        var sumOfSquares: int = 0
+        for (var i: int = 0; i < length; i++) {
+            var diff: int = myarray[i] as int - meanValue as int
+            sumOfSquares += (diff * diff)
+        }
+        return (sumOfSquares / length) as byte
+    }
+
+    public fn stddev(myarray: int[8]) int {
+        var varianceValue: int = this.varianceInt(myarray)
+        var x0: int = varianceValue / 2
+        var x1: int = (x0 + varianceValue / x0) / 2
+        while (x1 < x0) {
+            x0 = x1
+            x1 = (x0 + varianceValue / x0) / 2
+        }
+        return x0
+    }
+ 
+    public fn stddevUInt(myarray: uint[8]) uint {
+        var varianceValue: uint = this.varianceUInt(myarray) 
+        var x0: uint = varianceValue / 2
+        var x1: uint = (x0 + varianceValue / x0) / 2
+        while (x1 < x0) {
+            x0 = x1
+            x1 = (x0 + varianceValue / x0) / 2
+        }
+        return x0
+    }
+
+    public fn stddevByte(myarray: byte[8]) byte {
+        var varianceValue: byte = this.varianceByte(myarray)
+        var x0: int = varianceValue as int / 2
+        var x1: int = (x0 + varianceValue as int / x0) / 2
+        while (x1 < x0) {
+            x0 = x1
+            x1 = (x0 + varianceValue as int / x0) / 2
+        }
+        return x0 as byte
+    }
+    
+    
+}
