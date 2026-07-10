@@ -2,6 +2,7 @@ namespace Statistics
 
 component Stats {
 
+    @SuppressWarning("variable-divisor")
     public fn meanInt(myarray: int[8]) int {
         var sum: int = 0
         var length: int = myarray.Length()
@@ -11,6 +12,7 @@ component Stats {
         return sum / length
     }
  
+    @SuppressWarning("variable-divisor")
     public fn meanUInt(myarray: uint[8]) uint {
         var sum: uint = 0
         var length: int = myarray.Length()
@@ -21,6 +23,7 @@ component Stats {
         return sum / lengthUInt
     }
 
+    @SuppressWarning("variable-divisor")
     public fn meanByte(myarray: byte[8]) byte {
         var sum: int = 0
         var length: int = myarray.Length()
@@ -90,6 +93,7 @@ component Stats {
         }
     }
 
+    @SuppressWarning("variable-divisor")
     public fn varianceInt(myarray: int[8]) int {
         var length: int = myarray.Length()
         var meanValue: int = meanInt(myarray)
@@ -101,6 +105,7 @@ component Stats {
         return sumOfSquares / length
     }
 
+    @SuppressWarning("variable-divisor")
     public fn varianceUInt(myarray: uint[8]) uint {
         var length: int = myarray.Length()
         var meanValue: uint = meanUInt(myarray)
@@ -113,6 +118,7 @@ component Stats {
         return sumOfSquares / lengthUInt
     }
 
+    @SuppressWarning("variable-divisor")
     public fn varianceByte(myarray: byte[8]) byte {
         var length: int = myarray.Length()
         var meanValue: byte = meanByte(myarray)
@@ -124,6 +130,7 @@ component Stats {
         return (sumOfSquares / length) as byte
     }
 
+    @SuppressWarning("variable-divisor")
     public fn stddev(myarray: int[8]) int {
         var varianceValue: int = this.varianceInt(myarray)
         var x0: int = varianceValue / 2
@@ -135,6 +142,7 @@ component Stats {
         return x0
     }
  
+    @SuppressWarning("variable-divisor")
     public fn stddevUInt(myarray: uint[8]) uint {
         var varianceValue: uint = this.varianceUInt(myarray) 
         var x0: uint = varianceValue / 2
@@ -146,6 +154,7 @@ component Stats {
         return x0
     }
 
+    @SuppressWarning("variable-divisor")
     public fn stddevByte(myarray: byte[8]) byte {
         var varianceValue: byte = this.varianceByte(myarray)
         var x0: int = varianceValue as int / 2

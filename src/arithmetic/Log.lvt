@@ -21,7 +21,8 @@ component Log {
         return result
     }
 
-     public fn Log(value: int, base: int) int
+@SuppressWarning("variable-divisor")
+    public fn Log(value: int, base: int) int
     {
         if (value <= 0 || base <= 1)
         {
