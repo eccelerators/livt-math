@@ -9,6 +9,7 @@ component MacUnit
 {
 	// Minimum signed 16-bit accumulator value.
 	public const ACC_MIN: int = -32768
+
 	// Maximum signed 16-bit accumulator value.
 	public const ACC_MAX: int = 32767
 

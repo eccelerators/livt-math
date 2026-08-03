@@ -21,7 +21,7 @@ component Q15
 
 	public static fn ClampValue[](value: int) int
 	{
-		if (value < -32768) { return -32768 }
+		if (value < Q15.MIN) { return Q15.MIN }
 		if (value > 32767) { return 32767 }
 		return value
 	}
