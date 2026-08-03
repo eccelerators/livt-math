@@ -20,7 +20,7 @@ components = [
 ]
 
 [dependencies]
-Livt.Base = "0.1.1"
+Livt.Base = "0.2.0"
 
 [build.debug]
 warnings = ["all"]
