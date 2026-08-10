@@ -63,11 +63,12 @@ component Lcg16
 	}
 
 	/**
-	 * Return the next pseudo-random integer in [0, n-1].
+	 * Return the next pseudo-random integer in [0, n-1], or zero for n <= 0.
 	 */
 	@SuppressWarning("variable-divisor")
 	public fn GetNextInRange(n: int) int
 	{
+		if (n <= 0) { return 0 }
 		return this.GetNext() % n
 	}
 }

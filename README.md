@@ -5,7 +5,7 @@ packages. It collects reusable arithmetic components that are useful across
 application domains but are not specific to ML, crypto, networking, or signal
 processing.
 
-The 0.3.0 package surface is intentionally small and practical:
+The package surface is intentionally small and practical:
 
 - `Livt.Math.Sqrt.SqrtLUT`: 8-bit lookup-table integer square root.
 - `Livt.Math.Sqrt.SqrtNewtonRaphson`: iterative integer square root for larger
@@ -82,17 +82,19 @@ lookup-table implementation.
 
 `Lcg16` is a configurable linear congruential generator:
 
-- `new(seed, a, c, m)` constructs with explicit parameters (default: a=25173,
-  c=13849, m=65536).
+- `new(seed, a, c, m)` constructs with explicit parameters. The recommended
+  full-period parameters are `a=25173`, `c=13849`, and `m=65536`.
 - `GetNext()` advances and returns the next value in `[0, m-1]`.
-- `GetNextInRange(n)` returns the next value in `[0, n-1]`.
+- `GetNextInRange(n)` returns the next value in `[0, n-1]`, or `0` when
+  `n <= 0`.
 - `Seed(seed)` re-seeds the generator.
 
 `Xorshift24` is a higher-quality 24-bit xorshift generator:
 
 - `new(seed)` constructs with a seed in `[1, 16777215]` (zero auto-corrects to 1).
 - `GetNext()` advances and returns the next value in `[1, 16777215]`.
-- `GetNextInRange(n)` returns the next value in `[0, n-1]`.
+- `GetNextInRange(n)` returns the next value in `[0, n-1]`, or `0` when
+  `n <= 0`.
 - `Seed(seed)` re-seeds the generator.
 
 Both generators are hardware-safe (no int32 overflow) and suitable for

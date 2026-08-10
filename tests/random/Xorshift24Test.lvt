@@ -39,6 +39,13 @@ component Xorshift24Test
 		}
 	}
 
+	@Test
+	fn TestGetNextInRangeRejectsNonPositiveRange()
+	{
+		assert this.xs.GetNextInRange(0) == 0
+		assert this.xs.GetNextInRange(-1) == 0
+	}
+
 	// Verify Seed() resets the sequence reproducibly.
 	@Test
 	fn TestSeedResetsSequence()

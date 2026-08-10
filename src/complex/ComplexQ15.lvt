@@ -26,22 +26,22 @@ component ComplexQ15
 		return Q15.ClampValue(value)
 	}
 
-	public static fn AddReal[](real: int, imag: int, otherReal: int, otherImag: int) int
+	public static fn AddReal[](real: int, otherReal: int) int
 	{
 		return Q15.AddSaturatingValue(real, otherReal)
 	}
 
-	public static fn AddImag[](real: int, imag: int, otherReal: int, otherImag: int) int
+	public static fn AddImag[](imag: int, otherImag: int) int
 	{
 		return Q15.AddSaturatingValue(imag, otherImag)
 	}
 
-	public static fn SubReal[](real: int, imag: int, otherReal: int, otherImag: int) int
+	public static fn SubReal[](real: int, otherReal: int) int
 	{
 		return Q15.SubSaturatingValue(real, otherReal)
 	}
 
-	public static fn SubImag[](real: int, imag: int, otherReal: int, otherImag: int) int
+	public static fn SubImag[](imag: int, otherImag: int) int
 	{
 		return Q15.SubSaturatingValue(imag, otherImag)
 	}

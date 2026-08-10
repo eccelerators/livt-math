@@ -39,6 +39,13 @@ component Lcg16Test
 		}
 	}
 
+	@Test
+	fn TestGetNextInRangeRejectsNonPositiveRange()
+	{
+		assert this.lcg.GetNextInRange(0) == 0
+		assert this.lcg.GetNextInRange(-1) == 0
+	}
+
 	// Verify Seed() resets the sequence reproducibly.
 	@Test
 	fn TestSeedResetsSequence()
