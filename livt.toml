@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "0.4.0"
+version = "0.5.0"
 path = "src"
 outdir = "out"
 
@@ -10,13 +10,17 @@ components = [
     "SqrtLUTTest",
     "SqrtNewtonRaphsonTest",
     "MacUnitTest",
+    "MacInt32Test",
     "Q7Test",
     "Q15Test",
     "UQ8Test",
     "ComplexQ15Test",
     "TrigQ15Test",
     "Lcg16Test",
-    "Xorshift24Test"
+    "Xorshift24Test",
+    "SqrtInt32Test",
+    "ReciprocalSqrtQ15Test",
+    "TanhQ15Test"
 ]
 
 [dependencies]

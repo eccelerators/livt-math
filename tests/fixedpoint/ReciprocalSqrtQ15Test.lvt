@@ -1,0 +1,20 @@
+namespace Livt.Math.Tests.FixedPoint
+
+using Livt.Math.FixedPoint
+
+@Test
+component ReciprocalSqrtQ15Test
+{
+	dut: ReciprocalSqrtQ15
+	new() { this.dut = new ReciprocalSqrtQ15() }
+
+	@Test
+	fn ComputesScaledReciprocalRoots()
+	{
+		assert this.dut.Compute(0) == 0
+		assert this.dut.Compute(1) == 32768
+		assert this.dut.Compute(4) == 16384
+		assert this.dut.Compute(16) == 8192
+		assert this.dut.Compute(10000) == 328
+	}
+}

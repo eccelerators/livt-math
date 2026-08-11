@@ -1,0 +1,28 @@
+namespace Livt.Math.Tests.Approximation
+
+using Livt.Math.Approximation
+
+@Test
+component TanhQ15Test
+{
+	dut: TanhQ15
+	new() { this.dut = new TanhQ15() }
+
+	@Test
+	fn IsOddAndMonotonicAtReferencePoints()
+	{
+		assert this.dut.Apply(0) == 0
+		assert this.dut.Apply(64) == 8025
+		assert this.dut.Apply(128) == 15142
+		assert this.dut.Apply(-128) == -15142
+		assert this.dut.Apply(1024) == 32745
+		assert this.dut.Apply(2048) == 32745
+	}
+
+	@Test
+	fn InterpolatesBetweenEntries()
+	{
+		assert this.dut.Apply(32) == 4012
+		assert this.dut.Apply(-32) == -4012
+	}
+}

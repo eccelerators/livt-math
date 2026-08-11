@@ -12,6 +12,13 @@ The package surface is intentionally small and practical:
   inputs.
 - `Livt.Math.Arithmetic.MacUnit`: signed 16-bit saturating
   multiply-accumulate helper.
+- `Livt.Math.Arithmetic.MacInt32`: non-saturating signed-int32 accumulator for
+  bounded dot products whose mathematical sum is proven to fit.
+- `Livt.Math.Sqrt.SqrtInt32`: floor square root across the non-negative signed
+  int32 range.
+- `Livt.Math.FixedPoint.ReciprocalSqrtQ15`: reciprocal square root scaled by
+  32768 for normalization datapaths.
+- `Livt.Math.Approximation.TanhQ15`: interpolated Q8.8-input/Q1.15-output tanh.
 - `Livt.Math.FixedPoint.Q7`: compact signed Q1.7 fixed-point helpers.
 - `Livt.Math.FixedPoint.Q15`: signed Q1.15 fixed-point helpers for normalized
   DSP coefficients.
@@ -40,6 +47,15 @@ Square-root components return the floor of the mathematical square root:
 - `GetResult()` returns the current accumulator.
 - `Reset()` clears the accumulator.
 - Results are clamped to `[-32768, 32767]` after each accumulation step.
+
+`MacInt32` deliberately does not clamp to int16. It is appropriate for longer
+quantized dot products when the caller has established that every intermediate
+sum fits Livt's signed `int`. `SqrtInt32` and `ReciprocalSqrtQ15` provide the
+wider normalization path required by 64-value LayerNorm implementations.
+
+`TanhQ15.Apply(input)` accepts Q8.8 values, saturates outside `[-4, 4]`, and
+linearly interpolates a 0.25-spaced lookup table. It is generic arithmetic;
+model-specific GELU composition remains in `Livt.ML.Activation`.
 
 Fixed-point helpers use explicit named formats instead of a generic framework:
 
@@ -129,12 +145,14 @@ Projects that are more domain-specific should stay elsewhere:
 src/sqrt/         square-root implementations
 src/arithmetic/   small arithmetic primitives
 src/fixedpoint/   named fixed-point formats
+src/approximation/ bounded reusable function approximations
 src/complex/      fixed-point complex arithmetic
 src/lookup/       small reusable lookup constants
 src/random/       pseudo-random number generators
 tests/sqrt/       tests mirroring the source domain
 tests/arithmetic/
 tests/fixedpoint/
+tests/approximation/
 tests/complex/
 tests/lookup/
 tests/random/

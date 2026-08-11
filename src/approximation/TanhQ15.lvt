@@ -1,0 +1,57 @@
+namespace Livt.Math.Approximation
+
+/**
+ * Approximates tanh for a Q8.8 input and returns a signed Q1.15 value.
+ * Inputs outside [-4, 4] are saturated and points between the 0.25-spaced
+ * lookup entries are linearly interpolated.
+ */
+component TanhQ15
+{
+	public const INPUT_SCALE: int = 256
+	public const OUTPUT_SCALE: int = 32768
+	const STEP: int = 64
+	const LAST_INDEX: int = 16
+
+	lut: int[17]
+
+	new()
+	{
+		lut[0] = 0
+		lut[1] = 8025
+		lut[2] = 15142
+		lut[3] = 20812
+		lut[4] = 24955
+		lut[5] = 27796
+		lut[6] = 29659
+		lut[7] = 30846
+		lut[8] = 31588
+		lut[9] = 32047
+		lut[10] = 32328
+		lut[11] = 32500
+		lut[12] = 32605
+		lut[13] = 32669
+		lut[14] = 32707
+		lut[15] = 32731
+		lut[16] = 32745
+	}
+
+	/** Applies the bounded lookup/interpolation approximation. */
+	public fn Apply(input: int) int
+	{
+		var negative = input < 0
+		var magnitude = input
+		if (negative) { magnitude = 0 - input }
+		if (magnitude >= 1024) {
+			if (negative) { return 0 - lut[LAST_INDEX] }
+			return lut[LAST_INDEX]
+		}
+
+		var index = magnitude / STEP
+		var remainder = magnitude % STEP
+		var lower = lut[index]
+		var upper = lut[index + 1]
+		var value = lower + (upper - lower) * remainder / STEP
+		if (negative) { return 0 - value }
+		return value
+	}
+}

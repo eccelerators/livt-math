@@ -1,0 +1,36 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Accumulates signed products using Livt's int32 arithmetic.
+ *
+ * Callers must keep the mathematical sum inside the signed int32 range. This
+ * component deliberately does not apply the int16 saturation used by MacUnit.
+ */
+component MacInt32
+{
+	accumulator: int
+
+	/** Adds one signed product to the stored accumulator. */
+	public fn Accumulate(a: int, b: int)
+	{
+		accumulator = accumulator + a * b
+	}
+
+	/** Adds one signed value to the stored accumulator. */
+	public fn Add(value: int)
+	{
+		accumulator = accumulator + value
+	}
+
+	/** Returns the current accumulator value. */
+	public fn GetResult() int
+	{
+		return accumulator
+	}
+
+	/** Resets the accumulator to zero. */
+	public fn Reset()
+	{
+		accumulator = 0
+	}
+}

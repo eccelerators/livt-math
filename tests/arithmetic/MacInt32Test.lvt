@@ -1,0 +1,29 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+@Test
+component MacInt32Test
+{
+	mac: MacInt32
+	new() { this.mac = new MacInt32() }
+
+	@Test
+	fn AccumulatesBeyondInt16()
+	{
+		this.mac.Reset()
+		this.mac.Accumulate(127, 127)
+		this.mac.Accumulate(127, 127)
+		this.mac.Accumulate(-2, 5)
+		this.mac.Add(10)
+		assert this.mac.GetResult() == 32258
+	}
+
+	@Test
+	fn ResetsToZero()
+	{
+		this.mac.Accumulate(1000, 1000)
+		this.mac.Reset()
+		assert this.mac.GetResult() == 0
+	}
+}

@@ -1,0 +1,21 @@
+namespace Livt.Math.Tests.Sqrt
+
+using Livt.Math.Sqrt
+
+@Test
+component SqrtInt32Test
+{
+	sqrt: SqrtInt32
+	new() { this.sqrt = new SqrtInt32() }
+
+	@Test
+	fn ComputesLargeAndBoundaryValues()
+	{
+		assert this.sqrt.Compute(-1) == 0
+		assert this.sqrt.Compute(0) == 0
+		assert this.sqrt.Compute(1) == 1
+		assert this.sqrt.Compute(2) == 1
+		assert this.sqrt.Compute(1048576) == 1024
+		assert this.sqrt.Compute(2147395600) == 46340
+	}
+}
