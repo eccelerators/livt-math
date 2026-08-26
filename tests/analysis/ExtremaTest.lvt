@@ -1,0 +1,78 @@
+namespace MaxMin.Tests
+
+using MaxMin
+
+@Test
+component ExtremaTest {
+    extrema: Extrema
+
+    new() {
+        this.extrema = new Extrema()
+    }
+
+
+    @Test
+    fn TestMaxArray() {
+        var myarray: int[8] = [3, 1, 4, 1, -5, 9, 2, 6]
+        assert this.extrema.max(myarray) == 9
+    }
+
+    @Test
+    fn TestMinArray() {
+        
+        var myarray: int[8] = [3, 1, 4, 1, -5, 9, 2, 6]
+        assert this.extrema.min(myarray) == -5
+    }
+
+    @Test
+    fn TestMaxUint() {
+        var myarray: uint[8] = [10, 2, 25, 5, 100, 7, 15, 3]
+        assert this.extrema.max_uint(myarray) == 100
+    }
+
+    @Test
+    fn TestMinUint() {
+        var myarray: uint[8] = [10, 2, 25, 5, 100, 7, 15, 3]
+        assert this.extrema.min_uint(myarray) == 2
+    }
+
+    @Test
+    fn TestMaxByte() {
+        var myarray: byte[8] = [0x32, 0x0A, 0x78, 0x1E, 0xC8, 0x0F, 0x4B, 0x05]
+        assert this.extrema.max_byte(myarray) == 0xC8
+    }
+
+    @Test
+    fn TestMinByte() {
+        var myarray: byte[8] = [0x32, 0x0A, 0x78, 0x1E, 0xC8, 0x0F, 0x4B, 0x05]
+        assert this.extrema.min_byte(myarray) == 0x05
+    }
+
+    @Test
+    fn TestClampInt() {
+        assert this.extrema.clampInt(5, 1, 10) == 5
+        assert this.extrema.clampInt(-5, 1, 10) == 1
+        assert this.extrema.clampInt(15, 1, 10) == 10 
+    }
+
+    @Test
+    fn TestClampUInt() {
+        assert this.extrema.clampUInt(5, 1, 10) == 5
+        assert this.extrema.clampUInt(0, 1, 10) == 1
+        assert this.extrema.clampUInt(15, 1, 10) == 10
+    }
+
+    @Test
+    fn TestClampByte() {
+        assert this.extrema.clampByte(0xAA, 0x00, 0xFF) == 0xAA
+        assert this.extrema.clampByte(0x00, 0x11, 0xFF) == 0x11
+        assert this.extrema.clampByte(0xFF, 0x11, 0xEF) == 0xEF
+    }
+
+    @Test
+    fn TestAbs() {
+        assert this.extrema.abs(-5) == 5
+        assert this.extrema.abs(5) == 5
+        assert this.extrema.abs(0) == 0
+    }
+}

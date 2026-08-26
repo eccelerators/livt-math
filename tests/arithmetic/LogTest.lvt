@@ -1,0 +1,81 @@
+namespace Logarithm.Tests
+
+using Logarithm
+
+@Test
+component LogTest {
+
+    log: Log
+
+    new()
+    {
+        this.log = new Log()
+    }
+
+    @Test
+    fn TestExactPowersOfTwo()
+    {
+        assert this.log.Log2(1) == 0
+        assert this.log.Log2(2) == 1
+        assert this.log.Log2(4) == 2
+        assert this.log.Log2(8) == 3
+        assert this.log.Log2(1024) == 10
+        assert this.log.Log2(2097152) == 21
+    }
+
+    @Test
+    fn TestValuesBelowPowersOfTwo()
+    {
+        assert this.log.Log2(3) == 1
+        assert this.log.Log2(7) == 2
+        assert this.log.Log2(15) == 3
+        assert this.log.Log2(1023) == 9
+    }
+
+    @Test
+    fn TestInvalidInputs()
+    {
+        assert this.log.Log2(0) == -1
+        assert this.log.Log2(-1) == -1
+        assert this.log.Log2(-100) == -1
+    }
+
+    @Test
+    fn TestLargePositiveInteger()
+    {
+        assert this.log.Log2(1073741824) == 30
+        assert this.log.Log2(2147483647) == 30
+    }
+
+    @Test
+    fn TestLogBValidBases()
+    {
+        // Base 2
+        assert this.log.Log(8, 2) == 3
+        assert this.log.Log(7, 2) == 2
+
+        // Base 3
+        assert this.log.Log(9, 3) == 2
+        assert this.log.Log(27, 3) == 3
+        assert this.log.Log(26, 3) == 2
+
+        // Base 10
+        assert this.log.Log(10, 10) == 1
+        assert this.log.Log(100, 10) == 2
+        assert this.log.Log(1000, 10) == 3
+        assert this.log.Log(999, 10) == 2
+    }
+
+    @Test
+    fn TestLogBInvalidInputs()
+    {
+        // Invalid value
+        assert this.log.Log(0, 10) == -1
+        assert this.log.Log(-10, 10) == -1
+
+        // Invalid base
+        assert this.log.Log(100, 1) == -1
+        assert this.log.Log(100, 0) == -1
+        assert this.log.Log(100, -2) == -1
+    }
+}

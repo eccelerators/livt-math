@@ -1,0 +1,120 @@
+namespace MaxMin
+
+component Extrema {
+
+    public fn max(myarray: int[8]) int {
+       
+        var maxValue: int = myarray[0]
+        for (var i: int = 1; i < 8; i++) {
+            if (myarray[i] > maxValue) {
+                maxValue = myarray[i]
+            }
+        }
+        return maxValue
+    }
+
+
+    public fn min(myarray: int[8]) int {
+    
+        var minValue: int = myarray[0]
+        for (var i: int = 1; i < 8; i++) {
+            if (myarray[i] < minValue) {
+                minValue = myarray[i]
+            }
+        }
+        return minValue
+    }
+
+    public fn max_uint(myarray: uint[8]) uint {
+       
+        var maxValue: uint = myarray[0]
+        for (var i: int = 0; i < 8; i++) {
+            if (myarray[i] > maxValue) {
+                maxValue = myarray[i]
+            }
+        }
+        return maxValue
+    }
+
+    public fn min_uint(myarray: uint[8]) uint {
+    
+        var minValue: uint = myarray[0]
+        for (var i: int = 0; i < 8; i++) {
+            if (myarray[i] < minValue) {
+                minValue = myarray[i]
+            }
+        }
+        return minValue
+    }
+
+    public fn max_byte(myarray: byte[8]) byte {
+       
+        var maxValue: byte = myarray[0]
+        for (var i: int = 0; i < 8; i++) {
+            if (myarray[i] > maxValue) {
+                maxValue = myarray[i]
+            }
+        }
+        return maxValue
+    }
+
+    public fn min_byte(myarray: byte[8]) byte {
+    
+        var minValue: byte = myarray[0]
+        for (var i: int = 0; i < 8; i++) {
+            if (myarray[i] < minValue) {
+                minValue = myarray[i]
+            }
+        }
+        return minValue
+    }
+
+    public fn clampInt(value: int, min: int, max: int) int {
+        if (min > max) {
+            return 0 
+        }
+        if (value < min) {
+            return min
+        } if (value > max) {
+            return max
+        } else {
+            return value
+        }
+    }
+
+    public fn clampUInt(value: uint, min: uint, max: uint) uint {
+        if (min > max) {
+            return 0 
+        }
+        if (value < min) {
+            return min
+        } if (value > max) {
+            return max
+        } else {
+            return value
+        }
+    }
+    
+    public fn clampByte(value: byte, min: byte, max: byte) byte {
+        if (min > max) {
+            return 0x00
+        }
+        if (value < min) {
+            return min
+        } if (value > max) {
+            return max
+        } else {
+            return value
+        }
+    }
+
+    public fn abs(value: int) int {
+        if (value < 0) {
+            return -value
+        } else {
+            return value
+        }
+    }
+
+
+}

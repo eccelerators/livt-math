@@ -1,0 +1,209 @@
+namespace Statistics.Tests
+
+using Statistics
+
+@Test
+component StatsTest {
+
+    stats: Stats
+
+    new() {
+        this.stats = new Stats()
+    }
+
+    @Test
+    fn TestMeanInt() {
+        var myarray: int[8]
+        myarray[0] = 3
+        myarray[1] = 1
+        myarray[2] = 4
+        myarray[3] = 1
+        myarray[4] = 5
+        myarray[5] = 9
+        myarray[6] = 2
+        myarray[7] = 7
+        var result: int 
+        result = this.stats.meanInt(myarray)
+        assert this.stats.meanInt(myarray) == 4
+
+    }
+  
+    @Test
+    fn TestMeanUInt() {
+        var myarray: uint[8]
+        myarray[0] = 3
+        myarray[1] = 1
+        myarray[2] = 4
+        myarray[3] = 1
+        myarray[4] = 5
+        myarray[5] = 9
+        myarray[6] = 2
+        myarray[7] = 7
+        var result: uint 
+        result = this.stats.meanUInt(myarray)
+        assert this.stats.meanUInt(myarray) == 4
+
+    }
+ 
+    @Test
+    fn TestMeanByte() {
+        var myarray: byte[8]
+        myarray[0] = 0x02
+        myarray[1] = 0x04
+        myarray[2] = 0x06
+        myarray[3] = 0x08
+        myarray[4] = 0x0A
+        myarray[5] = 0x0C
+        myarray[6] = 0x0E
+        myarray[7] = 0x10
+ 
+        assert this.stats.meanByte(myarray) == 0x09
+    }
+    
+    @Test
+    fn TestMedian() {
+        
+        var myarray: int[7]
+        myarray[0] = 3
+        myarray[1] = 1
+        myarray[2] = 4
+        myarray[3] = 1
+        myarray[4] = 5
+        myarray[5] = 9
+        myarray[6] = 2
+        var result: int 
+        result = this.stats.medianInt(myarray)
+        assert this.stats.medianInt(myarray) == 3
+    }
+ 
+    @Test
+    fn TestMedianUInt() {
+        
+        var myarray: uint[7]
+        myarray[0] = 3
+        myarray[1] = 1
+        myarray[2] = 4
+        myarray[3] = 1
+        myarray[4] = 5
+        myarray[5] = 9
+        myarray[6] = 2
+        assert this.stats.medianUInt(myarray) == 3
+    }
+    
+    @Test
+    public fn TestMedianByte() {
+        
+        var myarray: byte[7]
+        myarray[0] = 0x02
+        myarray[1] = 0x04
+        myarray[2] = 0x06
+        myarray[3] = 0x08
+        myarray[4] = 0x0A
+        myarray[5] = 0x0C
+        myarray[6] = 0x0E
+        var result: byte 
+        result = this.stats.medianByte(myarray)
+        assert this.stats.medianByte(myarray) == 0x08
+    }
+        
+
+    @Test
+    fn TestVarianceInt() {
+        
+        var myarray: int[8]
+        myarray[0] = 0
+        myarray[1] = 2
+        myarray[2] = 4
+        myarray[3] = 6
+        myarray[4] = 0
+        myarray[5] = 2
+        myarray[6] = 4
+        myarray[7] = 6
+        var result: int 
+        result = this.stats.varianceInt(myarray)
+        assert this.stats.varianceInt(myarray) == 5
+    }
+
+    @Test
+    fn TestVarianceUInt() {
+        var myarray: uint[8]
+        myarray[0] = 0
+        myarray[1] = 2
+        myarray[2] = 4
+        myarray[3] = 6
+        myarray[4] = 0
+        myarray[5] = 2
+        myarray[6] = 4
+        myarray[7] = 6
+        var result: uint 
+        result = this.stats.varianceUInt(myarray)
+        assert this.stats.varianceUInt(myarray) == 5
+    }
+
+    @Test
+    fn TestVarianceByte() {
+        var myarray: byte[8]
+        myarray[0] = 0x00
+        myarray[1] = 0x02
+        myarray[2] = 0x04
+        myarray[3] = 0x06
+        myarray[4] = 0x00
+        myarray[5] = 0x02
+        myarray[6] = 0x04
+        myarray[7] = 0x06
+        var result: byte 
+        result = this.stats.varianceByte(myarray)
+        assert this.stats.varianceByte(myarray) == 0x05
+    }
+
+    @Test
+    fn TestStdDev() {
+        
+        var myarray: int[8]
+        myarray[0] = 0
+        myarray[1] = 0
+        myarray[2] = 0
+        myarray[3] = 0
+        myarray[4] = 8
+        myarray[5] = 8
+        myarray[6] = 8
+        myarray[7] = 8
+        var result: int 
+        result = this.stats.stddev(myarray)
+        assert this.stats.stddev(myarray) == 4
+    }
+
+    @Test
+    fn TestStdDevUInt() {
+        var myarray: uint[8]
+        myarray[0] = 0
+        myarray[1] = 0
+        myarray[2] = 0
+        myarray[3] = 0
+        myarray[4] = 8
+        myarray[5] = 8
+        myarray[6] = 8
+        myarray[7] = 8
+        var result: uint 
+        result = this.stats.stddevUInt(myarray)
+        assert this.stats.stddevUInt(myarray) == 4
+    }
+ 
+    @Test
+    fn TestStdDevByte() {
+        var myarray: byte[8]
+        myarray[0] = 0x00
+        myarray[1] = 0x00
+        myarray[2] = 0x00
+        myarray[3] = 0x00
+        myarray[4] = 0x08
+        myarray[5] = 0x08
+        myarray[6] = 0x08
+        myarray[7] = 0x08
+        var result: byte 
+        result = this.stats.stddevByte(myarray)
+        assert this.stats.stddevByte(myarray) == 0x04
+    }
+    
+    
+}
