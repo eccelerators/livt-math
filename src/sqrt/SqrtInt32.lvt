@@ -1,31 +1,36 @@
 namespace Livt.Math.Sqrt
 
-using Livt.Lang.Annotations
-
 /**
  * Computes floor square roots for non-negative signed-int32 values.
  *
- * Newton iterations use division instead of a final x*x comparison so the
- * verification step cannot overflow near the top of the int32 range.
+ * A restoring square-root implementation avoids multipliers and variable
+ * division. One pair of input bits is consumed per iteration, so the fixed
+ * 16 iterations cover every non-negative signed-int32 value exactly.
  */
 component SqrtInt32
 {
-	public const ITERATIONS: int = 31
+	public const ITERATIONS: int = 16
 
 	/** Returns floor(sqrt(value)); non-positive inputs return zero. */
-	@SuppressWarning("variable-divisor")
 	public fn Compute(value: int) int
 	{
 		if (value <= 0) { return 0 }
-		if (value == 1) { return 1 }
 
-		var root = value / 2 + 1
+		var radicand = value
+		var remainder = 0
+		var root = 0
 		for (var iteration = 0; iteration < ITERATIONS; iteration++) {
-			var quotient = value / root
-			if (root > quotient) { root = (root + quotient) / 2 }
+			remainder = (remainder << 2) | ((radicand >> 30) & 3)
+			radicand = radicand << 2
+			root = root << 1
+
+			var candidate = (root << 1) + 1
+			if (remainder >= candidate) {
+				remainder -= candidate
+				root++
+			}
 		}
 
-		if (root > value / root) { root-- }
 		return root
 	}
 }

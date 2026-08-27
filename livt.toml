@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "1.0.0"
+version = "1.1.0"
 path = "src"
 outdir = "out"
 
@@ -11,6 +11,7 @@ components = [
     "SqrtNewtonRaphsonTest",
     "MacUnitTest",
     "MacInt32Test",
+    "UnsignedDivideInt32Test",
     "Q7Test",
     "Q15Test",
     "UQ8Test",

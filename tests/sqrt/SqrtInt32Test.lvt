@@ -15,7 +15,13 @@ component SqrtInt32Test
 		assert this.sqrt.Compute(0) == 0
 		assert this.sqrt.Compute(1) == 1
 		assert this.sqrt.Compute(2) == 1
+		assert this.sqrt.Compute(3) == 1
+		assert this.sqrt.Compute(4) == 2
+		assert this.sqrt.Compute(15) == 3
+		assert this.sqrt.Compute(16) == 4
+		assert this.sqrt.Compute(17) == 4
 		assert this.sqrt.Compute(1048576) == 1024
 		assert this.sqrt.Compute(2147395600) == 46340
+		assert this.sqrt.Compute(2147483647) == 46340
 	}
 }

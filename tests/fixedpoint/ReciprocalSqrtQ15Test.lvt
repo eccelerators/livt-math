@@ -13,8 +13,13 @@ component ReciprocalSqrtQ15Test
 	{
 		assert this.dut.Compute(0) == 0
 		assert this.dut.Compute(1) == 32768
+		assert this.dut.Compute(2) == 32768
+		assert this.dut.Compute(3) == 32768
 		assert this.dut.Compute(4) == 16384
+		assert this.dut.Compute(15) == 10923
 		assert this.dut.Compute(16) == 8192
+		assert this.dut.Compute(17) == 8192
 		assert this.dut.Compute(10000) == 328
+		assert this.dut.Compute(2147483647) == 1
 	}
 }

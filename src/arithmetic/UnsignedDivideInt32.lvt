@@ -1,0 +1,49 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Divides non-negative signed-int32 values without combinational division.
+ *
+ * The restoring implementation consumes one dividend bit per iteration. Its
+ * compare-before-shift form keeps the remainder within the signed-int32 range,
+ * including when the divisor is close to the maximum positive int value.
+ */
+component UnsignedDivideInt32
+{
+	public const ITERATIONS: int = 31
+
+	/** Returns floor(dividend / divisor); invalid negative inputs or zero divisors return zero. */
+	public fn Compute(dividend: int, divisor: int) int
+	{
+		if (dividend < 0 || divisor <= 0) { return 0 }
+
+		var shiftedDividend = dividend
+		var remainder = 0
+		var quotient = 0
+		var divisorHalf = divisor >> 1
+		var divisorIsOdd = divisor & 1
+
+		for (var iteration = 0; iteration < ITERATIONS; iteration++) {
+			var nextBit = (shiftedDividend >> 30) & 1
+			shiftedDividend = shiftedDividend << 1
+			quotient = quotient << 1
+
+			var subtractDivisor = remainder > divisorHalf
+			if (remainder == divisorHalf) {
+				subtractDivisor = divisorIsOdd == 0 || nextBit == 1
+			}
+
+			if (subtractDivisor) {
+				if (divisorIsOdd == 0) {
+					remainder = ((remainder - divisorHalf) << 1) + nextBit
+				} else {
+					remainder = ((remainder - divisorHalf) << 1) + nextBit - 1
+				}
+				quotient++
+			} else {
+				remainder = (remainder << 1) + nextBit
+			}
+		}
+
+		return quotient
+	}
+}

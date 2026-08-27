@@ -1,0 +1,24 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+@Test
+component UnsignedDivideInt32Test
+{
+	divider: UnsignedDivideInt32
+	new() { this.divider = new UnsignedDivideInt32() }
+
+	@Test
+	fn ComputesFloorQuotientsAcrossTheInt32Range()
+	{
+		assert this.divider.Compute(-1, 1) == 0
+		assert this.divider.Compute(1, 0) == 0
+		assert this.divider.Compute(0, 5) == 0
+		assert this.divider.Compute(1, 1) == 1
+		assert this.divider.Compute(7, 2) == 3
+		assert this.divider.Compute(65536, 65536) == 1
+		assert this.divider.Compute(1073741824, 32768) == 32768
+		assert this.divider.Compute(2147483647, 2) == 1073741823
+		assert this.divider.Compute(2147483647, 2147483647) == 1
+	}
+}

@@ -1,12 +1,12 @@
 namespace Livt.Math.FixedPoint
 
 using Livt.Math.Sqrt
-using Livt.Lang.Annotations
 
 /** Returns reciprocal square roots scaled by 32768 for positive integers. */
 component ReciprocalSqrtQ15
 {
 	public const SCALE: int = 32768
+	public const DIVISION_BITS: int = 16
 
 	sqrt: SqrtInt32
 
@@ -16,11 +16,24 @@ component ReciprocalSqrtQ15
 	}
 
 	/** Returns round(32768 / floor(sqrt(value))); non-positive inputs return zero. */
-	@SuppressWarning("variable-divisor")
 	public fn Compute(value: int) int
 	{
 		if (value <= 0) { return 0 }
 		var root = this.sqrt.Compute(value)
-		return (SCALE + root / 2) / root
+		var dividend = SCALE + (root >> 1)
+		var remainder = 0
+		var quotient = 0
+
+		for (var iteration = 0; iteration < DIVISION_BITS; iteration++) {
+			remainder = (remainder << 1) | ((dividend >> 15) & 1)
+			dividend = dividend << 1
+			quotient = quotient << 1
+			if (remainder >= root) {
+				remainder -= root
+				quotient++
+			}
+		}
+
+		return quotient
 	}
 }
