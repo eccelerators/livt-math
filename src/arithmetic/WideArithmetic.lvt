@@ -1,0 +1,43 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Exact signed 64-bit arithmetic with symmetric output clipping.
+ * Wide values use two's-complement logic[64] transport, not Livt int arithmetic.
+ * Division uses a 64-step restoring divider; root uses 32 trial bits.
+ * One caller owns this scheduled component. Reset cancels pending requests.
+ * Invalid division or overflowing add/multiply returns zero and sets Failed().
+ */
+component WideArithmetic<OUTPUT_BITS: int = 24>
+{
+ static assert OUTPUT_BITS >= 2 && OUTPUT_BITS <= 31, "output bits must be 2..31"
+ primitive: WideArithmeticPrimitive
+ request: logic
+ new() { primitive = new WideArithmeticPrimitive() }
+ fn Execute(op: int, a: logic[64], b: logic[64]) logic[64]
+ {
+  state {
+   primitive.operation = op
+   primitive.a = a
+   primitive.b = b
+   primitive.outputBits = OUTPUT_BITS
+  }
+  request = !request
+  primitive.request = request
+  while (primitive.acknowledge != request) { state {} }
+  return primitive.result
+ }
+ /** Signed product, with overflow detected before narrowing. */
+ public fn Multiply(a: logic[64], b: logic[64]) logic[64] { return Execute(0, a, b) }
+ /** Signed sum, with overflow detected before narrowing. */
+ public fn Add(a: logic[64], b: logic[64]) logic[64] { return Execute(1, a, b) }
+ /** Signed nearest division; exact ties select the even quotient. Divisor is positive. */
+ public fn DivideEven(a: logic[64], b: logic[64]) logic[64] { return Execute(2, a, b) }
+ /** Floor square root of any unsigned 64-bit input. */
+ public fn Sqrt(a: logic[64]) logic[64] { return Execute(3, a, 0) }
+ /** Symmetric signed saturation, followed by checked narrowing to Livt int. */
+ public fn Clamp(a: logic[64]) int { return Execute(4, a, 0) as int }
+ /** Unsigned floor division for nonnegative signed-range values. */
+ public fn DivideFloor(a: logic[64], b: logic[64]) logic[64] { return Execute(5, a, b) }
+ /** Error flag belongs to the most recently completed operation. */
+ public fn Failed() bool { return primitive.failed }
+}

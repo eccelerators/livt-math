@@ -225,3 +225,9 @@ as Q15 arithmetic, complex multiply parts, lookup constants, and MAC units.
 ## 📄 License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
+
+## Exact wide integer arithmetic
+
+Version 1.3.0-dev adds [WideArithmetic](docs/WideArithmetic.md), a portable
+64-bit multiply/add/divide/root service with explicit rounding and overflow behavior.
+Run `livt test --run WideArithmeticTest` for the scalar edge cases.
