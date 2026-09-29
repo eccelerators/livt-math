@@ -8,15 +8,15 @@ using Livt.Lang.Annotations
  * For simulation and test stimulus, not cryptographic use.
  *
  * Algorithm: Marsaglia xorshift with triplet (a=3, b=7, c=5).
- *   state ^= (state << 3) & MASK
- *   state ^= state >> 7
- *   state ^= (state << 5) & MASK
+ * state ^= (state << 3) & MASK
+ * state ^= state >> 7
+ * state ^= (state << 5) & MASK
  *
  * Properties:
- *   - Full period: 2^24 - 1 = 16,777,215.
- *   - Hardware-safe: max intermediate = 16,777,215 * 32 = 536,870,880 < 2^31.
- *   - Better statistical quality than LCG (passes most randomness tests).
- *   - State must never be zero (zero is a fixed point of xorshift).
+ * - Full period: 2^24 - 1 = 16,777,215.
+ * - Hardware-safe: max intermediate = 16,777,215 * 32 = 536,870,880 < 2^31.
+ * - Better statistical quality than LCG (passes most randomness tests).
+ * - State must never be zero (zero is a fixed point of xorshift).
  *
  * Use cases: weight initialization, Monte Carlo sampling, test fixture seeding.
  * Not cryptographically secure — use Livt.Crypto for security applications.
@@ -36,8 +36,8 @@ component Xorshift24
 	new(seed: int)
 	{
 		this.current_state = seed & MASK
-		if (this.current_state == 0)
-		{
+
+		if (this.current_state == 0) {
 			this.current_state = 1
 		}
 	}
@@ -49,8 +49,8 @@ component Xorshift24
 	public fn Seed(seed: int)
 	{
 		this.current_state = seed & MASK
-		if (this.current_state == 0)
-		{
+
+		if (this.current_state == 0) {
 			this.current_state = 1
 		}
 	}
@@ -87,7 +87,10 @@ component Xorshift24
 	@SuppressWarning("variable-divisor")
 	public fn GetNextInRange(n: int) int
 	{
-		if (n <= 0) { return 0 }
+		if (n <= 0) {
+			return 0
+		}
+
 		return this.GetNext() % n
 	}
 }

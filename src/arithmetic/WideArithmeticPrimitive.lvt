@@ -1,15 +1,20 @@
 namespace Livt.Math.Arithmetic
 
-/** Portable 64-bit arithmetic engine. Operations are scheduled, never concurrent. */
+/**
+ * Portable 64-bit arithmetic engine. Operations are scheduled, never concurrent.
+ */
 @Opaque
 component WideArithmeticPrimitive
 {
- public request: in logic
- public operation: in int
- public a: in logic[64]
- public b: in logic[64]
- public outputBits: in int
- public acknowledge: out logic
- public result: out logic[64]
- public failed: out bool
+	// Input command and operands; hold stable until matching acknowledgment.
+	public request: in logic
+	public operation: in int
+	public a: in logic[64]
+	public b: in logic[64]
+	public outputBits: in int
+
+	// Completion toggle, result bits, and error status from the native worker.
+	public acknowledge: out logic
+	public result: out logic[64]
+	public failed: out bool
 }

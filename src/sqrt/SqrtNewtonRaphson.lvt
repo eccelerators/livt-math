@@ -9,6 +9,7 @@ component SqrtNewtonRaphson
 {
 	// Largest input accepted before clamping.
 	public const MAX_INPUT: int = 32767
+
 	// Fixed Newton-Raphson iteration count.
 	public const ITERATIONS: int = 16
 
@@ -23,6 +24,7 @@ component SqrtNewtonRaphson
 		}
 
 		var bounded: int = n
+
 		if (bounded > MAX_INPUT) {
 			bounded = MAX_INPUT
 		}

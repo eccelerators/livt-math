@@ -3,16 +3,28 @@ namespace Livt.Math.Tests.Complex
 using Livt.Math.Complex
 using Livt.Math.FixedPoint
 
+/**
+ * Exercises ComplexQ15 with a shared fixture instance. Each scenario establishes the
+ * inputs and state it needs.
+ */
 @Test
 component ComplexQ15Test
 {
+	// Shared fixture instances, signals, and observation state.
 	value: ComplexQ15
 
+	/**
+	 * Creates the shared fixture instances (ComplexQ15). Tests initialize the state required
+	 * by their scenario.
+	 */
 	new()
 	{
 		value = new ComplexQ15()
 	}
 
+	/**
+	 * Checks that Set s and clamps values.
+	 */
 	@Test
 	fn SetsAndClampsValues()
 	{
@@ -22,6 +34,9 @@ component ComplexQ15Test
 		assert value.GetImag() == -32768
 	}
 
+	/**
+	 * Checks that Add s and subtracts.
+	 */
 	@Test
 	fn AddsAndSubtracts()
 	{
@@ -37,6 +52,9 @@ component ComplexQ15Test
 		assert value.GetResultImag() == -2500
 	}
 
+	/**
+	 * Checks that Mul tiplies by one.
+	 */
 	@Test
 	fn MultipliesByOne()
 	{
@@ -47,6 +65,9 @@ component ComplexQ15Test
 		assert value.GetResultImag() == 0
 	}
 
+	/**
+	 * Checks that Mul tiplies by imaginary unit.
+	 */
 	@Test
 	fn MultipliesByImaginaryUnit()
 	{
@@ -57,6 +78,9 @@ component ComplexQ15Test
 		assert value.GetResultImag() == 16383
 	}
 
+	/**
+	 * Checks that the component rotates simple quarter turn.
+	 */
 	@Test
 	fn RotatesSimpleQuarterTurn()
 	{
@@ -67,6 +91,9 @@ component ComplexQ15Test
 		assert value.GetResultImag() == 16383
 	}
 
+	/**
+	 * Checks the direct context free helpers case.
+	 */
 	@Test
 	fn DirectContextFreeHelpers()
 	{
@@ -92,5 +119,4 @@ component ComplexQ15Test
 		assert mulRealQuarter == -16383
 		assert mulImagQuarter == 16383
 	}
-
 }

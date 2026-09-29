@@ -9,12 +9,17 @@ namespace Livt.Math.Arithmetic
  */
 component UnsignedDivideInt32
 {
+	// Compile-time dimensions, bounds, and numeric constants.
 	public const ITERATIONS: int = 31
 
-	/** Returns floor(dividend / divisor); invalid negative inputs or zero divisors return zero. */
+	/**
+	 * Returns floor(dividend / divisor); invalid negative inputs or zero divisors return zero.
+	 */
 	public fn Compute(dividend: int, divisor: int) int
 	{
-		if (dividend < 0 || divisor <= 0) { return 0 }
+		if (dividend < 0 || divisor <= 0) {
+			return 0
+		}
 
 		var shiftedDividend = dividend
 		var remainder = 0
@@ -28,6 +33,7 @@ component UnsignedDivideInt32
 			quotient = quotient << 1
 
 			var subtractDivisor = remainder > divisorHalf
+
 			if (remainder == divisorHalf) {
 				subtractDivisor = divisorIsOdd == 0 || nextBit == 1
 			}
@@ -38,6 +44,7 @@ component UnsignedDivideInt32
 				} else {
 					remainder = ((remainder - divisorHalf) << 1) + nextBit - 1
 				}
+
 				quotient++
 			} else {
 				remainder = (remainder << 1) + nextBit

@@ -2,16 +2,28 @@ namespace Livt.Math.Tests.Sqrt
 
 using Livt.Math.Sqrt
 
+/**
+ * Exercises SqrtNewtonRaphson with a shared fixture instance. Each scenario establishes
+ * the inputs and state it needs.
+ */
 @Test
 component SqrtNewtonRaphsonTest
 {
+	// Shared fixture instances, signals, and observation state.
 	sqrt: SqrtNewtonRaphson
 
+	/**
+	 * Creates the shared fixture instances (SqrtNewtonRaphson). Tests initialize the state
+	 * required by their scenario.
+	 */
 	new()
 	{
 		sqrt = new SqrtNewtonRaphson()
 	}
 
+	/**
+	 * Checks the zero case.
+	 */
 	@Test
 	fn TestZero()
 	{
@@ -19,6 +31,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 0
 	}
 
+	/**
+	 * Checks the one case.
+	 */
 	@Test
 	fn TestOne()
 	{
@@ -26,6 +41,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 1
 	}
 
+	/**
+	 * Checks the non perfect square2 case.
+	 */
 	@Test
 	fn TestNonPerfectSquare2()
 	{
@@ -33,6 +51,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 1
 	}
 
+	/**
+	 * Checks the non perfect square3 case.
+	 */
 	@Test
 	fn TestNonPerfectSquare3()
 	{
@@ -40,6 +61,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 1
 	}
 
+	/**
+	 * Checks the perfect square4 case.
+	 */
 	@Test
 	fn TestPerfectSquare4()
 	{
@@ -47,6 +71,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 2
 	}
 
+	/**
+	 * Checks the perfect square9 case.
+	 */
 	@Test
 	fn TestPerfectSquare9()
 	{
@@ -54,6 +81,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 3
 	}
 
+	/**
+	 * Checks the perfect square100 case.
+	 */
 	@Test
 	fn TestPerfectSquare100()
 	{
@@ -61,6 +91,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 10
 	}
 
+	/**
+	 * Checks the non perfect square99 case.
+	 */
 	@Test
 	fn TestNonPerfectSquare99()
 	{
@@ -68,6 +101,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 9
 	}
 
+	/**
+	 * Checks the perfect square16129 case.
+	 */
 	@Test
 	fn TestPerfectSquare16129()
 	{
@@ -75,6 +111,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 127
 	}
 
+	/**
+	 * Checks the non perfect square32766 case.
+	 */
 	@Test
 	fn TestNonPerfectSquare32766()
 	{
@@ -82,6 +121,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 181
 	}
 
+	/**
+	 * Checks the max case.
+	 */
 	@Test
 	fn TestMax()
 	{
@@ -89,6 +131,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 181
 	}
 
+	/**
+	 * Checks that Clamp above max.
+	 */
 	@Test
 	fn TestClampAboveMax()
 	{
@@ -96,6 +141,9 @@ component SqrtNewtonRaphsonTest
 		assert result == 181
 	}
 
+	/**
+	 * Checks that Clamp below zero.
+	 */
 	@Test
 	fn TestClampBelowZero()
 	{

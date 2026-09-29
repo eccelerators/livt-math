@@ -13,7 +13,10 @@ component MacUnit
 	// Maximum signed 16-bit accumulator value.
 	public const ACC_MAX: int = 32767
 
+	// Running sum retained until Reset starts another reduction.
 	accumulator: int
+
+	// Owned arithmetic worker used by serialized operations.
 	conv: Convert
 
 	/**

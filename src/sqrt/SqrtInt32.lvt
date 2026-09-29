@@ -9,22 +9,29 @@ namespace Livt.Math.Sqrt
  */
 component SqrtInt32
 {
+	// Compile-time dimensions, bounds, and numeric constants.
 	public const ITERATIONS: int = 16
 
-	/** Returns floor(sqrt(value)); non-positive inputs return zero. */
+	/**
+	 * Returns floor(sqrt(value)); non-positive inputs return zero.
+	 */
 	public fn Compute(value: int) int
 	{
-		if (value <= 0) { return 0 }
+		if (value <= 0) {
+			return 0
+		}
 
 		var radicand = value
 		var remainder = 0
 		var root = 0
+
 		for (var iteration = 0; iteration < ITERATIONS; iteration++) {
 			remainder = (remainder << 2) | ((radicand >> 30) & 3)
 			radicand = radicand << 2
 			root = root << 1
 
 			var candidate = (root << 1) + 1
+
 			if (remainder >= candidate) {
 				remainder -= candidate
 				root++

@@ -7,6 +7,7 @@ component SqrtLUT
 {
 	// Largest input accepted before clamping.
 	public const MAX_INPUT: int = 255
+
 	// Number of entries in the lookup table.
 	const LUT_SIZE: int = 256
 

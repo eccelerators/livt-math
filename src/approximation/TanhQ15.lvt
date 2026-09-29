@@ -7,13 +7,18 @@ namespace Livt.Math.Approximation
  */
 component TanhQ15
 {
+	// Compile-time dimensions, bounds, and numeric constants.
 	public const INPUT_SCALE: int = 256
 	public const OUTPUT_SCALE: int = 32768
 	const STEP: int = 64
 	const LAST_INDEX: int = 16
 
+	// Owned approximation table in the component numeric scale.
 	lut: int[17]
 
+	/**
+	 * Loads the owned Q1.15 approximation table used by Apply.
+	 */
 	new()
 	{
 		lut[0] = 0
@@ -35,14 +40,23 @@ component TanhQ15
 		lut[16] = 32745
 	}
 
-	/** Applies the bounded lookup/interpolation approximation. */
+	/**
+	 * Applies the bounded lookup/interpolation approximation.
+	 */
 	public fn Apply(input: int) int
 	{
 		var negative = input < 0
 		var magnitude = input
-		if (negative) { magnitude = 0 - input }
+
+		if (negative) {
+			magnitude = 0 - input
+		}
+
 		if (magnitude >= 1024) {
-			if (negative) { return 0 - lut[LAST_INDEX] }
+			if (negative) {
+				return 0 - lut[LAST_INDEX]
+			}
+
 			return lut[LAST_INDEX]
 		}
 
@@ -51,7 +65,11 @@ component TanhQ15
 		var lower = lut[index]
 		var upper = lut[index + 1]
 		var value = lower + (upper - lower) * remainder / STEP
-		if (negative) { return 0 - value }
+
+		if (negative) {
+			return 0 - value
+		}
+
 		return value
 	}
 }

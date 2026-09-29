@@ -2,18 +2,29 @@ namespace Livt.Math.Tests.Random
 
 using Livt.Math.Random
 
+/**
+ * Exercises Xorshift24 with a shared fixture instance. Each scenario establishes the
+ * inputs and state it needs.
+ */
 @Test
 component Xorshift24Test
 {
+	// Shared fixture instances, signals, and observation state.
 	xs: Xorshift24
 
+	/**
+	 * Creates the shared fixture instances (Xorshift24). Tests initialize the state required
+	 * by their scenario.
+	 */
 	new()
 	{
 		xs = new Xorshift24(1)
 	}
 
-	// Verify the deterministic output sequence from seed=1.
-	// Reference: Python xorshift24(a=3, b=7, c=5) with 24-bit mask.
+	/**
+	 * Verify the deterministic output sequence from seed=1. Reference: Python xorshift24(a=3,
+	 * b=7, c=5) with 24-bit mask.
+	 */
 	@Test
 	fn TestGetNextSequence()
 	{
@@ -24,14 +35,16 @@ component Xorshift24Test
 		assert this.xs.GetNext() == 9831862
 	}
 
-	// Verify GetNextInRange returns values in [0, n-1].
+	/**
+	 * Verify GetNextInRange returns values in [0, n-1].
+	 */
 	@Test
 	fn TestGetNextInRangeIsInBounds()
 	{
 		var i: int = 0
 		var v: int = 0
-		while (i < 20)
-		{
+
+		while (i < 20) {
 			v = this.xs.GetNextInRange(100)
 			assert v >= 0
 			assert v < 100
@@ -39,6 +52,9 @@ component Xorshift24Test
 		}
 	}
 
+	/**
+	 * Checks that GetNextInRange rejects non positive range.
+	 */
 	@Test
 	fn TestGetNextInRangeRejectsNonPositiveRange()
 	{
@@ -46,7 +62,9 @@ component Xorshift24Test
 		assert this.xs.GetNextInRange(-1) == 0
 	}
 
-	// Verify Seed() resets the sequence reproducibly.
+	/**
+	 * Verify Seed() resets the sequence reproducibly.
+	 */
 	@Test
 	fn TestSeedResetsSequence()
 	{
@@ -57,7 +75,9 @@ component Xorshift24Test
 		assert this.xs.GetNext() == 11896
 	}
 
-	// Verify distinct seeds produce distinct first values.
+	/**
+	 * Verify distinct seeds produce distinct first values.
+	 */
 	@Test
 	fn TestDifferentSeeds()
 	{
@@ -69,12 +89,15 @@ component Xorshift24Test
 		assert v42 == 11896
 	}
 
-	// Verify seed=0 is corrected to 1 (zero is a fixed point).
+	/**
+	 * Verify seed=0 is corrected to 1 (zero is a fixed point).
+	 */
 	@Test
 	fn TestZeroSeedCorrected()
 	{
 		this.xs.Seed(0)
 		var v: int = this.xs.GetNext()
+
 		// Should produce same as seed=1.
 		assert v == 297
 	}

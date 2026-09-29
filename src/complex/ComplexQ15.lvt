@@ -5,14 +5,22 @@ using Livt.Math.FixedPoint
 /**
  * Stateful helper for signed Q1.15 complex arithmetic.
  * Set stores the input value. Add/Sub/Mul write their latest value to result fields.
+ * Arithmetic inputs must fit raw Q1.15 (-32768..32767). Multiplication rescales
+ * and saturates each product before the final component sum or difference.
  */
 component ComplexQ15
 {
+	// Stored complex input, separate from the arithmetic result.
 	real: int
 	imag: int
+
+	// Latest computed result, retained for the caller.
 	resultReal: int
 	resultImag: int
 
+	/**
+	 * Initializes the stored complex input and the separate result to zero.
+	 */
 	new()
 	{
 		this.real = 0
@@ -21,31 +29,54 @@ component ComplexQ15
 		this.resultImag = 0
 	}
 
+	/**
+	 * Saturates one raw signed Q1.15 component to -32768..32767 without changing instance
+	 * state.
+	 */
 	public static fn ClampPart[](value: int) int
 	{
 		return Q15.ClampValue(value)
 	}
 
+	/**
+	 * Returns the saturated sum of two real Q1.15 components; inputs must be in -32768..32767.
+	 */
 	public static fn AddReal[](real: int, otherReal: int) int
 	{
 		return Q15.AddSaturatingValue(real, otherReal)
 	}
 
+	/**
+	 * Returns the saturated sum of two imaginary Q1.15 components; inputs must be in
+	 * -32768..32767.
+	 */
 	public static fn AddImag[](imag: int, otherImag: int) int
 	{
 		return Q15.AddSaturatingValue(imag, otherImag)
 	}
 
+	/**
+	 * Returns the saturated real-component difference; both inputs must be raw Q1.15 values in
+	 * -32768..32767.
+	 */
 	public static fn SubReal[](real: int, otherReal: int) int
 	{
 		return Q15.SubSaturatingValue(real, otherReal)
 	}
 
+	/**
+	 * Returns the saturated imaginary-component difference; both inputs must be raw Q1.15
+	 * values in -32768..32767.
+	 */
 	public static fn SubImag[](imag: int, otherImag: int) int
 	{
 		return Q15.SubSaturatingValue(imag, otherImag)
 	}
 
+	/**
+	 * Returns the real component of the complex product. Inputs must fit Q1.15; each product
+	 * is rescaled and saturated before the saturated subtraction.
+	 */
 	public static fn MulReal[](real: int, imag: int, otherReal: int, otherImag: int) int
 	{
 		var ac: int = Q15.MulValue(real, otherReal)
@@ -53,6 +84,10 @@ component ComplexQ15
 		return Q15.SubSaturatingValue(ac, bd)
 	}
 
+	/**
+	 * Returns the imaginary component of the complex product. Inputs must fit Q1.15; each
+	 * product is rescaled and saturated before the saturated addition.
+	 */
 	public static fn MulImag[](real: int, imag: int, otherReal: int, otherImag: int) int
 	{
 		var ad: int = Q15.MulValue(real, otherImag)
@@ -69,21 +104,33 @@ component ComplexQ15
 		this.imag = this.ClampQ15(imag)
 	}
 
+	/**
+	 * Returns the stored input real component, unchanged by Add, Sub, and Mul.
+	 */
 	public fn GetReal() int
 	{
 		return this.real
 	}
 
+	/**
+	 * Returns the stored input imaginary component, unchanged by Add, Sub, and Mul.
+	 */
 	public fn GetImag() int
 	{
 		return this.imag
 	}
 
+	/**
+	 * Returns the latest arithmetic result real component, or zero before an operation.
+	 */
 	public fn GetResultReal() int
 	{
 		return this.resultReal
 	}
 
+	/**
+	 * Returns the latest arithmetic result imaginary component, or zero before an operation.
+	 */
 	public fn GetResultImag() int
 	{
 		return this.resultImag
@@ -139,10 +186,19 @@ component ComplexQ15
 		this.Mul(twiddleReal, twiddleImag)
 	}
 
+	/**
+	 * Saturates an intermediate component to the raw signed Q1.15 range.
+	 */
 	fn ClampQ15(value: int) int
 	{
-		if (value < -32768) { return -32768 }
-		if (value > 32767) { return 32767 }
+		if (value < -32768) {
+			return -32768
+		}
+
+		if (value > 32767) {
+			return 32767
+		}
+
 		return value
 	}
 }

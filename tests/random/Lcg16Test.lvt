@@ -2,18 +2,29 @@ namespace Livt.Math.Tests.Random
 
 using Livt.Math.Random
 
+/**
+ * Exercises Lcg16 with a shared fixture instance. Each scenario establishes the inputs and
+ * state it needs.
+ */
 @Test
 component Lcg16Test
 {
+	// Shared fixture instances, signals, and observation state.
 	lcg: Lcg16
 
+	/**
+	 * Creates the shared fixture instances (Lcg16). Tests initialize the state required by
+	 * their scenario.
+	 */
 	new()
 	{
 		// Standard 16-bit LCG: a=25173, c=13849, m=65536, seed=0.
 		lcg = new Lcg16(0, 25173, 13849, 65536)
 	}
 
-	// Verify the deterministic output sequence from seed=0.
+	/**
+	 * Verify the deterministic output sequence from seed=0.
+	 */
 	@Test
 	fn TestGetNextSequence()
 	{
@@ -24,14 +35,16 @@ component Lcg16Test
 		assert this.lcg.GetNext() == 13925
 	}
 
-	// Verify GetNextInRange returns values in [0, n-1].
+	/**
+	 * Verify GetNextInRange returns values in [0, n-1].
+	 */
 	@Test
 	fn TestGetNextInRangeIsInBounds()
 	{
 		var i: int = 0
 		var v: int = 0
-		while (i < 20)
-		{
+
+		while (i < 20) {
 			v = this.lcg.GetNextInRange(100)
 			assert v >= 0
 			assert v < 100
@@ -39,6 +52,9 @@ component Lcg16Test
 		}
 	}
 
+	/**
+	 * Checks that GetNextInRange rejects non positive range.
+	 */
 	@Test
 	fn TestGetNextInRangeRejectsNonPositiveRange()
 	{
@@ -46,7 +62,9 @@ component Lcg16Test
 		assert this.lcg.GetNextInRange(-1) == 0
 	}
 
-	// Verify Seed() resets the sequence reproducibly.
+	/**
+	 * Verify Seed() resets the sequence reproducibly.
+	 */
 	@Test
 	fn TestSeedResetsSequence()
 	{
@@ -57,7 +75,9 @@ component Lcg16Test
 		assert this.lcg.GetNext() == 22539
 	}
 
-	// Verify distinct seeds produce distinct first values.
+	/**
+	 * Verify distinct seeds produce distinct first values.
+	 */
 	@Test
 	fn TestDifferentSeeds()
 	{

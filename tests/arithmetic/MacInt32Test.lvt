@@ -2,12 +2,28 @@ namespace Livt.Math.Tests.Arithmetic
 
 using Livt.Math.Arithmetic
 
+/**
+ * Exercises MacInt32 with a shared fixture instance. Each scenario establishes the inputs
+ * and state it needs.
+ */
 @Test
 component MacInt32Test
 {
+	// Shared fixture instances, signals, and observation state.
 	mac: MacInt32
-	new() { this.mac = new MacInt32() }
 
+	/**
+	 * Creates the shared fixture instances (MacInt32). Tests initialize the state required by
+	 * their scenario.
+	 */
+	new()
+	{
+		this.mac = new MacInt32()
+	}
+
+	/**
+	 * Checks that Accumulate s beyond int16.
+	 */
 	@Test
 	fn AccumulatesBeyondInt16()
 	{
@@ -19,6 +35,9 @@ component MacInt32Test
 		assert this.mac.GetResult() == 32258
 	}
 
+	/**
+	 * Checks that Reset s to zero.
+	 */
 	@Test
 	fn ResetsToZero()
 	{

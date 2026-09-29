@@ -2,42 +2,69 @@ namespace Livt.Math.FixedPoint
 
 /**
  * Signed Q1.7 fixed-point helper for compact normalized coefficients.
- * Operations clamp to [-128, 127] and store the latest value for GetResult().
+ * Instance operations clamp to [-128, 127] and store the latest value for GetResult().
+ * Static helpers return their value without modifying an instance.
  */
 component Q7
 {
+	// Compile-time dimensions, bounds, and numeric constants.
 	public const MIN: int = -128
 	public const MAX: int = 127
 	public const ZERO: int = 0
 	public const ONE: int = 127
 	public const HALF: int = 64
 
+	// Latest computed result, retained for the caller.
 	result: int
 
+	/**
+	 * Initializes the stored result to zero; static helpers do not use this state.
+	 */
 	new()
 	{
 		result = 0
 	}
 
+	/**
+	 * Returns value saturated to -128..127, without changing any instance result.
+	 */
 	public static fn ClampValue[](value: int) int
 	{
-		if (value < Q7.MIN) { return Q7.MIN }
-		if (value > 127) { return 127 }
+		if (value < Q7.MIN) {
+			return Q7.MIN
+		}
+
+		if (value > 127) {
+			return 127
+		}
+
 		return value
 	}
 
+	/**
+	 * Returns the saturated sum of two raw Q7 values in -128..127. Inputs must fit that range;
+	 * does not change instance state.
+	 */
 	public static fn AddSaturatingValue[](a: int, b: int) int
 	{
 		var sum: int = a + b
 		return Q7.ClampValue(sum)
 	}
 
+	/**
+	 * Returns the saturated difference of two raw Q7 values in -128..127. Inputs must fit that
+	 * range; does not change instance state.
+	 */
 	public static fn SubSaturatingValue[](a: int, b: int) int
 	{
 		var difference: int = a - b
 		return Q7.ClampValue(difference)
 	}
 
+	/**
+	 * Multiplies two raw Q7 values in -128..127, divides the integer product by 128, and
+	 * saturates the result. Does not change instance state.
+	 */
 	public static fn MulValue[](a: int, b: int) int
 	{
 		var product: int = a * b
@@ -50,9 +77,13 @@ component Q7
 	 */
 	public fn Clamp(value: int)
 	{
-		if (value < -128) { result = -128 }
-		elif (value > 127) { result = 127 }
-		else { result = value }
+		if (value < -128) {
+			result = -128
+		} elif (value > 127) {
+			result = 127
+		} else {
+			result = value
+		}
 	}
 
 	/**

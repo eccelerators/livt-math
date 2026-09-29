@@ -2,42 +2,69 @@ namespace Livt.Math.FixedPoint
 
 /**
  * Unsigned Q0.8 fixed-point helper for normalized values in [0, 1].
- * Operations clamp to [0, 255] and store the latest value for GetResult().
+ * Instance operations clamp to [0, 255] and store the latest value for GetResult().
+ * Static helpers return their value without modifying an instance.
  */
 component UQ8
 {
+	// Compile-time dimensions, bounds, and numeric constants.
 	public const MIN: int = 0
 	public const MAX: int = 255
 	public const ZERO: int = 0
 	public const ONE: int = 255
 	public const HALF: int = 128
 
+	// Latest computed result, retained for the caller.
 	result: int
 
+	/**
+	 * Initializes the stored result to zero; static helpers do not use this state.
+	 */
 	new()
 	{
 		result = 0
 	}
 
+	/**
+	 * Returns value saturated to 0..255, without changing any instance result.
+	 */
 	public static fn ClampValue[](value: int) int
 	{
-		if (value < 0) { return 0 }
-		if (value > 255) { return 255 }
+		if (value < 0) {
+			return 0
+		}
+
+		if (value > 255) {
+			return 255
+		}
+
 		return value
 	}
 
+	/**
+	 * Returns the saturated sum of two raw UQ8 values in 0..255. Inputs must fit that range;
+	 * does not change instance state.
+	 */
 	public static fn AddSaturatingValue[](a: int, b: int) int
 	{
 		var sum: int = a + b
 		return UQ8.ClampValue(sum)
 	}
 
+	/**
+	 * Returns the saturated difference of two raw UQ8 values in 0..255. Inputs must fit that
+	 * range; does not change instance state.
+	 */
 	public static fn SubSaturatingValue[](a: int, b: int) int
 	{
 		var difference: int = a - b
 		return UQ8.ClampValue(difference)
 	}
 
+	/**
+	 * Multiplies two raw UQ8 values in 0..255, divides the integer product by 256, and
+	 * saturates the result. Does not change instance state.
+	 */
 	public static fn MulValue[](a: int, b: int) int
 	{
 		var product: int = a * b
@@ -50,9 +77,13 @@ component UQ8
 	 */
 	public fn Clamp(value: int)
 	{
-		if (value < 0) { result = 0 }
-		elif (value > 255) { result = 255 }
-		else { result = value }
+		if (value < 0) {
+			result = 0
+		} elif (value > 255) {
+			result = 255
+		} else {
+			result = value
+		}
 	}
 
 	/**

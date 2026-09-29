@@ -2,22 +2,37 @@ namespace Livt.Math.Tests.Arithmetic
 
 using Livt.Math.Arithmetic
 
+/**
+ * Exercises MacUnit with a shared fixture instance. Each scenario establishes the inputs
+ * and state it needs.
+ */
 @Test
 component MacUnitTest
 {
+	// Shared fixture instances, signals, and observation state.
 	mac: MacUnit
 
+	/**
+	 * Creates the shared fixture instances (MacUnit). Tests initialize the state required by
+	 * their scenario.
+	 */
 	new()
 	{
 		mac = new MacUnit()
 	}
 
+	/**
+	 * Checks that the component starts at zero.
+	 */
 	@Test
 	fn StartsAtZero()
 	{
 		assert mac.GetResult() == 0
 	}
 
+	/**
+	 * Checks that Accumulate s products.
+	 */
 	@Test
 	fn AccumulatesProducts()
 	{
@@ -28,6 +43,9 @@ component MacUnitTest
 		assert mac.GetResult() == 22
 	}
 
+	/**
+	 * Checks that the component handles zero input.
+	 */
 	@Test
 	fn HandlesZeroInput()
 	{
@@ -37,6 +55,9 @@ component MacUnitTest
 		assert mac.GetResult() == 0
 	}
 
+	/**
+	 * Checks that Reset s accumulator.
+	 */
 	@Test
 	fn ResetsAccumulator()
 	{
@@ -47,6 +68,9 @@ component MacUnitTest
 		assert mac.GetResult() == 0
 	}
 
+	/**
+	 * Checks that the component saturates accumulator.
+	 */
 	@Test
 	fn SaturatesAccumulator()
 	{
@@ -56,6 +80,9 @@ component MacUnitTest
 		assert mac.GetResult() == MacUnit.ACC_MAX
 	}
 
+	/**
+	 * Checks that the component saturates negative accumulator.
+	 */
 	@Test
 	fn SaturatesNegativeAccumulator()
 	{
@@ -65,6 +92,9 @@ component MacUnitTest
 		assert mac.GetResult() == MacUnit.ACC_MIN
 	}
 
+	/**
+	 * Checks that the component supports dot product pattern.
+	 */
 	@Test
 	fn SupportsDotProductPattern()
 	{

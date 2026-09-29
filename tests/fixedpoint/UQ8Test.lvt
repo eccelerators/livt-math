@@ -2,16 +2,28 @@ namespace Livt.Math.Tests.FixedPoint
 
 using Livt.Math.FixedPoint
 
+/**
+ * Exercises UQ8 with a shared fixture instance. Each scenario establishes the inputs and
+ * state it needs.
+ */
 @Test
 component UQ8Test
 {
+	// Shared fixture instances, signals, and observation state.
 	uq8: UQ8
 
+	/**
+	 * Creates the shared fixture instances (UQ8). Tests initialize the state required by their
+	 * scenario.
+	 */
 	new()
 	{
 		uq8 = new UQ8()
 	}
 
+	/**
+	 * Checks that Clamp s boundaries.
+	 */
 	@Test
 	fn ClampsBoundaries()
 	{
@@ -23,6 +35,9 @@ component UQ8Test
 		assert uq8.GetResult() == 42
 	}
 
+	/**
+	 * Checks that Add s and subtracts saturating.
+	 */
 	@Test
 	fn AddsAndSubtractsSaturating()
 	{
@@ -34,6 +49,9 @@ component UQ8Test
 		assert uq8.GetResult() == 27
 	}
 
+	/**
+	 * Checks that Mul tiplies with rescale.
+	 */
 	@Test
 	fn MultipliesWithRescale()
 	{
@@ -43,6 +61,9 @@ component UQ8Test
 		assert uq8.GetResult() == 254
 	}
 
+	/**
+	 * Checks the direct context free helpers case.
+	 */
 	@Test
 	fn DirectContextFreeHelpers()
 	{
@@ -58,5 +79,4 @@ component UQ8Test
 		assert subtracted == 0
 		assert multiplied == 64
 	}
-
 }

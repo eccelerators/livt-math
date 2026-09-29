@@ -2,12 +2,28 @@ namespace Livt.Math.Tests.Sqrt
 
 using Livt.Math.Sqrt
 
+/**
+ * Exercises SqrtInt32 with a shared fixture instance. Each scenario establishes the inputs
+ * and state it needs.
+ */
 @Test
 component SqrtInt32Test
 {
+	// Shared fixture instances, signals, and observation state.
 	sqrt: SqrtInt32
-	new() { this.sqrt = new SqrtInt32() }
 
+	/**
+	 * Creates the shared fixture instances (SqrtInt32). Tests initialize the state required by
+	 * their scenario.
+	 */
+	new()
+	{
+		this.sqrt = new SqrtInt32()
+	}
+
+	/**
+	 * Checks that Compute s large and boundary values.
+	 */
 	@Test
 	fn ComputesLargeAndBoundaryValues()
 	{

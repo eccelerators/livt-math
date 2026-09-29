@@ -68,7 +68,10 @@ component Lcg16
 	@SuppressWarning("variable-divisor")
 	public fn GetNextInRange(n: int) int
 	{
-		if (n <= 0) { return 0 }
+		if (n <= 0) {
+			return 0
+		}
+
 		return this.GetNext() % n
 	}
 }

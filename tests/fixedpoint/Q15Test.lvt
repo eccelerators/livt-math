@@ -2,16 +2,28 @@ namespace Livt.Math.Tests.FixedPoint
 
 using Livt.Math.FixedPoint
 
+/**
+ * Exercises Q15 with a shared fixture instance. Each scenario establishes the inputs and
+ * state it needs.
+ */
 @Test
 component Q15Test
 {
+	// Shared fixture instances, signals, and observation state.
 	q15: Q15
 
+	/**
+	 * Creates the shared fixture instances (Q15). Tests initialize the state required by their
+	 * scenario.
+	 */
 	new()
 	{
 		q15 = new Q15()
 	}
 
+	/**
+	 * Checks that Clamp s boundaries.
+	 */
 	@Test
 	fn ClampsBoundaries()
 	{
@@ -23,6 +35,9 @@ component Q15Test
 		assert q15.GetResult() == 1234
 	}
 
+	/**
+	 * Checks that Add s and subtracts saturating.
+	 */
 	@Test
 	fn AddsAndSubtractsSaturating()
 	{
@@ -34,6 +49,9 @@ component Q15Test
 		assert q15.GetResult() == 7
 	}
 
+	/**
+	 * Checks that Mul tiplies with rescale.
+	 */
 	@Test
 	fn MultipliesWithRescale()
 	{
@@ -45,6 +63,9 @@ component Q15Test
 		assert q15.GetResult() == -32767
 	}
 
+	/**
+	 * Checks the direct context free helpers case.
+	 */
 	@Test
 	fn DirectContextFreeHelpers()
 	{
@@ -60,5 +81,4 @@ component Q15Test
 		assert subtracted == 7
 		assert multiplied == 8192
 	}
-
 }
