@@ -29,6 +29,7 @@ component IntegerDivisionTest
 	 * Exhausts all valid four-bit signed pairs against language integer semantics.
 	 */
 	@Test
+	@SuppressWarning("variable-divisor")
 	fn SignedExhaustive()
 	{
 		for (var a = -8; a < 8; a++) {
@@ -47,6 +48,7 @@ component IntegerDivisionTest
 	 * Exhausts unsigned pairs, including the upper half of the configured range.
 	 */
 	@Test
+	@SuppressWarning("variable-divisor")
 	fn UnsignedExhaustive()
 	{
 		for (var a = 0; a < 16; a++) {
