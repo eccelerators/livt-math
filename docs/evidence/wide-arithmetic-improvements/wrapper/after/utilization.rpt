@@ -1,0 +1,31 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Wed Sep 30 17:39:29 2026
+| Host         : vagrant-devbox running 64-bit Ubuntu 24.04.4 LTS
+| Command      : report_utilization -hierarchical -file utilization.rpt
+| Design       : bench
+| Device       : xc7a200tfbg676-1
+| Speed File   : -1
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++------------------------+--------------------------------------------------------------+------------+------------+---------+------+------+--------+--------+------------+
+|        Instance        |                            Module                            | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs | RAMB36 | RAMB18 | DSP Blocks |
++------------------------+--------------------------------------------------------------+------------+------------+---------+------+------+--------+--------+------------+
+| bench                  |                                                        (top) |       3942 |       3942 |       0 |    0 | 3917 |      0 |      0 |          4 |
+|   dut                  | livt_math_arithmetic_widearithmetic_g_24_31_sig_93dd70859d1b |       3942 |       3942 |       0 |    0 | 3917 |      0 |      0 |          4 |
+|     (dut)              | livt_math_arithmetic_widearithmetic_g_24_31_sig_93dd70859d1b |       2316 |       2316 |       0 |    0 | 3146 |      0 |      0 |          0 |
+|     primitive_instance |                 livt_math_arithmetic_widearithmeticprimitive |       1626 |       1626 |       0 |    0 |  771 |      0 |      0 |          4 |
++------------------------+--------------------------------------------------------------+------------+------------+---------+------+------+--------+--------+------------+
+
+

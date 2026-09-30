@@ -63,40 +63,52 @@ component UnsignedDivision<BITS: int = 32> : IIntegerDivision<uint>
 		return true
 	}
 
-	/** Returns the most recently completed quotient. */
+	/**
+	 * Returns the most recently completed quotient.
+	 */
 	override fn GetQuotient() uint
 	{
 		return quotient
 	}
 
-	/** Returns the most recently completed remainder. */
+	/**
+	 * Returns the most recently completed remainder.
+	 */
 	override fn GetRemainder() uint
 	{
 		return remainder
 	}
 
-	/** Computes floor division; zero on failure, distinguished by Failed. */
+	/**
+	 * Computes floor division; zero on failure, distinguished by Failed.
+	 */
 	override fn Divide(dividend: uint, divisor: uint) uint
 	{
 		Compute(dividend, divisor)
 		return quotient
 	}
 
-	/** Computes the nonnegative remainder using the same worker. */
+	/**
+	 * Computes the nonnegative remainder using the same worker.
+	 */
 	override fn Remainder(dividend: uint, divisor: uint) uint
 	{
 		Compute(dividend, divisor)
 		return remainder
 	}
 
-	/** Unsigned remainder and Euclidean modulo coincide. */
+	/**
+	 * Unsigned remainder and Euclidean modulo coincide.
+	 */
 	override fn ModuloEuclidean(dividend: uint, divisor: uint) uint
 	{
 		Compute(dividend, divisor)
 		return remainder
 	}
 
-	/** Returns the error status of the latest computation. */
+	/**
+	 * Returns the error status of the latest computation.
+	 */
 	override fn Failed() bool
 	{
 		return failed

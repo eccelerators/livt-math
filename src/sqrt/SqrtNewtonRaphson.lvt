@@ -16,7 +16,9 @@ component SqrtNewtonRaphson
 	// Serialized exact division for bounded Newton steps.
 	divider: UnsignedDivision<15>
 
-	/** Owns one divider for inputs clamped to MAX_INPUT. */
+	/**
+	 * Owns one divider for inputs clamped to MAX_INPUT.
+	 */
 	new()
 	{
 		divider = new UnsignedDivision<15>()

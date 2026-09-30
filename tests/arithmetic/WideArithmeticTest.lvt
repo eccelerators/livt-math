@@ -12,6 +12,9 @@ component WideArithmeticTest
 	wide: WideArithmetic<24>
 	small: WideArithmetic<16>
 
+	// A divide-only instance must reject disabled operations deterministically.
+	division: WideArithmetic<24, 4>
+
 	/**
 	 * Creates the shared fixture instances (WideArithmetic). Tests initialize the state
 	 * required by their scenario.
@@ -20,6 +23,7 @@ component WideArithmeticTest
 	{
 		wide = new WideArithmetic<24>()
 		small = new WideArithmetic<16>()
+		division = new WideArithmetic<24, 4>()
 	}
 
 	/**
@@ -92,4 +96,25 @@ component WideArithmeticTest
 		assert small.Clamp(0x7fffffffffffffff) == 32767
 		assert small.Clamp(0xffffffffffffffff) == -1
 	}
+
+	/**
+	 * Checks compile-time operation selection and recovery after rejected requests.
+	 */
+	@Test
+	fn OperationCapabilities()
+	{
+		assert division.Multiply(7, 9) == 0
+		assert division.Failed()
+		assert division.Sqrt(16) == 0
+		assert division.Failed()
+		assert division.Add(1, 2) == 0
+		assert division.Failed()
+		assert division.Clamp(42) == 0
+		assert division.Failed()
+		assert division.DivideEven(7, 2) == 4
+		assert !division.Failed()
+		assert division.DivideFloor(7, 2) == 3
+		assert !division.Failed()
+	}
+
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Livt" tests="15" failures="0" skipped="0" time="59.868">
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5FixedPointTest" name="NibblesScalesAndTies" time="0.034"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5FixedPointTest" name="SaturationAndGate" time="0.021"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5FixedPointTest" name="WideAccumulationAndBounds" time="1.995"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5MatrixTest" name="FrozenQueryProjection" time="27.978"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5MatrixTest" name="UnalignedRowsAndPartialGroups" time="1.312"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="FrozenRmsRow" time="13.949"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="SmallRmsAndZero" time="0.228"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="FrozenGeluAndTails" time="0.2"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="FrozenMaskedSoftmax" time="0.692"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="SmallSoftmaxAndTableViews" time="0.138"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="CutoffMaskAndRounding" time="0.165"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest" name="WideRmsExtremes" time="13.135"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NumericTest" name="WideExact" time="0.005"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5NumericTest" name="ModelNumericBoundary" time="0.011"></testcase>
+  <testcase classname="Livt.Onnx.FlanT5.Tests.FlanT5TableArithmeticTest" name="RoundedTableIndices" time="0.005"></testcase>
+</testsuite>

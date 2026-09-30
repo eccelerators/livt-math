@@ -13,6 +13,9 @@ component WideArithmeticPrimitive
 	public b: in logic[64]
 	public outputBits: in int
 
+	// Compile-time capability mask supplied by the owning generic wrapper.
+	public operations: in int
+
 	// Completion toggle, result bits, and error status from the native worker.
 	public acknowledge: out logic
 	public result: out logic[64]

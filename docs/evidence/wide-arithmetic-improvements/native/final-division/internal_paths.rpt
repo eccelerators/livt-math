@@ -1,0 +1,1501 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Wed Sep 30 17:47:39 2026
+| Host         : vagrant-devbox running 64-bit Ubuntu 24.04.4 LTS
+| Command      : report_timing -from [all_registers] -to [all_registers] -max_paths 10 -file internal_paths.rpt
+| Design       : bench
+| Device       : 7a200t-fbg676
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             7.141ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[60]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.815ns  (logic 7.022ns (54.796%)  route 5.793ns (45.204%))
+  Logic Levels:           36  (CARRY4=32 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.041ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.541ns = ( 21.541 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.315    13.583 r  dut/ctor_result_reg[60]_i_3/O[3]
+                         net (fo=1, routed)           0.586    14.169    dut/ctor_result01_in[60]
+    SLICE_X50Y128        LUT6 (Prop_lut6_I3_O)        0.307    14.476 r  dut/ctor_result[60]_i_1/O
+                         net (fo=1, routed)           0.000    14.476    dut/ctor_result[60]_i_1_n_0
+    SLICE_X50Y128        FDRE                                         r  dut/ctor_result_reg[60]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.541    21.541    dut/clk
+    SLICE_X50Y128        FDRE                                         r  dut/ctor_result_reg[60]/C
+                         clock pessimism              0.079    21.620    <hidden>
+                         clock uncertainty           -0.035    21.585    <hidden>
+    SLICE_X50Y128        FDRE (Setup_fdre_C_D)        0.032    21.617    dut/ctor_result_reg[60]
+  -------------------------------------------------------------------
+                         required time                         21.617    <hidden>
+                         arrival time                         -14.476    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.141    <hidden>
+
+Slack (MET) :             7.248ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[61]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.707ns  (logic 7.031ns (55.330%)  route 5.676ns (44.670%))
+  Logic Levels:           37  (CARRY4=33 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.040ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.542ns = ( 21.542 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.385 r  dut/ctor_result_reg[60]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.385    dut/ctor_result_reg[60]_i_3_n_0
+    SLICE_X48Y129        CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.219    13.604 r  dut/ctor_result_reg[63]_i_5/O[0]
+                         net (fo=1, routed)           0.469    14.073    dut/ctor_result01_in[61]
+    SLICE_X50Y129        LUT6 (Prop_lut6_I3_O)        0.295    14.368 r  dut/ctor_result[61]_i_1/O
+                         net (fo=1, routed)           0.000    14.368    dut/ctor_result[61]_i_1_n_0
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[61]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.542    21.542    dut/clk
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[61]/C
+                         clock pessimism              0.079    21.621    <hidden>
+                         clock uncertainty           -0.035    21.586    <hidden>
+    SLICE_X50Y129        FDRE (Setup_fdre_C_D)        0.031    21.617    dut/ctor_result_reg[61]
+  -------------------------------------------------------------------
+                         required time                         21.617    <hidden>
+                         arrival time                         -14.368    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.248    <hidden>
+
+Slack (MET) :             7.293ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[62]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.662ns  (logic 7.146ns (56.435%)  route 5.516ns (43.565%))
+  Logic Levels:           37  (CARRY4=33 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.040ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.542ns = ( 21.542 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.385 r  dut/ctor_result_reg[60]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.385    dut/ctor_result_reg[60]_i_3_n_0
+    SLICE_X48Y129        CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323    13.708 r  dut/ctor_result_reg[63]_i_5/O[1]
+                         net (fo=1, routed)           0.309    14.017    dut/ctor_result01_in[62]
+    SLICE_X50Y129        LUT6 (Prop_lut6_I3_O)        0.306    14.323 r  dut/ctor_result[62]_i_1/O
+                         net (fo=1, routed)           0.000    14.323    dut/ctor_result[62]_i_1_n_0
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[62]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.542    21.542    dut/clk
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[62]/C
+                         clock pessimism              0.079    21.621    <hidden>
+                         clock uncertainty           -0.035    21.586    <hidden>
+    SLICE_X50Y129        FDRE (Setup_fdre_C_D)        0.031    21.617    dut/ctor_result_reg[62]
+  -------------------------------------------------------------------
+                         required time                         21.617    <hidden>
+                         arrival time                         -14.323    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.293    <hidden>
+
+Slack (MET) :             7.364ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[57]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.590ns  (logic 6.914ns (54.915%)  route 5.676ns (45.085%))
+  Logic Levels:           36  (CARRY4=32 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.041ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.541ns = ( 21.541 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.219    13.487 r  dut/ctor_result_reg[60]_i_3/O[0]
+                         net (fo=1, routed)           0.469    13.956    dut/ctor_result01_in[57]
+    SLICE_X50Y128        LUT6 (Prop_lut6_I3_O)        0.295    14.251 r  dut/ctor_result[57]_i_1/O
+                         net (fo=1, routed)           0.000    14.251    dut/ctor_result[57]_i_1_n_0
+    SLICE_X50Y128        FDRE                                         r  dut/ctor_result_reg[57]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.541    21.541    dut/clk
+    SLICE_X50Y128        FDRE                                         r  dut/ctor_result_reg[57]/C
+                         clock pessimism              0.079    21.620    <hidden>
+                         clock uncertainty           -0.035    21.585    <hidden>
+    SLICE_X50Y128        FDRE (Setup_fdre_C_D)        0.031    21.616    dut/ctor_result_reg[57]
+  -------------------------------------------------------------------
+                         required time                         21.616    <hidden>
+                         arrival time                         -14.251    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.364    <hidden>
+
+Slack (MET) :             7.366ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[59]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.588ns  (logic 6.940ns (55.133%)  route 5.648ns (44.867%))
+  Logic Levels:           36  (CARRY4=32 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.040ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.542ns = ( 21.542 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239    13.507 r  dut/ctor_result_reg[60]_i_3/O[2]
+                         net (fo=1, routed)           0.441    13.948    dut/ctor_result01_in[59]
+    SLICE_X50Y129        LUT6 (Prop_lut6_I3_O)        0.301    14.249 r  dut/ctor_result[59]_i_1/O
+                         net (fo=1, routed)           0.000    14.249    dut/ctor_result[59]_i_1_n_0
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[59]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.542    21.542    dut/clk
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[59]/C
+                         clock pessimism              0.079    21.621    <hidden>
+                         clock uncertainty           -0.035    21.586    <hidden>
+    SLICE_X50Y129        FDRE (Setup_fdre_C_D)        0.029    21.615    dut/ctor_result_reg[59]
+  -------------------------------------------------------------------
+                         required time                         21.615    <hidden>
+                         arrival time                         -14.249    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.366    <hidden>
+
+Slack (MET) :             7.375ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[53]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.577ns  (logic 6.797ns (54.043%)  route 5.780ns (45.957%))
+  Logic Levels:           35  (CARRY4=31 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.044ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.538ns = ( 21.538 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.219    13.370 r  dut/ctor_result_reg[56]_i_3/O[0]
+                         net (fo=1, routed)           0.573    13.943    dut/ctor_result01_in[53]
+    SLICE_X50Y126        LUT6 (Prop_lut6_I3_O)        0.295    14.238 r  dut/ctor_result[53]_i_1/O
+                         net (fo=1, routed)           0.000    14.238    dut/ctor_result[53]_i_1_n_0
+    SLICE_X50Y126        FDRE                                         r  dut/ctor_result_reg[53]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.538    21.538    dut/clk
+    SLICE_X50Y126        FDRE                                         r  dut/ctor_result_reg[53]/C
+                         clock pessimism              0.079    21.617    <hidden>
+                         clock uncertainty           -0.035    21.582    <hidden>
+    SLICE_X50Y126        FDRE (Setup_fdre_C_D)        0.031    21.613    dut/ctor_result_reg[53]
+  -------------------------------------------------------------------
+                         required time                         21.613    <hidden>
+                         arrival time                         -14.238    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.375    <hidden>
+
+Slack (MET) :             7.377ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[63]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.580ns  (logic 7.057ns (56.098%)  route 5.523ns (43.903%))
+  Logic Levels:           37  (CARRY4=33 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.040ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.542ns = ( 21.542 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.385 r  dut/ctor_result_reg[60]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.385    dut/ctor_result_reg[60]_i_3_n_0
+    SLICE_X48Y129        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239    13.624 r  dut/ctor_result_reg[63]_i_5/O[2]
+                         net (fo=1, routed)           0.316    13.940    dut/ctor_result01_in[63]
+    SLICE_X50Y129        LUT6 (Prop_lut6_I3_O)        0.301    14.241 r  dut/ctor_result[63]_i_2/O
+                         net (fo=1, routed)           0.000    14.241    dut/ctor_result[63]_i_2_n_0
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[63]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.542    21.542    dut/clk
+    SLICE_X50Y129        FDRE                                         r  dut/ctor_result_reg[63]/C
+                         clock pessimism              0.079    21.621    <hidden>
+                         clock uncertainty           -0.035    21.586    <hidden>
+    SLICE_X50Y129        FDRE (Setup_fdre_C_D)        0.032    21.618    dut/ctor_result_reg[63]
+  -------------------------------------------------------------------
+                         required time                         21.618    <hidden>
+                         arrival time                         -14.241    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.377    <hidden>
+
+Slack (MET) :             7.390ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[54]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.562ns  (logic 6.912ns (55.022%)  route 5.650ns (44.978%))
+  Logic Levels:           35  (CARRY4=31 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.044ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.538ns = ( 21.538 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323    13.474 r  dut/ctor_result_reg[56]_i_3/O[1]
+                         net (fo=1, routed)           0.443    13.917    dut/ctor_result01_in[54]
+    SLICE_X50Y126        LUT6 (Prop_lut6_I3_O)        0.306    14.223 r  dut/ctor_result[54]_i_1/O
+                         net (fo=1, routed)           0.000    14.223    dut/ctor_result[54]_i_1_n_0
+    SLICE_X50Y126        FDRE                                         r  dut/ctor_result_reg[54]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.538    21.538    dut/clk
+    SLICE_X50Y126        FDRE                                         r  dut/ctor_result_reg[54]/C
+                         clock pessimism              0.079    21.617    <hidden>
+                         clock uncertainty           -0.035    21.582    <hidden>
+    SLICE_X50Y126        FDRE (Setup_fdre_C_D)        0.032    21.614    dut/ctor_result_reg[54]
+  -------------------------------------------------------------------
+                         required time                         21.614    <hidden>
+                         arrival time                         -14.223    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.390    <hidden>
+
+Slack (MET) :             7.409ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[58]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.545ns  (logic 7.029ns (56.029%)  route 5.516ns (43.971%))
+  Logic Levels:           36  (CARRY4=32 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.041ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.541ns = ( 21.541 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.034 r  dut/ctor_result_reg[48]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.034    dut/ctor_result_reg[48]_i_3_n_0
+    SLICE_X48Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.151 r  dut/ctor_result_reg[52]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.151    dut/ctor_result_reg[52]_i_3_n_0
+    SLICE_X48Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    13.268 r  dut/ctor_result_reg[56]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    13.268    dut/ctor_result_reg[56]_i_3_n_0
+    SLICE_X48Y128        CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323    13.591 r  dut/ctor_result_reg[60]_i_3/O[1]
+                         net (fo=1, routed)           0.309    13.900    dut/ctor_result01_in[58]
+    SLICE_X50Y128        LUT6 (Prop_lut6_I3_O)        0.306    14.206 r  dut/ctor_result[58]_i_1/O
+                         net (fo=1, routed)           0.000    14.206    dut/ctor_result[58]_i_1_n_0
+    SLICE_X50Y128        FDRE                                         r  dut/ctor_result_reg[58]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.541    21.541    dut/clk
+    SLICE_X50Y128        FDRE                                         r  dut/ctor_result_reg[58]/C
+                         clock pessimism              0.079    21.620    <hidden>
+                         clock uncertainty           -0.035    21.585    <hidden>
+    SLICE_X50Y128        FDRE (Setup_fdre_C_D)        0.031    21.616    dut/ctor_result_reg[58]
+  -------------------------------------------------------------------
+                         required time                         21.616    <hidden>
+                         arrival time                         -14.206    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.409    <hidden>
+
+Slack (MET) :             7.417ns  (required time - arrival time)
+  Source:                 dut/divisor_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/ctor_result_reg[48]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        12.533ns  (logic 6.671ns (53.229%)  route 5.862ns (46.771%))
+  Logic Levels:           33  (CARRY4=29 LUT2=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.046ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    1.536ns = ( 21.536 - 20.000 ) 
+    Source Clock Delay      (SCD):    1.661ns
+    Clock Pessimism Removal (CPR):    0.079ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=334, unset)          1.661     1.661    dut/clk
+    SLICE_X60Y118        FDRE                                         r  dut/divisor_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y118        FDRE (Prop_fdre_C_Q)         0.518     2.179 r  dut/divisor_reg[4]/Q
+                         net (fo=5, routed)           1.130     3.309    dut/divisor[4]
+    SLICE_X57Y117        LUT2 (Prop_lut2_I0_O)        0.124     3.433 r  dut/ctor_result[0]_i_174/O
+                         net (fo=1, routed)           0.000     3.433    dut/ctor_result[0]_i_174_n_0
+    SLICE_X57Y117        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     3.965 r  dut/ctor_result_reg[0]_i_144/CO[3]
+                         net (fo=1, routed)           0.000     3.965    dut/ctor_result_reg[0]_i_144_n_0
+    SLICE_X57Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.079 r  dut/ctor_result_reg[0]_i_143/CO[3]
+                         net (fo=1, routed)           0.000     4.079    dut/ctor_result_reg[0]_i_143_n_0
+    SLICE_X57Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.193 r  dut/ctor_result_reg[0]_i_121/CO[3]
+                         net (fo=1, routed)           0.000     4.193    dut/ctor_result_reg[0]_i_121_n_0
+    SLICE_X57Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.307 r  dut/ctor_result_reg[0]_i_120/CO[3]
+                         net (fo=1, routed)           0.000     4.307    dut/ctor_result_reg[0]_i_120_n_0
+    SLICE_X57Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.421 r  dut/ctor_result_reg[0]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     4.421    dut/ctor_result_reg[0]_i_119_n_0
+    SLICE_X57Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.535 r  dut/ctor_result_reg[0]_i_93/CO[3]
+                         net (fo=1, routed)           0.000     4.535    dut/ctor_result_reg[0]_i_93_n_0
+    SLICE_X57Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.649 r  dut/ctor_result_reg[0]_i_92/CO[3]
+                         net (fo=1, routed)           0.000     4.649    dut/ctor_result_reg[0]_i_92_n_0
+    SLICE_X57Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.763 r  dut/ctor_result_reg[0]_i_91/CO[3]
+                         net (fo=1, routed)           0.009     4.772    dut/ctor_result_reg[0]_i_91_n_0
+    SLICE_X57Y125        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.886 r  dut/ctor_result_reg[0]_i_68/CO[3]
+                         net (fo=1, routed)           0.000     4.886    dut/ctor_result_reg[0]_i_68_n_0
+    SLICE_X57Y126        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.000 r  dut/ctor_result_reg[0]_i_67/CO[3]
+                         net (fo=1, routed)           0.000     5.000    dut/ctor_result_reg[0]_i_67_n_0
+    SLICE_X57Y127        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.114 r  dut/ctor_result_reg[0]_i_66/CO[3]
+                         net (fo=1, routed)           0.000     5.114    dut/ctor_result_reg[0]_i_66_n_0
+    SLICE_X57Y128        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.228 r  dut/ctor_result_reg[0]_i_43/CO[3]
+                         net (fo=1, routed)           0.000     5.228    dut/ctor_result_reg[0]_i_43_n_0
+    SLICE_X57Y129        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.342 r  dut/ctor_result_reg[0]_i_42/CO[3]
+                         net (fo=1, routed)           0.000     5.342    dut/ctor_result_reg[0]_i_42_n_0
+    SLICE_X57Y130        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.456 r  dut/ctor_result_reg[0]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     5.456    dut/ctor_result_reg[0]_i_35_n_0
+    SLICE_X57Y131        CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     5.695 r  dut/ctor_result_reg[0]_i_25/O[2]
+                         net (fo=3, routed)           1.255     6.950    dut/ctor_result_reg[0]_i_25_n_5
+    SLICE_X59Y127        LUT4 (Prop_lut4_I0_O)        0.302     7.252 r  dut/ctor_result[0]_i_15/O
+                         net (fo=1, routed)           0.000     7.252    dut/ctor_result[0]_i_15_n_0
+    SLICE_X59Y127        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     7.653 r  dut/ctor_result_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.653    dut/ctor_result_reg[0]_i_4_n_0
+    SLICE_X59Y128        CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.271     7.924 r  dut/ctor_result_reg[0]_i_2/CO[0]
+                         net (fo=66, routed)          1.959     9.883    dut/q_next38_in
+    SLICE_X50Y115        LUT6 (Prop_lut6_I3_O)        0.373    10.256 r  dut/ctor_result[4]_i_8/O
+                         net (fo=1, routed)           0.845    11.101    dut/ctor_result[4]_i_8_n_0
+    SLICE_X48Y114        CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.637    11.738 r  dut/ctor_result_reg[4]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.738    dut/ctor_result_reg[4]_i_3_n_0
+    SLICE_X48Y115        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.855 r  dut/ctor_result_reg[8]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.855    dut/ctor_result_reg[8]_i_3_n_0
+    SLICE_X48Y116        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    11.972 r  dut/ctor_result_reg[12]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    11.972    dut/ctor_result_reg[12]_i_3_n_0
+    SLICE_X48Y117        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.089 r  dut/ctor_result_reg[16]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.089    dut/ctor_result_reg[16]_i_3_n_0
+    SLICE_X48Y118        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.206 r  dut/ctor_result_reg[20]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.206    dut/ctor_result_reg[20]_i_3_n_0
+    SLICE_X48Y119        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.323 r  dut/ctor_result_reg[24]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.323    dut/ctor_result_reg[24]_i_3_n_0
+    SLICE_X48Y120        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.440 r  dut/ctor_result_reg[28]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.440    dut/ctor_result_reg[28]_i_3_n_0
+    SLICE_X48Y121        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.557 r  dut/ctor_result_reg[32]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.557    dut/ctor_result_reg[32]_i_3_n_0
+    SLICE_X48Y122        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.674 r  dut/ctor_result_reg[36]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.674    dut/ctor_result_reg[36]_i_3_n_0
+    SLICE_X48Y123        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.791 r  dut/ctor_result_reg[40]_i_3/CO[3]
+                         net (fo=1, routed)           0.000    12.791    dut/ctor_result_reg[40]_i_3_n_0
+    SLICE_X48Y124        CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    12.908 r  dut/ctor_result_reg[44]_i_3/CO[3]
+                         net (fo=1, routed)           0.009    12.917    dut/ctor_result_reg[44]_i_3_n_0
+    SLICE_X48Y125        CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.315    13.232 r  dut/ctor_result_reg[48]_i_3/O[3]
+                         net (fo=1, routed)           0.655    13.887    dut/ctor_result01_in[48]
+    SLICE_X50Y125        LUT6 (Prop_lut6_I3_O)        0.307    14.194 r  dut/ctor_result[48]_i_1/O
+                         net (fo=1, routed)           0.000    14.194    dut/ctor_result[48]_i_1_n_0
+    SLICE_X50Y125        FDRE                                         r  dut/ctor_result_reg[48]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=334, unset)          1.536    21.536    dut/clk
+    SLICE_X50Y125        FDRE                                         r  dut/ctor_result_reg[48]/C
+                         clock pessimism              0.079    21.615    <hidden>
+                         clock uncertainty           -0.035    21.580    <hidden>
+    SLICE_X50Y125        FDRE (Setup_fdre_C_D)        0.031    21.611    dut/ctor_result_reg[48]
+  -------------------------------------------------------------------
+                         required time                         21.611    <hidden>
+                         arrival time                         -14.194    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  7.417    <hidden>
+
+
+
+

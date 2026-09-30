@@ -1,0 +1,7 @@
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1521:57:@115ns:(report note): LIVT_TEST_START:DefaultsToZeroVector
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1532:57:@1995ns:(report note): LIVT_TEST_PASS:DefaultsToZeroVector
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1537:57:@2005ns:(report note): LIVT_TEST_START:EmbedsConfiguredToken
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1548:57:@4455ns:(report note): LIVT_TEST_PASS:EmbedsConfiguredToken
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1553:57:@4465ns:(report note): LIVT_TEST_START:IgnoresOutOfRangeAccess
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1564:57:@6505ns:(report note): LIVT_TEST_PASS:IgnoresOutOfRangeAccess
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.Embedding.FixedTokenEmbeddingTest.vhd:1572:49:@6525ns:(report note): Simulation finished

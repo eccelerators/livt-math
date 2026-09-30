@@ -1,0 +1,431 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Wed Sep 30 17:39:37 2026
+| Host         : vagrant-devbox running 64-bit Ubuntu 24.04.4 LTS
+| Command      : report_timing_summary -file timing.rpt
+| Design       : bench
+| Device       : 7a200t-fbg676
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+  Inter-SLR Compensation                     :  Conservative
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+------------------------------------------------------------------------------------------------
+| Report Methodology
+| ------------------
+------------------------------------------------------------------------------------------------
+
+No report available as report_methodology has not been run prior. Run report_methodology on the current design for the summary of methodology violations.
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (0)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (0)
+5. checking no_input_delay (0)
+6. checking no_output_delay (0)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (0)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (0)
+------------------------
+ There are 0 register/latch pins with no clock.
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (0)
+------------------------------------------------
+ There are 0 pins that are not constrained for maximum delay.
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (0)
+------------------------------
+ There are 0 input ports with no input delay specified.
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (0)
+-------------------------------
+ There are 0 ports with no output delay specified.
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (0)
+------------------------------------
+ There are 0 input ports with partial input delay specified.
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+      8.279        0.000                      0                11238       -0.358     -115.803                   3736                11238        9.500        0.000                       0                  3921  
+
+
+Timing constraints are not met.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+Clock  Waveform(ns)       Period(ns)      Frequency(MHz)
+-----  ------------       ----------      --------------
+clock  {0.000 10.000}     20.000          50.000          
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock             WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----             -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+clock               8.279        0.000                      0                11238       -0.358     -115.803                   3736                11238        9.500        0.000                       0                  3921  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    ----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clock
+  To Clock:  clock
+
+Setup :            0  Failing Endpoints,  Worst Slack        8.279ns,  Total Violation        0.000ns
+Hold  :         3736  Failing Endpoints,  Worst Slack       -0.358ns,  Total Violation     -115.803ns
+PW    :            0  Failing Endpoints,  Worst Slack        9.500ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             8.279ns  (required time - arrival time)
+  Source:                 dut/primitive_instance/divisor_reg[1]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/primitive_instance/ctor_result_reg[63]/D
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (clock rise@20.000ns - clock rise@0.000ns)
+  Data Path Delay:        11.573ns  (logic 7.720ns (66.707%)  route 3.853ns (33.293%))
+  Logic Levels:           41  (CARRY4=34 LUT2=2 LUT3=1 LUT4=2 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 20.924 - 20.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=3920, unset)         0.973     0.973    dut/primitive_instance/clk
+                         FDRE                                         r  dut/primitive_instance/divisor_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+                         FDRE (Prop_fdre_C_Q)         0.340     1.313 r  dut/primitive_instance/divisor_reg[1]/Q
+                         net (fo=5, unplaced)         0.498     1.811    dut/primitive_instance/divisor[1]
+                         LUT2 (Prop_lut2_I0_O)        0.295     2.106 r  dut/primitive_instance/ctor_result[62]_i_237/O
+                         net (fo=1, unplaced)         0.000     2.106    dut/primitive_instance/ctor_result[62]_i_237_n_0
+                         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     2.639 r  dut/primitive_instance/ctor_result_reg[62]_i_205/CO[3]
+                         net (fo=1, unplaced)         0.009     2.648    dut/primitive_instance/ctor_result_reg[62]_i_205_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     2.765 r  dut/primitive_instance/ctor_result_reg[62]_i_204/CO[3]
+                         net (fo=1, unplaced)         0.000     2.765    dut/primitive_instance/ctor_result_reg[62]_i_204_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     2.882 r  dut/primitive_instance/ctor_result_reg[62]_i_203/CO[3]
+                         net (fo=1, unplaced)         0.000     2.882    dut/primitive_instance/ctor_result_reg[62]_i_203_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     2.999 r  dut/primitive_instance/ctor_result_reg[62]_i_181/CO[3]
+                         net (fo=1, unplaced)         0.000     2.999    dut/primitive_instance/ctor_result_reg[62]_i_181_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.116 r  dut/primitive_instance/ctor_result_reg[62]_i_180/CO[3]
+                         net (fo=1, unplaced)         0.000     3.116    dut/primitive_instance/ctor_result_reg[62]_i_180_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.233 r  dut/primitive_instance/ctor_result_reg[62]_i_179/CO[3]
+                         net (fo=1, unplaced)         0.000     3.233    dut/primitive_instance/ctor_result_reg[62]_i_179_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.350 r  dut/primitive_instance/ctor_result_reg[62]_i_149/CO[3]
+                         net (fo=1, unplaced)         0.000     3.350    dut/primitive_instance/ctor_result_reg[62]_i_149_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.467 r  dut/primitive_instance/ctor_result_reg[62]_i_148/CO[3]
+                         net (fo=1, unplaced)         0.000     3.467    dut/primitive_instance/ctor_result_reg[62]_i_148_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.584 r  dut/primitive_instance/ctor_result_reg[62]_i_147/CO[3]
+                         net (fo=1, unplaced)         0.000     3.584    dut/primitive_instance/ctor_result_reg[62]_i_147_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.701 r  dut/primitive_instance/ctor_result_reg[62]_i_119/CO[3]
+                         net (fo=1, unplaced)         0.000     3.701    dut/primitive_instance/ctor_result_reg[62]_i_119_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.818 r  dut/primitive_instance/ctor_result_reg[62]_i_118/CO[3]
+                         net (fo=1, unplaced)         0.000     3.818    dut/primitive_instance/ctor_result_reg[62]_i_118_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     3.935 r  dut/primitive_instance/ctor_result_reg[62]_i_117/CO[3]
+                         net (fo=1, unplaced)         0.000     3.935    dut/primitive_instance/ctor_result_reg[62]_i_117_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.052 r  dut/primitive_instance/ctor_result_reg[62]_i_89/CO[3]
+                         net (fo=1, unplaced)         0.000     4.052    dut/primitive_instance/ctor_result_reg[62]_i_89_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.169 r  dut/primitive_instance/ctor_result_reg[62]_i_88/CO[3]
+                         net (fo=1, unplaced)         0.000     4.169    dut/primitive_instance/ctor_result_reg[62]_i_88_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.286 r  dut/primitive_instance/ctor_result_reg[62]_i_81/CO[3]
+                         net (fo=1, unplaced)         0.000     4.286    dut/primitive_instance/ctor_result_reg[62]_i_81_n_0
+                         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.337     4.623 f  dut/primitive_instance/ctor_result_reg[62]_i_64/O[1]
+                         net (fo=3, unplaced)         0.629     5.252    dut/primitive_instance/ctor_result_reg[62]_i_64_n_6
+                         LUT4 (Prop_lut4_I1_O)        0.335     5.587 r  dut/primitive_instance/ctor_result[62]_i_51/O
+                         net (fo=1, unplaced)         0.000     5.587    dut/primitive_instance/ctor_result[62]_i_51_n_0
+                         CARRY4 (Prop_carry4_DI[2]_CO[3])
+                                                      0.432     6.019 r  dut/primitive_instance/ctor_result_reg[62]_i_32/CO[3]
+                         net (fo=1, unplaced)         0.000     6.019    dut/primitive_instance/ctor_result_reg[62]_i_32_n_0
+                         CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.281     6.300 f  dut/primitive_instance/ctor_result_reg[62]_i_22/CO[0]
+                         net (fo=1, unplaced)         0.470     6.770    dut/primitive_instance/q_next38_in
+                         LUT4 (Prop_lut4_I0_O)        0.367     7.137 r  dut/primitive_instance/ctor_result[62]_i_14/O
+                         net (fo=128, unplaced)       0.555     7.692    dut/primitive_instance/ctor_result[62]_i_14_n_0
+                         LUT2 (Prop_lut2_I0_O)        0.124     7.816 r  dut/primitive_instance/ctor_result[4]_i_13/O
+                         net (fo=1, unplaced)         0.333     8.149    dut/primitive_instance/ctor_result[4]_i_13_n_0
+                         CARRY4 (Prop_carry4_CYINIT_CO[3])
+                                                      0.595     8.744 r  dut/primitive_instance/ctor_result_reg[4]_i_5/CO[3]
+                         net (fo=1, unplaced)         0.009     8.753    dut/primitive_instance/ctor_result_reg[4]_i_5_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     8.870 r  dut/primitive_instance/ctor_result_reg[8]_i_5/CO[3]
+                         net (fo=1, unplaced)         0.000     8.870    dut/primitive_instance/ctor_result_reg[8]_i_5_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     8.987 r  dut/primitive_instance/ctor_result_reg[12]_i_5/CO[3]
+                         net (fo=1, unplaced)         0.000     8.987    dut/primitive_instance/ctor_result_reg[12]_i_5_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.104 r  dut/primitive_instance/ctor_result_reg[16]_i_5/CO[3]
+                         net (fo=1, unplaced)         0.000     9.104    dut/primitive_instance/ctor_result_reg[16]_i_5_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.221 r  dut/primitive_instance/ctor_result_reg[20]_i_5/CO[3]
+                         net (fo=1, unplaced)         0.000     9.221    dut/primitive_instance/ctor_result_reg[20]_i_5_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.338 r  dut/primitive_instance/ctor_result_reg[24]_i_6/CO[3]
+                         net (fo=1, unplaced)         0.000     9.338    dut/primitive_instance/ctor_result_reg[24]_i_6_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.455 r  dut/primitive_instance/ctor_result_reg[28]_i_6/CO[3]
+                         net (fo=1, unplaced)         0.000     9.455    dut/primitive_instance/ctor_result_reg[28]_i_6_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.572 r  dut/primitive_instance/ctor_result_reg[31]_i_5/CO[3]
+                         net (fo=1, unplaced)         0.000     9.572    dut/primitive_instance/ctor_result_reg[31]_i_5_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.689 r  dut/primitive_instance/ctor_result_reg[36]_i_9/CO[3]
+                         net (fo=1, unplaced)         0.000     9.689    dut/primitive_instance/ctor_result_reg[36]_i_9_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.806 r  dut/primitive_instance/ctor_result_reg[40]_i_10/CO[3]
+                         net (fo=1, unplaced)         0.000     9.806    dut/primitive_instance/ctor_result_reg[40]_i_10_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     9.923 r  dut/primitive_instance/ctor_result_reg[44]_i_10/CO[3]
+                         net (fo=1, unplaced)         0.000     9.923    dut/primitive_instance/ctor_result_reg[44]_i_10_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    10.040 r  dut/primitive_instance/ctor_result_reg[48]_i_10/CO[3]
+                         net (fo=1, unplaced)         0.000    10.040    dut/primitive_instance/ctor_result_reg[48]_i_10_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    10.157 r  dut/primitive_instance/ctor_result_reg[52]_i_9/CO[3]
+                         net (fo=1, unplaced)         0.000    10.157    dut/primitive_instance/ctor_result_reg[52]_i_9_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    10.274 r  dut/primitive_instance/ctor_result_reg[56]_i_10/CO[3]
+                         net (fo=1, unplaced)         0.000    10.274    dut/primitive_instance/ctor_result_reg[56]_i_10_n_0
+                         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    10.391 r  dut/primitive_instance/ctor_result_reg[60]_i_10/CO[3]
+                         net (fo=1, unplaced)         0.000    10.391    dut/primitive_instance/ctor_result_reg[60]_i_10_n_0
+                         CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.256    10.647 r  dut/primitive_instance/ctor_result_reg[62]_i_11/O[2]
+                         net (fo=1, unplaced)         0.452    11.099    dut/primitive_instance/ctor_result01_in[63]
+                         LUT6 (Prop_lut6_I4_O)        0.301    11.400 r  dut/primitive_instance/ctor_result[63]_i_13/O
+                         net (fo=1, unplaced)         0.449    11.849    dut/primitive_instance/ctor_result[63]_i_13_n_0
+                         LUT5 (Prop_lut5_I4_O)        0.124    11.973 r  dut/primitive_instance/ctor_result[63]_i_5/O
+                         net (fo=1, unplaced)         0.449    12.422    dut/primitive_instance/ctor_result[63]_i_5_n_0
+                         LUT3 (Prop_lut3_I0_O)        0.124    12.546 r  dut/primitive_instance/ctor_result[63]_i_2/O
+                         net (fo=1, unplaced)         0.000    12.546    dut/primitive_instance/ctor_result[63]_i_2_n_0
+                         FDRE                                         r  dut/primitive_instance/ctor_result_reg[63]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  clk
+                         net (fo=3920, unset)         0.924    20.924    dut/primitive_instance/clk
+                         FDRE                                         r  dut/primitive_instance/ctor_result_reg[63]/C
+                         clock pessimism              0.000    20.924    <hidden>
+                         clock uncertainty           -0.035    20.889    <hidden>
+                         FDRE (Setup_fdre_C_D)       -0.064    20.825    dut/primitive_instance/ctor_result_reg[63]
+  -------------------------------------------------------------------
+                         required time                         20.825    <hidden>
+                         arrival time                         -12.546    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  8.279    <hidden>
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (VIOLATED) :        -0.358ns  (arrival time - required time)
+  Source:                 rst
+                            (input port clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/primitive_instance/pair_high_reg/RSTM
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             clock
+  Path Type:              Hold (Min at Slow Process Corner)
+  Requirement:            0.000ns  (clock rise@0.000ns - clock rise@0.000ns)
+  Data Path Delay:        0.924ns  (logic 0.000ns (0.000%)  route 0.924ns (100.000%))
+  Logic Levels:           0  
+  Input Delay:            0.000ns
+  Clock Path Skew:        0.973ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.973ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                         input delay                  0.000     0.000    <hidden>
+                                                      0.000     0.000 r  rst
+                         net (fo=3100, unset)         0.924     0.924    dut/primitive_instance/rst
+                         DSP48E1                                      r  dut/primitive_instance/pair_high_reg/RSTM
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  clk
+                         net (fo=3920, unset)         0.973     0.973    dut/primitive_instance/clk
+                         DSP48E1                                      r  dut/primitive_instance/pair_high_reg/CLK
+                         clock pessimism              0.000     0.973    <hidden>
+                         clock uncertainty            0.035     1.008    <hidden>
+                         DSP48E1 (Hold_dsp48e1_CLK_RSTM)
+                                                      0.274     1.282    dut/primitive_instance/pair_high_reg
+  -------------------------------------------------------------------
+                         required time                         -1.282    <hidden>
+                         arrival time                           0.924    <hidden>
+  -------------------------------------------------------------------
+                         slack                                 -0.358    <hidden>
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         clock
+Waveform(ns):       { 0.000 10.000 }
+Period(ns):         20.000
+Sources:            { clk }
+
+Check Type        Corner  Lib Pin      Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location  Pin
+Min Period        n/a     DSP48E1/CLK  n/a            3.884         20.000      16.116               dut/primitive_instance/products_reg[1]/CLK
+Low Pulse Width   Slow    FDSE/C       n/a            0.500         10.000      9.500                dut/FSM_onehot_add_fn_reset_sync.this_add_lvt_state_reg[0]/C
+High Pulse Width  Slow    FDSE/C       n/a            0.500         10.000      9.500                dut/FSM_onehot_add_fn_reset_sync.this_add_lvt_state_reg[0]/C
+
+
+

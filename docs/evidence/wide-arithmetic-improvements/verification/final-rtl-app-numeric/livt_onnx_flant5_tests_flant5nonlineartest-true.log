@@ -1,0 +1,15 @@
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8594:57:@115ns:(report note): LIVT_TEST_START:FrozenRmsRow
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8605:57:@3365995ns:(report note): LIVT_TEST_PASS:FrozenRmsRow
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8610:57:@3366005ns:(report note): LIVT_TEST_START:SmallRmsAndZero
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8621:57:@3425105ns:(report note): LIVT_TEST_PASS:SmallRmsAndZero
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8626:57:@3425115ns:(report note): LIVT_TEST_START:FrozenGeluAndTails
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8637:57:@3476295ns:(report note): LIVT_TEST_PASS:FrozenGeluAndTails
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8642:57:@3476305ns:(report note): LIVT_TEST_START:FrozenMaskedSoftmax
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8653:57:@3645485ns:(report note): LIVT_TEST_PASS:FrozenMaskedSoftmax
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8658:57:@3645495ns:(report note): LIVT_TEST_START:SmallSoftmaxAndTableViews
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8669:57:@3680555ns:(report note): LIVT_TEST_PASS:SmallSoftmaxAndTableViews
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8674:57:@3680565ns:(report note): LIVT_TEST_START:CutoffMaskAndRounding
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8685:57:@3721765ns:(report note): LIVT_TEST_PASS:CutoffMaskAndRounding
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8690:57:@3721775ns:(report note): LIVT_TEST_START:WideRmsExtremes
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8701:57:@6961285ns:(report note): LIVT_TEST_PASS:WideRmsExtremes
+/tmp/wide-improve/app-numeric/out/debug/tests/Livt.Onnx.FlanT5.Tests.FlanT5NonlinearTest.vhd:8709:49:@6961305ns:(report note): Simulation finished

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Livt" tests="5" failures="0" skipped="0" time="1.207">
-  <testcase classname="Livt.Math.Tests.Arithmetic.IntegerDivisionTest" name="SignedExhaustive" time="0.782"></testcase>
-  <testcase classname="Livt.Math.Tests.Arithmetic.IntegerDivisionTest" name="UnsignedExhaustive" time="0.354"></testcase>
-  <testcase classname="Livt.Math.Tests.Arithmetic.IntegerDivisionTest" name="FullWidthLimits" time="0.029"></testcase>
-  <testcase classname="Livt.Math.Tests.Arithmetic.IntegerDivisionTest" name="SignedModulo" time="0.028"></testcase>
-  <testcase classname="Livt.Math.Tests.Arithmetic.IntegerDivisionTest" name="FailureAndRecovery" time="0.014"></testcase>
-</testsuite>

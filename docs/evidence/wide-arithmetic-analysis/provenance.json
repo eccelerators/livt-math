@@ -1,0 +1,8 @@
+{
+  "date": "2026-09-30",
+  "primitive_sha256": "c7ab2836d53abd17cf13dcd376d6b0cb288372976bfbba1552c2e04bbac8b9d4",
+  "matches_routed_source": true,
+  "checkpoint": "/home/vagrant/git/livt/livt-flan-t5-arty-a7-100t/work/a200t-arithmetic-rebuild/routed.dcp",
+  "inspection": "Read-only checkpoint inspection; four Vivado threads, 20 GiB guard. No synthesis or source modification.",
+  "scope": "Existing application OOC implementation; measurements are not isolated primitive benchmarks."
+}

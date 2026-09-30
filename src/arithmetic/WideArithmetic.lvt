@@ -3,13 +3,17 @@ namespace Livt.Math.Arithmetic
 /**
  * Exact signed 64-bit arithmetic with symmetric output clipping.
  * Wide values use two's-complement logic[64] transport, not Livt int arithmetic.
- * Division uses a 64-step restoring divider; root uses 32 trial bits.
+ * Division uses 64 restoring steps; root consumes 32 pairs of bits.
+ * OPERATIONS bits enable multiply/add/divide/root/clamp (1/2/4/8/16).
+ * Disabled operations return zero and set Failed; the default enables all.
  * One caller owns this scheduled component. Reset cancels pending requests.
  * Invalid division or overflowing add/multiply returns zero and sets Failed().
  */
-component WideArithmetic<OUTPUT_BITS: int = 24>
+component WideArithmetic<OUTPUT_BITS: int = 24, OPERATIONS: int = 31>
 {
 	static assert OUTPUT_BITS >= 2 && OUTPUT_BITS <= 31, "output bits must be 2..31"
+
+	static assert OPERATIONS >= 0 && OPERATIONS <= 31, "operation mask must be 0..31"
 
 	// Owned arithmetic worker used by serialized operations.
 	primitive: WideArithmeticPrimitive
@@ -24,6 +28,7 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	new()
 	{
 		primitive = new WideArithmeticPrimitive()
+		primitive.operations = OPERATIONS
 	}
 
 	/**
@@ -31,7 +36,7 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 * acknowledgment. The operation codes follow WideArithmeticPrimitive; only one caller may
 	 * use this worker at a time.
 	 */
-	fn Execute(op: int, a: logic[64], b: logic[64]) logic[64]
+	fn Execute(op: int, a: logic[64], b: logic[64])
 	{
 		state {
 			primitive.operation = op
@@ -47,8 +52,6 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 			state {
 			}
 		}
-
-		return primitive.result
 	}
 
 	/**
@@ -56,7 +59,8 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 */
 	public fn Multiply(a: logic[64], b: logic[64]) logic[64]
 	{
-		return Execute(0, a, b)
+		Execute(0, a, b)
+		return primitive.result
 	}
 
 	/**
@@ -64,7 +68,8 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 */
 	public fn Add(a: logic[64], b: logic[64]) logic[64]
 	{
-		return Execute(1, a, b)
+		Execute(1, a, b)
+		return primitive.result
 	}
 
 	/**
@@ -72,7 +77,8 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 */
 	public fn DivideEven(a: logic[64], b: logic[64]) logic[64]
 	{
-		return Execute(2, a, b)
+		Execute(2, a, b)
+		return primitive.result
 	}
 
 	/**
@@ -80,7 +86,8 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 */
 	public fn Sqrt(a: logic[64]) logic[64]
 	{
-		return Execute(3, a, 0)
+		Execute(3, a, 0)
+		return primitive.result
 	}
 
 	/**
@@ -88,7 +95,8 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 */
 	public fn Clamp(a: logic[64]) int
 	{
-		return Execute(4, a, 0) as int
+		Execute(4, a, 0)
+		return primitive.result as int
 	}
 
 	/**
@@ -96,7 +104,8 @@ component WideArithmetic<OUTPUT_BITS: int = 24>
 	 */
 	public fn DivideFloor(a: logic[64], b: logic[64]) logic[64]
 	{
-		return Execute(5, a, b)
+		Execute(5, a, b)
+		return primitive.result
 	}
 
 	/**

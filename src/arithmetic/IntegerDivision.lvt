@@ -19,13 +19,17 @@ component IntegerDivision<BITS: int = 32> : IIntegerDivision<int>
 	remainder: int
 	failed: bool
 
-	/** Owns one iterative worker in the inherited clock/reset context. */
+	/**
+	 * Owns one iterative worker in the inherited clock/reset context.
+	 */
 	new()
 	{
 		magnitude = new UnsignedDivision<BITS>()
 	}
 
-	/** Computes a truncating quotient and matching signed remainder together. */
+	/**
+	 * Computes a truncating quotient and matching signed remainder together.
+	 */
 	override fn Compute(dividend: int, divisor: int) bool
 	{
 		quotient = 0
@@ -83,33 +87,43 @@ component IntegerDivision<BITS: int = 32> : IIntegerDivision<int>
 		return true
 	}
 
-	/** Returns the last quotient, truncated toward zero. */
+	/**
+	 * Returns the last quotient, truncated toward zero.
+	 */
 	override fn GetQuotient() int
 	{
 		return quotient
 	}
 
-	/** Returns the last remainder, zero or with the dividend's sign. */
+	/**
+	 * Returns the last remainder, zero or with the dividend's sign.
+	 */
 	override fn GetRemainder() int
 	{
 		return remainder
 	}
 
-	/** Computes the quotient. Check Failed when operands have not been validated. */
+	/**
+	 * Computes the quotient. Check Failed when operands have not been validated.
+	 */
 	override fn Divide(dividend: int, divisor: int) int
 	{
 		Compute(dividend, divisor)
 		return quotient
 	}
 
-	/** Computes signed remainder; this is the counterpart of truncating division. */
+	/**
+	 * Computes signed remainder; this is the counterpart of truncating division.
+	 */
 	override fn Remainder(dividend: int, divisor: int) int
 	{
 		Compute(dividend, divisor)
 		return remainder
 	}
 
-	/** Computes a nonnegative residue; MIN / -1 retains the common failure contract. */
+	/**
+	 * Computes a nonnegative residue; MIN / -1 retains the common failure contract.
+	 */
 	override fn ModuloEuclidean(dividend: int, divisor: int) int
 	{
 		if (!Compute(dividend, divisor)) {
@@ -127,7 +141,9 @@ component IntegerDivision<BITS: int = 32> : IIntegerDivision<int>
 		return remainder
 	}
 
-	/** Reports failure of the latest computation. */
+	/**
+	 * Reports failure of the latest computation.
+	 */
 	override fn Failed() bool
 	{
 		return failed

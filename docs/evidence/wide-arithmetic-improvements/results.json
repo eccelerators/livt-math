@@ -1,0 +1,41 @@
+{
+  "baseline": {
+    "luts": 1157.0,
+    "ffs": 430.0,
+    "dsps": 20.0,
+    "wns_ns": -3.99,
+    "whs_ns": -1.555,
+    "internal_slack_ns": -0.708
+  },
+  "full": {
+    "luts": 1622.0,
+    "ffs": 771.0,
+    "dsps": 4.0,
+    "wns_ns": 5.18,
+    "whs_ns": -1.475,
+    "internal_slack_ns": 5.18
+  },
+  "division": {
+    "luts": 628.0,
+    "ffs": 335.0,
+    "dsps": 0.0,
+    "wns_ns": 7.141,
+    "whs_ns": -1.19,
+    "internal_slack_ns": 7.141
+  },
+  "wrapper_before": {
+    "luts": 3764,
+    "ffs": 4358,
+    "dsps": 4
+  },
+  "wrapper_after": {
+    "luts": 3942,
+    "ffs": 3917,
+    "dsps": 4
+  },
+  "wrapper_division": {
+    "luts": 2938,
+    "ffs": 3479,
+    "dsps": 0
+  }
+}

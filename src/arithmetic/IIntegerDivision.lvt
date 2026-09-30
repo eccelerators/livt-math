@@ -10,24 +10,38 @@ namespace Livt.Math.Arithmetic
  */
 interface IIntegerDivision<T>
 {
-	/** Computes both results, returning false on invalid operands or quotient overflow. */
+	/**
+	 * Computes both results, returning false on invalid operands or quotient overflow.
+	 */
 	fn Compute(dividend: T, divisor: T) bool
 
-	/** Returns the quotient of the latest computation, or zero after failure/reset. */
+	/**
+	 * Returns the quotient of the latest computation, or zero after failure/reset.
+	 */
 	fn GetQuotient() T
 
-	/** Returns the remainder of the latest computation; signed remainder follows dividend. */
+	/**
+	 * Returns the remainder of the latest computation; signed remainder follows dividend.
+	 */
 	fn GetRemainder() T
 
-	/** Computes and returns the quotient; inspect Failed to distinguish invalid division. */
+	/**
+	 * Computes and returns the quotient; inspect Failed to distinguish invalid division.
+	 */
 	fn Divide(dividend: T, divisor: T) T
 
-	/** Computes and returns the remainder; inspect Failed for invalid division. */
+	/**
+	 * Computes and returns the remainder; inspect Failed for invalid division.
+	 */
 	fn Remainder(dividend: T, divisor: T) T
 
-	/** Computes the residue in [0, abs(divisor)); inspect Failed for invalid division. */
+	/**
+	 * Computes the residue in [0, abs(divisor)); inspect Failed for invalid division.
+	 */
 	fn ModuloEuclidean(dividend: T, divisor: T) T
 
-	/** Reports invalid operands or quotient overflow in the latest computation. */
+	/**
+	 * Reports invalid operands or quotient overflow in the latest computation.
+	 */
 	fn Failed() bool
 }

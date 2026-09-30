@@ -2,7 +2,9 @@ namespace Livt.Math.Tests.Arithmetic
 
 using Livt.Math.Arithmetic
 
-/** Exact quotient/remainder oracles cover signs, limits, errors and configured widths. */
+/**
+ * Exact quotient/remainder oracles cover signs, limits, errors and configured widths.
+ */
 @Test
 component IntegerDivisionTest
 {
@@ -12,7 +14,9 @@ component IntegerDivisionTest
 	smallSigned: IntegerDivision<4>
 	smallUnsigned: UnsignedDivision<4>
 
-	/** Creates serialized workers in the test context. */
+	/**
+	 * Creates serialized workers in the test context.
+	 */
 	new()
 	{
 		signed = new IntegerDivision()
@@ -21,7 +25,9 @@ component IntegerDivisionTest
 		smallUnsigned = new UnsignedDivision<4>()
 	}
 
-	/** Exhausts all valid four-bit signed pairs against language integer semantics. */
+	/**
+	 * Exhausts all valid four-bit signed pairs against language integer semantics.
+	 */
 	@Test
 	fn SignedExhaustive()
 	{
@@ -37,7 +43,9 @@ component IntegerDivisionTest
 		}
 	}
 
-	/** Exhausts unsigned pairs, including the upper half of the configured range. */
+	/**
+	 * Exhausts unsigned pairs, including the upper half of the configured range.
+	 */
 	@Test
 	fn UnsignedExhaustive()
 	{
@@ -50,7 +58,9 @@ component IntegerDivisionTest
 		}
 	}
 
-	/** Covers full-width magnitudes, including signed MIN and uint high-bit values. */
+	/**
+	 * Covers full-width magnitudes, including signed MIN and uint high-bit values.
+	 */
 	@Test
 	fn FullWidthLimits()
 	{
@@ -70,7 +80,9 @@ component IntegerDivisionTest
 		assert unsigned.Divide(0x80000000 as uint, 0xffffffff as uint) == 0
 	}
 
-	/** Distinguishes truncating remainder from nonnegative Euclidean modulo. */
+	/**
+	 * Distinguishes truncating remainder from nonnegative Euclidean modulo.
+	 */
 	@Test
 	fn SignedModulo()
 	{
@@ -84,7 +96,9 @@ component IntegerDivisionTest
 		assert unsigned.ModuloEuclidean(7, 3) == 1
 	}
 
-	/** Invalid operations clear previous results; a later valid call recovers. */
+	/**
+	 * Invalid operations clear previous results; a later valid call recovers.
+	 */
 	@Test
 	fn FailureAndRecovery()
 	{

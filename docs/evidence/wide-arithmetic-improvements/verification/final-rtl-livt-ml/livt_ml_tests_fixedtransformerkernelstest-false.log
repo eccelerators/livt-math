@@ -1,0 +1,5 @@
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.FixedTransformerKernelsTest.vhd:3296:65:@115ns:(report note): LIVT_TEST_START:AlternateFormatAndDimensions
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.FixedTransformerKernelsTest.vhd:3307:65:@52465ns:(report note): LIVT_TEST_PASS:AlternateFormatAndDimensions
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.FixedTransformerKernelsTest.vhd:3312:65:@52475ns:(report note): LIVT_TEST_START:IndividuallyRoundedProbabilitiesAreNotRenormalized
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.FixedTransformerKernelsTest.vhd:3323:65:@146205ns:(report note): LIVT_TEST_PASS:IndividuallyRoundedProbabilitiesAreNotRenormalized
+/tmp/wide-improve/livt-ml/out/debug/tests/Livt.ML.Tests.FixedTransformerKernelsTest.vhd:3331:57:@146225ns:(report note): Simulation finished

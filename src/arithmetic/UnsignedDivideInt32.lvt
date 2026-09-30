@@ -13,13 +13,17 @@ component UnsignedDivideInt32
 	// Shared implementation of exact scheduled division.
 	divider: UnsignedDivision<31>
 
-	/** Owns one worker; calls must be serialized. */
+	/**
+	 * Owns one worker; calls must be serialized.
+	 */
 	new()
 	{
 		divider = new UnsignedDivision<31>()
 	}
 
-	/** Returns the floor quotient, or zero for invalid input. */
+	/**
+	 * Returns the floor quotient, or zero for invalid input.
+	 */
 	public fn Compute(dividend: int, divisor: int) int
 	{
 		if (dividend < 0 || divisor <= 0) {
