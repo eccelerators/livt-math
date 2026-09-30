@@ -1,6 +1,6 @@
 namespace Livt.Math.Random
 
-using Livt.Lang.Annotations
+using Livt.Math.Arithmetic
 
 /**
  * 16-bit LCG PRNG, period 65536.
@@ -29,6 +29,9 @@ component Lcg16
 	// Bit mask applied after each step: mask = m - 1.
 	mask: int
 
+	// Owned worker for bounded-range sampling; calls are serialized.
+	divider: UnsignedDivision<31>
+
 	// Current generator state in [0, mask].
 	current_state: int
 
@@ -38,6 +41,7 @@ component Lcg16
 	 */
 	new(seed: int, a: int, c: int, m: int)
 	{
+		divider = new UnsignedDivision<31>()
 		this.a = a
 		this.c = c
 		this.mask = m - 1
@@ -65,13 +69,13 @@ component Lcg16
 	/**
 	 * Return the next pseudo-random integer in [0, n-1], or zero for n <= 0.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn GetNextInRange(n: int) int
 	{
 		if (n <= 0) {
 			return 0
 		}
 
-		return this.GetNext() % n
+		var value = this.GetNext()
+		return divider.Remainder(value as uint, n as uint) as int
 	}
 }

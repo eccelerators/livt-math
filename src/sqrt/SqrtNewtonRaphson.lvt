@@ -1,6 +1,6 @@
 namespace Livt.Math.Sqrt
 
-using Livt.Lang.Annotations
+using Livt.Math.Arithmetic
 
 /**
  * Computes floor square roots for integer inputs up to MAX_INPUT.
@@ -13,10 +13,18 @@ component SqrtNewtonRaphson
 	// Fixed Newton-Raphson iteration count.
 	public const ITERATIONS: int = 16
 
+	// Serialized exact division for bounded Newton steps.
+	divider: UnsignedDivision<15>
+
+	/** Owns one divider for inputs clamped to MAX_INPUT. */
+	new()
+	{
+		divider = new UnsignedDivision<15>()
+	}
+
 	/**
 	 * Returns floor(sqrt(n)) after clamping n into the supported range.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn Compute(n: int) int
 	{
 		if (n <= 0) {
@@ -36,7 +44,8 @@ component SqrtNewtonRaphson
 		var x: int = bounded / 2 + 1
 
 		for (var i = 0; i < ITERATIONS; i++) {
-			x = (x + bounded / x) / 2
+			var quotient = divider.Divide(bounded as uint, x as uint) as int
+			x = (x + quotient) / 2
 		}
 
 		if (x * x > bounded) {

@@ -31,9 +31,9 @@ The package surface is intentionally small and practical:
 
 ## Package API Shape
 
-`Livt.Math` exposes concrete hardware components rather than generic numeric
-traits. Each component has an explicit fixed-size contract so callers can reason
-about range, clamping, and synthesis cost.
+`Livt.Math` exposes hardware components with explicit numeric and timing
+contracts. Scheduled integer division also provides a generic interface so
+consumers can select a worker without depending on its algorithm.
 
 Square-root components return the floor of the mathematical square root:
 
@@ -91,10 +91,9 @@ size-4 and size-8 examples. Unsupported table sizes fall back to `cos = 1` and
 `sin = 0` in Q15 form. Larger transform orchestration belongs in a
 signal-processing package rather than in `Livt.Math`.
 
-`SqrtNewtonRaphson` uses variable integer division. That keeps the component
-compact and straightforward for simulation and early hardware exploration, but
-callers should expect the generated divider to be more expensive than the
-lookup-table implementation.
+`SqrtNewtonRaphson` uses the scheduled unsigned divider for its Newton steps.
+It preserves floor-square-root results while trading additional cycles for a
+bounded arithmetic step.
 
 `Lcg16` is a configurable linear congruential generator:
 
@@ -231,3 +230,11 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE).
 Version 1.3.0-dev adds [WideArithmetic](docs/WideArithmetic.md), a portable
 64-bit multiply/add/divide/root service with explicit rounding and overflow behavior.
 Run `livt test --run WideArithmeticTest` for the scalar edge cases.
+
+## Scheduled division and modulo
+
+[Integer division](docs/IntegerDivision.md) defines the shared exact API:
+`IntegerDivision<BITS>`, `UnsignedDivision<BITS>`, and `IIntegerDivision<T>`.
+Compute quotient and remainder together, or use Divide/Remainder convenience
+calls. ModuloEuclidean explicitly requests nonnegative modulo. The guide covers
+errors, ownership, reset, latency, dependency layering, and migration policy.

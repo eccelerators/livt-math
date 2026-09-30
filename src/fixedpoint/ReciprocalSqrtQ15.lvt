@@ -1,6 +1,7 @@
 namespace Livt.Math.FixedPoint
 
 using Livt.Math.Sqrt
+using Livt.Math.Arithmetic
 
 /**
  * Returns reciprocal square roots scaled by 32768 for positive integers.
@@ -13,13 +14,15 @@ component ReciprocalSqrtQ15
 
 	// Owned arithmetic worker used by serialized operations.
 	sqrt: SqrtInt32
+	divider: UnsignedDivision<DIVISION_BITS>
 
 	/**
-	 * Creates the owned integer square-root worker; reciprocal division uses local arithmetic.
+	 * Creates the owned integer square-root worker; reciprocal division shares the generic worker.
 	 */
 	new()
 	{
 		this.sqrt = new SqrtInt32()
+		divider = new UnsignedDivision<DIVISION_BITS>()
 	}
 
 	/**
@@ -33,20 +36,6 @@ component ReciprocalSqrtQ15
 
 		var root = this.sqrt.Compute(value)
 		var dividend = SCALE + (root >> 1)
-		var remainder = 0
-		var quotient = 0
-
-		for (var iteration = 0; iteration < DIVISION_BITS; iteration++) {
-			remainder = (remainder << 1) | ((dividend >> 15) & 1)
-			dividend = dividend << 1
-			quotient = quotient << 1
-
-			if (remainder >= root) {
-				remainder -= root
-				quotient++
-			}
-		}
-
-		return quotient
+		return divider.Divide(dividend as uint, root as uint) as int
 	}
 }

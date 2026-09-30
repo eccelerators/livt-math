@@ -1,0 +1,135 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Exact signed division for BITS-bit operands (2..32), truncating toward zero.
+ * Remainder has the dividend's sign and a = quotient * b + remainder.
+ * Zero divisors, out-of-range inputs and MIN / -1 fail with zero results.
+ * ModuloEuclidean returns a nonnegative residue, unlike signed remainder.
+ * Owns one unsigned magnitude worker. Serialize calls; reset cancels pending work.
+ */
+component IntegerDivision<BITS: int = 32> : IIntegerDivision<int>
+{
+	static assert BITS >= 2 && BITS <= 32, "signed division width must be 2..32"
+
+	// Shared magnitude datapath; no division operators in the signed adapter.
+	magnitude: UnsignedDivision<BITS>
+
+	// Latest signed results and validation status.
+	quotient: int
+	remainder: int
+	failed: bool
+
+	/** Owns one iterative worker in the inherited clock/reset context. */
+	new()
+	{
+		magnitude = new UnsignedDivision<BITS>()
+	}
+
+	/** Computes a truncating quotient and matching signed remainder together. */
+	override fn Compute(dividend: int, divisor: int) bool
+	{
+		quotient = 0
+		remainder = 0
+		failed = true
+
+		if (divisor == 0) {
+			return false
+		}
+
+		var minimum = -2147483647 - 1
+
+		static if (BITS < 32) {
+			minimum = 0 - (1 << (BITS - 1))
+			var maximum = (1 << (BITS - 1)) - 1
+
+			if (dividend < minimum || dividend > maximum || divisor < minimum || divisor > maximum) {
+				return false
+			}
+		}
+
+		if (dividend == minimum && divisor == -1) {
+			return false
+		}
+
+		var a = dividend as uint
+		var b = divisor as uint
+
+		if (dividend < 0) {
+			a = (0 as uint) - a
+		}
+
+		if (divisor < 0) {
+			b = (0 as uint) - b
+		}
+
+		if (!magnitude.Compute(a, b)) {
+			return false
+		}
+
+		var q = magnitude.GetQuotient()
+		var r = magnitude.GetRemainder()
+
+		if ((dividend < 0) != (divisor < 0)) {
+			q = (0 as uint) - q
+		}
+
+		if (dividend < 0) {
+			r = (0 as uint) - r
+		}
+
+		quotient = q as int
+		remainder = r as int
+		failed = false
+		return true
+	}
+
+	/** Returns the last quotient, truncated toward zero. */
+	override fn GetQuotient() int
+	{
+		return quotient
+	}
+
+	/** Returns the last remainder, zero or with the dividend's sign. */
+	override fn GetRemainder() int
+	{
+		return remainder
+	}
+
+	/** Computes the quotient. Check Failed when operands have not been validated. */
+	override fn Divide(dividend: int, divisor: int) int
+	{
+		Compute(dividend, divisor)
+		return quotient
+	}
+
+	/** Computes signed remainder; this is the counterpart of truncating division. */
+	override fn Remainder(dividend: int, divisor: int) int
+	{
+		Compute(dividend, divisor)
+		return remainder
+	}
+
+	/** Computes a nonnegative residue; MIN / -1 retains the common failure contract. */
+	override fn ModuloEuclidean(dividend: int, divisor: int) int
+	{
+		if (!Compute(dividend, divisor)) {
+			return 0
+		}
+
+		if (remainder < 0) {
+			if (divisor < 0) {
+				return remainder - divisor
+			}
+
+			return remainder + divisor
+		}
+
+		return remainder
+	}
+
+	/** Reports failure of the latest computation. */
+	override fn Failed() bool
+	{
+		return failed
+	}
+}

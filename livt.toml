@@ -8,6 +8,7 @@ outdir = "out"
 path = "tests"
 components = [
     "WideArithmeticTest",
+    "IntegerDivisionTest",
     "SqrtLUTTest",
     "SqrtNewtonRaphsonTest",
     "MacUnitTest",

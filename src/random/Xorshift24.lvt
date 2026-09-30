@@ -1,6 +1,6 @@
 namespace Livt.Math.Random
 
-using Livt.Lang.Annotations
+using Livt.Math.Arithmetic
 
 /**
  * 24-bit xorshift PRNG, period 2^24-1.
@@ -26,6 +26,9 @@ component Xorshift24
 	// 24-bit mask: 2^24 - 1 = 16,777,215.
 	public const MASK: int = 16777215
 
+	// Owned worker for bounded-range sampling; calls are serialized.
+	divider: UnsignedDivision<31>
+
 	// Current generator state in [1, MASK].
 	current_state: int
 
@@ -35,6 +38,7 @@ component Xorshift24
 	 */
 	new(seed: int)
 	{
+		divider = new UnsignedDivision<31>()
 		this.current_state = seed & MASK
 
 		if (this.current_state == 0) {
@@ -84,13 +88,13 @@ component Xorshift24
 	/**
 	 * Return the next pseudo-random integer in [0, n-1], or zero for n <= 0.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn GetNextInRange(n: int) int
 	{
 		if (n <= 0) {
 			return 0
 		}
 
-		return this.GetNext() % n
+		var value = this.GetNext()
+		return divider.Remainder(value as uint, n as uint) as int
 	}
 }

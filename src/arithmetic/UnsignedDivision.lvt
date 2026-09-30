@@ -1,0 +1,104 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Exact unsigned division for operands fitting BITS (1..32). A restoring loop
+ * performs BITS scheduled bit steps; setup and function handshakes add latency.
+ * The compare-before-shift recurrence avoids a 33-bit remainder intermediate.
+ * Values outside the configured range and zero divisors fail instead of truncating.
+ * Own one instance per serialized caller; use IIntegerDivision<uint> for substitution.
+ */
+component UnsignedDivision<BITS: int = 32> : IIntegerDivision<uint>
+{
+	static assert BITS >= 1 && BITS <= 32, "division width must be 1..32"
+
+	// Results of the latest completed request; reset clears all observations.
+	quotient: uint
+	remainder: uint
+	failed: bool
+
+	/**
+	 * Produces exact quotient and remainder without a native division or remainder operator.
+	 */
+	override fn Compute(dividend: uint, divisor: uint) bool
+	{
+		quotient = 0
+		remainder = 0
+		failed = true
+
+		if (divisor == 0) {
+			return false
+		}
+
+		static if (BITS < 32) {
+			if (dividend >= ((1 as uint) << BITS) || divisor >= ((1 as uint) << BITS)) {
+				return false
+			}
+		}
+
+		var q: uint = 0
+		var r: uint = 0
+		var half = divisor >> 1
+		var odd = divisor & 1
+		var bitIndex = BITS
+
+		while (bitIndex > 0) {
+			state {
+				bitIndex--
+				var nextBit = (dividend >> bitIndex) & 1
+				var subtract = r > half || (r == half && (odd == 0 || nextBit == 1))
+				q = q << 1
+
+				if (subtract) {
+					r = ((r - half) << 1) + nextBit - odd
+					q = q | 1
+				} else {
+					r = (r << 1) + nextBit
+				}
+			}
+		}
+
+		quotient = q
+		remainder = r
+		failed = false
+		return true
+	}
+
+	/** Returns the most recently completed quotient. */
+	override fn GetQuotient() uint
+	{
+		return quotient
+	}
+
+	/** Returns the most recently completed remainder. */
+	override fn GetRemainder() uint
+	{
+		return remainder
+	}
+
+	/** Computes floor division; zero on failure, distinguished by Failed. */
+	override fn Divide(dividend: uint, divisor: uint) uint
+	{
+		Compute(dividend, divisor)
+		return quotient
+	}
+
+	/** Computes the nonnegative remainder using the same worker. */
+	override fn Remainder(dividend: uint, divisor: uint) uint
+	{
+		Compute(dividend, divisor)
+		return remainder
+	}
+
+	/** Unsigned remainder and Euclidean modulo coincide. */
+	override fn ModuloEuclidean(dividend: uint, divisor: uint) uint
+	{
+		Compute(dividend, divisor)
+		return remainder
+	}
+
+	/** Returns the error status of the latest computation. */
+	override fn Failed() bool
+	{
+		return failed
+	}
+}

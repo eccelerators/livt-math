@@ -1,0 +1,112 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+/** Exact quotient/remainder oracles cover signs, limits, errors and configured widths. */
+@Test
+component IntegerDivisionTest
+{
+	// Independent signed, unsigned, and narrow fixtures.
+	signed: IntegerDivision
+	unsigned: UnsignedDivision
+	smallSigned: IntegerDivision<4>
+	smallUnsigned: UnsignedDivision<4>
+
+	/** Creates serialized workers in the test context. */
+	new()
+	{
+		signed = new IntegerDivision()
+		unsigned = new UnsignedDivision()
+		smallSigned = new IntegerDivision<4>()
+		smallUnsigned = new UnsignedDivision<4>()
+	}
+
+	/** Exhausts all valid four-bit signed pairs against language integer semantics. */
+	@Test
+	fn SignedExhaustive()
+	{
+		for (var a = -8; a < 8; a++) {
+			for (var b = -8; b < 8; b++) {
+				if (b != 0 && !(a == -8 && b == -1)) {
+					assert smallSigned.Compute(a, b)
+					assert smallSigned.GetQuotient() == a / b
+					assert smallSigned.GetRemainder() == a % b
+					assert !smallSigned.Failed()
+				}
+			}
+		}
+	}
+
+	/** Exhausts unsigned pairs, including the upper half of the configured range. */
+	@Test
+	fn UnsignedExhaustive()
+	{
+		for (var a = 0; a < 16; a++) {
+			for (var b = 1; b < 16; b++) {
+				assert smallUnsigned.Compute(a as uint, b as uint)
+				assert smallUnsigned.GetQuotient() == (a / b) as uint
+				assert smallUnsigned.GetRemainder() == (a % b) as uint
+			}
+		}
+	}
+
+	/** Covers full-width magnitudes, including signed MIN and uint high-bit values. */
+	@Test
+	fn FullWidthLimits()
+	{
+		var minimum = -2147483647 - 1
+		assert signed.Compute(minimum, 3)
+		assert signed.GetQuotient() == -715827882
+		assert signed.GetRemainder() == -2
+		assert signed.Divide(minimum, 1) == minimum
+		assert signed.Divide(minimum, minimum) == 1
+		assert signed.ModuloEuclidean(-1, minimum) == 2147483647
+		assert signed.Divide(2147483647, -1) == -2147483647
+		assert unsigned.Compute(0xffffffff as uint, 0x80000001 as uint)
+		assert unsigned.GetQuotient() == 1
+		assert unsigned.GetRemainder() == 2147483646
+		assert unsigned.Divide(0xffffffff as uint, 1) == 0xffffffff as uint
+		assert unsigned.Remainder(0xffffffff as uint, 2) == 1
+		assert unsigned.Divide(0x80000000 as uint, 0xffffffff as uint) == 0
+	}
+
+	/** Distinguishes truncating remainder from nonnegative Euclidean modulo. */
+	@Test
+	fn SignedModulo()
+	{
+		assert signed.Divide(-7, 3) == -2
+		assert signed.Remainder(-7, 3) == -1
+		assert signed.ModuloEuclidean(-7, 3) == 2
+		assert signed.ModuloEuclidean(-7, -3) == 2
+		assert signed.Remainder(7, -3) == 1
+		assert signed.ModuloEuclidean(7, -3) == 1
+		assert signed.ModuloEuclidean(-6, 3) == 0
+		assert unsigned.ModuloEuclidean(7, 3) == 1
+	}
+
+	/** Invalid operations clear previous results; a later valid call recovers. */
+	@Test
+	fn FailureAndRecovery()
+	{
+		assert signed.Divide(99, 3) == 33
+		assert !signed.Compute(1, 0)
+		assert signed.Failed()
+		assert signed.GetQuotient() == 0
+		assert signed.GetRemainder() == 0
+		assert !signed.Compute(-2147483647 - 1, -1)
+		assert signed.Failed()
+		assert signed.Divide(0, -3) == 0
+		assert !signed.Failed()
+		assert !smallSigned.Compute(-8, -1)
+		assert !smallSigned.Compute(8, 1)
+		assert !smallSigned.Compute(1, -9)
+		assert !smallUnsigned.Compute(16, 1)
+		assert !smallUnsigned.Compute(1, 16)
+		assert !unsigned.Compute(1, 0)
+		assert unsigned.Failed()
+		assert unsigned.GetQuotient() == 0
+		assert unsigned.GetRemainder() == 0
+		assert unsigned.Compute(0, 1)
+		assert !unsigned.Failed()
+	}
+}
