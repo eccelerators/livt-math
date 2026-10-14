@@ -7,6 +7,8 @@ parser.add_argument('--work',type=Path,required=True)
 parser.add_argument('--generated-lib',type=Path,required=True)
 parser.add_argument('--ghdl',default='ghdl')
 args=parser.parse_args()
+args.work=args.work.resolve()
+args.generated_lib=args.generated_lib.resolve()
 args.work.mkdir(parents=True,exist_ok=True)
 r=random.Random(579); mask=(1<<64)-1
 v=[]
@@ -38,6 +40,16 @@ for i in range(200):
  for x in (a*a-1,a*a,a*a+1):
   if 0<=x<=mask:add(3,x)
 for bits in (0,1,2,31,32,63):add(4,mask,bits=bits)
+# Explicit even/odd ties and both sides of half, including long carry propagation.
+for denominator in (2, 4, 6, 16, 1<<32, (1<<62)-2):
+ for quotient in (0, 1, 2, 3):
+  for delta in (-1, 0, 1):
+   magnitude=quotient*denominator+denominator//2+delta
+   if 0<=magnitude<(1<<63):
+    for sign in (-1,1):add(2,sign*magnitude,denominator)
+    add(5,magnitude,denominator)
+for numerator in ((1<<63)-1,-((1<<63)-1),-(1<<63)):
+ for denominator in (1,2,3,(1<<63)-1):add(2,numerator,denominator)
 add(99,0)
 header='''library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all;
 use std.env.all; use work.livt_lang_icontext_package.all;
@@ -57,6 +69,8 @@ begin
    variable actual_expected: std_logic_vector(63 downto 0);
    variable actual_error: boolean;
    variable capability: integer;
+   variable cycles: natural;
+   variable held_result: std_logic_vector(63 downto 0);
   begin
    actual_expected:=expected;actual_error:=error;
    capability:=o;if o=5 then capability:=2;end if;
@@ -67,9 +81,16 @@ begin
    end if;
    wait until falling_edge(ctx.clk);toggle:=not request;
    a<=av;b<=bv;op<=to_signed(o,32);bits<=to_signed(width,32);request<=toggle;
-   wait until ack=toggle for 2 us;
-   assert ack=toggle report "completion timeout" severity failure;
-   wait for 1 ns;
+   held_result:=result;cycles:=0;
+   wait until rising_edge(ctx.clk);wait for 1 ns;
+   while ack/=toggle loop
+    assert result=held_result report "result changed before acknowledgement" severity failure;
+    assert cycles<200 report "completion timeout" severity failure;
+    wait until rising_edge(ctx.clk);wait for 1 ns;cycles:=cycles+1;
+   end loop;
+   if (o=2 or o=5) and not actual_error then
+    assert cycles=67 report "division finalization latency" severity failure;
+   end if;
    assert result=actual_expected and failed=actual_error report "oracle mismatch op=" & integer'image(o) & " a=" & to_hstring(av) & " b=" & to_hstring(bv) & " got=" & to_hstring(result) & " expected=" & to_hstring(expected) severity failure;
    wait for 20 ns;
    assert result=actual_expected and failed=actual_error report "held request replayed" severity failure;
@@ -81,7 +102,7 @@ tail='''
   -- Cancel every in-flight phase, then prove recovery with a fresh multiply.
   for operation in 0 to 3 loop
    if operation/=1 then
-    for cycle in 0 to 67 loop
+    for cycle in 0 to 70 loop
      wait until falling_edge(ctx.clk);
      op<=to_signed(operation,32);a<=x"7fffffffffffffff";b<=x"0000000000000003";request<=not request;
      for tick in 0 to cycle loop wait until rising_edge(ctx.clk);end loop;
@@ -102,10 +123,12 @@ print(len(v),'oracle vectors')
 root=Path(__file__).resolve().parents[1]
 def run(command,log):
  with (args.work/log).open('w') as output:
-  subprocess.run(command,stdout=output,stderr=subprocess.STDOUT,check=True)
+  subprocess.run(command,stdout=output,stderr=subprocess.STDOUT,check=True,cwd=args.work,timeout=300)
 base=[args.ghdl,'-a','--std=08','--workdir='+str(args.work)]
 run(base+[str(args.generated_lib/'Livt.Lang.Package.vhd'),str(args.generated_lib/'Livt.Lang.IContext.Package.vhd'),str(root/'src/arithmetic/WideArithmeticPrimitive.vhd'),str(args.work/'oracle.vhd'),str(root/'tests/rtl/WideArithmeticResetTb.vhd')],'compile.log')
-for capabilities in [31,4,0,8,1]:
+for entity in ['wide_oracle_tb','wide_arithmetic_reset_tb']:
+ run([args.ghdl,'-e','--std=08','--workdir='+str(args.work),entity],entity+'-elaborate.log')
+for capabilities in [31,23,4,0,8,1]:
  run([args.ghdl,'-r','--std=08','--workdir='+str(args.work),'wide_oracle_tb','-gOPERATIONS='+str(capabilities),'--assert-level=error'],'oracle-'+str(capabilities)+'.log')
 run([args.ghdl,'-r','--std=08','--workdir='+str(args.work),'wide_arithmetic_reset_tb','--assert-level=error'],'reset.log')
 print('PASS oracle, disabled capabilities, all-phase reset and existing reset bench')

@@ -9,8 +9,8 @@ input as unsigned. OUTPUT_BITS controls clipping, not the internal operand width
 | --- | --- | ---: |
 | Multiply | Signed product; overflow returns zero and sets Failed | 21 |
 | Add | Signed sum; overflow returns zero and sets Failed | 0 |
-| DivideEven | Positive divisor; signed nearest rounding, ties to even | 65 |
-| DivideFloor | Nonnegative signed-range dividend, positive divisor | 65 |
+| DivideEven | Positive divisor; signed nearest rounding, ties to even | 67 |
+| DivideFloor | Nonnegative signed-range dividend, positive divisor | 67 |
 | Sqrt | Floor square root of the entire unsigned 64-bit range | 32 |
 | Clamp | Symmetric clipping to +/-((1 << (OUTPUT_BITS-1))-1), 2..31 bits | 0 |
 
@@ -60,7 +60,10 @@ DSPs and a shorter critical path.
 
 Sqrt consumes two input bits per cycle using a restoring shift/compare/subtract
 recurrence. It no longer squares a trial candidate. Division remains a 64-step
-restoring divider followed by rounding/sign restoration. The generated Execute
+restoring divider followed by separate rounding-decision, increment and sign/result
+stages. This adds two native division cycles and removes the combined remainder
+comparison/increment/negation path. See the [finalization measurements](evidence/division-finalization/README.md).
+The generated Execute
 helper now returns completion only; public methods read the stable native result
 directly, avoiding a redundant 64-bit result channel and its storage/multiplexing.
 
@@ -70,8 +73,8 @@ whole-application fit or board timing guarantees.
 
 ## Verification
 
-Run `livt test` for the package tests. The exact-reference runner generates 3,307
-deterministic boundary/random vectors and checks five capability masks, held
+Run `livt test` for the package tests. The exact-reference runner generates 3,517
+deterministic boundary/random vectors and checks six capability masks, held
 requests, cancellation across operation phases and recovery. It also runs the
 existing native reset bench:
 

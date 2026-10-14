@@ -19,11 +19,11 @@ entity livt_math_arithmetic_widearithmeticprimitive is
 end;
 
 architecture rtl of livt_math_arithmetic_widearithmeticprimitive is
-    type phase_t is (idle, dividing, rounding, rooting, mul_products, mul_pairs, mul_join,
+    type phase_t is (idle, dividing, rounding, round_increment, divide_finish, rooting, mul_products, mul_pairs, mul_join,
         mul_low, mul_high, mul_finish);
     signal phase : phase_t := idle;
     signal pending : std_logic := '0';
-    signal negative, round_even : boolean := false;
+    signal negative, round_even, round_up : boolean := false;
     signal dividend, divisor, quotient, radicand : unsigned(63 downto 0);
     signal remainder : unsigned(64 downto 0);
     signal root : unsigned(31 downto 0);
@@ -66,6 +66,7 @@ begin
                 radicand <= (others => '0');
                 negative <= false;
                 round_even <= false;
+                round_up <= false;
                 index <= 0;
                 products <= (others => (others => '0'));
                 pair_low <= (others => '0');
@@ -96,17 +97,23 @@ begin
                     index <= index - 1;
                 end if;
             elsif phase = rounding and ctor_operations(2) = '1' then
-                q_next := quotient;
-
-                if round_even and(remainder > resize(divisor, 65) - remainder or
-                (remainder = resize(divisor, 65) - remainder and quotient(0) = '1')) then
-                    q_next := q_next + 1;
+                -- remainder < divisor; the 65-bit doubled remainder cannot overflow.
+                -- Decide the tie before incrementing, then restore the sign separately.
+                round_up <= round_even and
+                    (shift_left(remainder, 1) > resize(divisor, 65) or
+                    (shift_left(remainder, 1) = resize(divisor, 65) and quotient(0) = '1'));
+                phase <= round_increment;
+            elsif phase = round_increment and ctor_operations(2) = '1' then
+                if round_up then
+                    quotient <= quotient + 1;
                 end if;
 
+                phase <= divide_finish;
+            elsif phase = divide_finish and ctor_operations(2) = '1' then
                 if negative then
-                    ctor_result <= std_logic_vector(- signed(q_next));
+                    ctor_result <= std_logic_vector(- signed(quotient));
                 else
-                    ctor_result <= std_logic_vector(q_next);
+                    ctor_result <= std_logic_vector(quotient);
                 end if;
 
                 ctor_acknowledge <= pending;
