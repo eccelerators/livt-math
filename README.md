@@ -227,7 +227,7 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE).
 
 ## Exact wide integer arithmetic
 
-Version 1.3.0-dev adds [WideArithmetic](docs/WideArithmetic.md), a portable
+Version 1.3.0 adds [WideArithmetic](docs/WideArithmetic.md), a portable
 64-bit multiply/add/divide/root service with explicit rounding and overflow behavior.
 The worker now uses staged multiplication, multiplier-free square root and an
 optional compile-time operation mask. See the guide for latency, exact failure
