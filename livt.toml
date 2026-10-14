@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "1.3.0-dev"
+version = "1.3.0"
 path = "src"
 outdir = "out"
 
@@ -27,7 +27,7 @@ components = [
 ]
 
 [dependencies]
-Livt.Base = "1.1.0"
+Livt.Base = "1.2.0"
 
 [build.debug]
 warnings = ["all"]
