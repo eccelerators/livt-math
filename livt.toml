@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "1.3.0"
+version = "1.4.0"
 path = "src"
 outdir = "out"
 
@@ -8,6 +8,7 @@ outdir = "out"
 path = "tests"
 components = [
     "WideArithmeticTest",
+    "WideArithmeticPipelineTest",
     "IntegerDivisionTest",
     "SqrtLUTTest",
     "SqrtNewtonRaphsonTest",

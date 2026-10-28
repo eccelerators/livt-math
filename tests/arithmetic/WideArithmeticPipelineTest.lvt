@@ -1,0 +1,49 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+/** Checks generic configuration through the scheduled Livt wrapper. */
+@Test
+component WideArithmeticPipelineTest
+{
+	// Faster division with four registered rounding stages.
+	fast: WideArithmetic<31, 31, 4, true, true>
+
+	// Default rounding and division-only capability specialization.
+	standard: WideArithmetic<24, 4, 3, true>
+
+	new()
+	{
+		fast = new WideArithmetic<31, 31, 4, true, true>()
+		standard = new WideArithmetic<24, 4, 3, true>()
+	}
+
+	@Test
+	fn ConfiguredDivision()
+	{
+		assert fast.DivideEven(7, 2) == 4
+		assert fast.DivideEven(5, 2) == 2
+		assert fast.DivideEven(0xfffffffffffffff9, 2) == 0xfffffffffffffffc
+		assert fast.DivideEven(0x8000000000000000, 1) == 0x8000000000000000
+		assert fast.DivideEven(20, 3) == 7
+		assert fast.DivideFloor(7, 2) == 3
+		assert !fast.Failed()
+		assert standard.DivideEven(7, 2) == 4
+		assert standard.DivideEven(5, 2) == 2
+		assert standard.DivideEven(20, 3) == 7
+		assert !standard.Failed()
+	}
+
+	@Test
+	fn FailureAndRecovery()
+	{
+		assert fast.DivideEven(7, 0) == 0
+		assert fast.Failed()
+		assert fast.DivideEven(8, 4) == 2
+		assert !fast.Failed()
+		assert standard.Multiply(7, 2) == 0
+		assert standard.Failed()
+		assert standard.DivideEven(8, 4) == 2
+		assert !standard.Failed()
+	}
+}

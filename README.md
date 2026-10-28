@@ -5,6 +5,16 @@ packages. It collects reusable arithmetic components that are useful across
 application domains but are not specific to ML, crypto, networking, or signal
 processing.
 
+## 📦 Package
+
+```toml
+[dependencies]
+Livt.Math = "1.4.0"
+```
+
+`Livt.Math` depends on `Livt.Base 1.2.0`. See
+[CHANGELOG.md](CHANGELOG.md) for release notes and compatibility guidance.
+
 The package surface is intentionally small and practical:
 
 - `Livt.Math.Sqrt.SqrtLUT`: 8-bit lookup-table integer square root.
@@ -28,6 +38,8 @@ The package surface is intentionally small and practical:
 - `Livt.Math.Lookup.TrigQ15`: small Q15 sine/cosine lookup for common angles.
 - `Livt.Math.Random.Lcg16`: 16-bit linear congruential generator (period 65 536).
 - `Livt.Math.Random.Xorshift24`: 24-bit xorshift generator (period 2^24 − 1).
+- `Livt.Math.Arithmetic.WideArithmetic`: exact scheduled 64-bit
+  multiply/add/divide/root service with configurable timing tradeoffs.
 
 ## Package API Shape
 
@@ -115,6 +127,25 @@ bounded arithmetic step.
 Both generators are hardware-safe (no int32 overflow) and suitable for
 simulation stimulus, weight initialization, and test fixture seeding. They are
 not cryptographically secure.
+
+### Exact wide integer arithmetic
+
+`WideArithmetic` provides exact signed 64-bit multiply, add, division, square
+root and symmetric clipping through `logic[64]` transport. Version 1.4.0 adds
+compile-time selection of three or four rounding stages, an optional exact
+power-of-two division fast path and optional registered dispatch groups.
+
+Existing type arguments retain the previous behavior. The new trailing options
+change latency and generated hardware without changing numeric results. See
+[WideArithmetic](docs/WideArithmetic.md) for generics, division latency, failure
+semantics and configuration tradeoffs.
+
+### Scheduled division and modulo
+
+[Integer division](docs/IntegerDivision.md) defines the shared exact API:
+`IntegerDivision<BITS>`, `UnsignedDivision<BITS>`, and `IIntegerDivision<T>`.
+Compute quotient and remainder together, or use the `Divide` and `Remainder`
+convenience calls. `ModuloEuclidean` explicitly requests nonnegative modulo.
 
 ## Package Boundary
 
@@ -224,20 +255,3 @@ as Q15 arithmetic, complex multiply parts, lookup constants, and MAC units.
 ## 📄 License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
-
-## Exact wide integer arithmetic
-
-Version 1.3.0 adds [WideArithmetic](docs/WideArithmetic.md), a portable
-64-bit multiply/add/divide/root service with explicit rounding and overflow behavior.
-The worker now uses staged multiplication, multiplier-free square root and an
-optional compile-time operation mask. See the guide for latency, exact failure
-semantics and measured hardware tradeoffs.
-Run `livt test --run WideArithmeticTest` for the scalar edge cases.
-
-## Scheduled division and modulo
-
-[Integer division](docs/IntegerDivision.md) defines the shared exact API:
-`IntegerDivision<BITS>`, `UnsignedDivision<BITS>`, and `IIntegerDivision<T>`.
-Compute quotient and remainder together, or use Divide/Remainder convenience
-calls. ModuloEuclidean explicitly requests nonnegative modulo. The guide covers
-errors, ownership, reset, latency, dependency layering, and migration policy.

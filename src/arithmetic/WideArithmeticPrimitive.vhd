@@ -14,18 +14,22 @@ entity livt_math_arithmetic_widearithmeticprimitive is
         ctor_result : out std_logic_vector(63 downto 0);
         ctor_failed : out boolean;
         -- Constant capability bits: multiply/add/divide/root/clamp.
-        ctor_operations : in signed(31 downto 0) := to_signed(31, 32)
+        ctor_operations : in signed(31 downto 0) := to_signed(31, 32);
+        ctor_roundingstages : in signed(31 downto 0) := to_signed(3, 32);
+        ctor_poweroftwofastpath : in boolean := false
     );
 end;
 
 architecture rtl of livt_math_arithmetic_widearithmeticprimitive is
-    type phase_t is (idle, dividing, rounding, round_increment, divide_finish, rooting, mul_products, mul_pairs, mul_join,
+    type phase_t is (idle, divide_classify, divide_power, dividing, rounding, round_decide, round_increment, divide_finish, rooting, mul_products, mul_pairs, mul_join,
         mul_low, mul_high, mul_finish);
     signal phase : phase_t := idle;
     signal pending : std_logic := '0';
     signal negative, round_even, round_up : boolean := false;
     signal dividend, divisor, quotient, radicand : unsigned(63 downto 0);
     signal remainder : unsigned(64 downto 0);
+    signal round_distance : unsigned(64 downto 0);
+    signal power_shift : natural range 0 to 63 := 0;
     signal root : unsigned(31 downto 0);
     signal index : integer range 0 to 63 := 0;
 
@@ -67,6 +71,8 @@ begin
                 negative <= false;
                 round_even <= false;
                 round_up <= false;
+                round_distance <= (others => '0');
+                power_shift <= 0;
                 index <= 0;
                 products <= (others => (others => '0'));
                 pair_low <= (others => '0');
@@ -78,6 +84,22 @@ begin
                 mul_carry <= (others => '0');
                 mul_digit <= 0;
                 root_remainder <= (others => '0');
+            elsif phase = divide_classify and ctor_operations(2) = '1' then
+                -- Divisor validity was checked at acceptance; only positive divisors enter.
+                if (divisor and (divisor - 1)) = 0 then
+                    for bit_index in 0 to 62 loop
+                        if divisor(bit_index) = '1' then
+                            power_shift <= bit_index;
+                        end if;
+                    end loop;
+                    phase <= divide_power;
+                else
+                    phase <= dividing;
+                end if;
+            elsif phase = divide_power and ctor_operations(2) = '1' then
+                quotient <= shift_right(dividend, power_shift);
+                remainder <= resize(dividend and (divisor - 1), 65);
+                phase <= rounding;
             elsif phase = dividing and ctor_operations(2) = '1' then
                 rem_next := shift_left(remainder, 1);
                 rem_next(0) := dividend(index);
@@ -97,11 +119,19 @@ begin
                     index <= index - 1;
                 end if;
             elsif phase = rounding and ctor_operations(2) = '1' then
-                -- remainder < divisor; the 65-bit doubled remainder cannot overflow.
-                -- Decide the tie before incrementing, then restore the sign separately.
-                round_up <= round_even and
-                    (shift_left(remainder, 1) > resize(divisor, 65) or
-                    (shift_left(remainder, 1) = resize(divisor, 65) and quotient(0) = '1'));
+                if ctor_roundingstages = 4 then
+                    round_distance <= resize(divisor, 65) - remainder;
+                    phase <= round_decide;
+                else
+                    -- Default three-stage rounding; remainder < divisor.
+                    round_up <= round_even and
+                        (shift_left(remainder, 1) > resize(divisor, 65) or
+                        (shift_left(remainder, 1) = resize(divisor, 65) and quotient(0) = '1'));
+                    phase <= round_increment;
+                end if;
+            elsif phase = round_decide and ctor_operations(2) = '1' then
+                round_up <= round_even and (remainder > round_distance or
+                    (remainder = round_distance and quotient(0) = '1'));
                 phase <= round_increment;
             elsif phase = round_increment and ctor_operations(2) = '1' then
                 if round_up then
@@ -248,7 +278,11 @@ begin
                             remainder <= (others => '0');
                             round_even <= ctor_operation = 2;
                             index <= 63;
-                            phase <= dividing;
+                            if ctor_poweroftwofastpath then
+                                phase <= divide_classify;
+                            else
+                                phase <= dividing;
+                            end if;
                         end if;
                     when 3 =>
                         if ctor_operations(3) = '0' then
