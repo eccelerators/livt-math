@@ -1,0 +1,137 @@
+namespace Livt.Math.Tests.Statistics
+
+using Livt.Math.Statistics
+
+@Test
+component StreamingMomentsInt16Test
+{
+	moments: StreamingMomentsInt16<8>
+	limited: StreamingMomentsInt16<3>
+
+	new()
+	{
+		moments = new StreamingMomentsInt16<8>()
+		limited = new StreamingMomentsInt16<3>()
+	}
+
+	@Test
+	fn RejectsEmptyFinalization()
+	{
+		moments.Reset()
+		assert !moments.Finalize()
+		assert !moments.HasResult()
+		assert moments.GetMean() == 0
+		assert moments.GetVariance() == (0 as uint)
+		assert moments.GetStdDev() == (0 as uint)
+	}
+
+	@Test
+	fn ComputesReferencePopulationMoments()
+	{
+		moments.Reset()
+		assert moments.Add(2)
+		assert moments.Add(4)
+		assert moments.Add(4)
+		assert moments.Add(4)
+		assert moments.Add(5)
+		assert moments.Add(5)
+		assert moments.Add(7)
+		assert moments.Add(9)
+		assert moments.Finalize()
+		assert moments.GetCount() == (8 as uint)
+		assert moments.GetSum() == 40
+		assert moments.GetMean() == 5
+		assert moments.GetVariance() == (4 as uint)
+		assert moments.GetStdDev() == (2 as uint)
+	}
+
+	@Test
+	fn FloorsFractionalVarianceAndRoot()
+	{
+		moments.Reset()
+		assert moments.Add(-2)
+		assert moments.Add(-1)
+		assert moments.Add(1)
+		assert moments.Add(2)
+		assert moments.Finalize()
+		assert moments.GetMean() == 0
+		assert moments.GetVariance() == (2 as uint)
+		assert moments.GetStdDev() == (1 as uint)
+	}
+
+	@Test
+	fn RoundsMeanTiesToEven()
+	{
+		moments.Reset()
+		assert moments.Add(0)
+		assert moments.Add(1)
+		assert moments.Finalize()
+		assert moments.GetMean() == 0
+
+		moments.Reset()
+		assert moments.Add(1)
+		assert moments.Add(2)
+		assert moments.Finalize()
+		assert moments.GetMean() == 2
+
+		moments.Reset()
+		assert moments.Add(-2)
+		assert moments.Add(-1)
+		assert moments.Finalize()
+		assert moments.GetMean() == -2
+	}
+
+	@Test
+	fn HandlesSignedInt16ExtremesExactly()
+	{
+		moments.Reset()
+		assert moments.Add(-32768)
+		assert moments.Add(32767)
+		assert moments.Finalize()
+		assert moments.GetSum() == -1
+		assert moments.GetMean() == 0
+		assert moments.GetVariance() == (1073709056 as uint)
+		assert moments.GetStdDev() == (32767 as uint)
+	}
+
+	@Test
+	fn RejectsInvalidSamplesWithoutMutation()
+	{
+		moments.Reset()
+		assert moments.Add(5)
+		assert moments.Finalize()
+		assert !moments.Add(-32769)
+		assert !moments.Add(32768)
+		assert moments.HasResult()
+		assert moments.GetCount() == (1 as uint)
+		assert moments.GetMean() == 5
+	}
+
+	@Test
+	fn InvalidatesResultAfterAcceptedSample()
+	{
+		moments.Reset()
+		assert moments.Add(3)
+		assert moments.Finalize()
+		assert moments.HasResult()
+		assert moments.Add(5)
+		assert !moments.HasResult()
+		assert moments.GetMean() == 0
+		assert moments.Finalize()
+		assert moments.GetMean() == 4
+	}
+
+	@Test
+	fn EnforcesCompileTimeCapacity()
+	{
+		limited.Reset()
+		assert limited.Add(1)
+		assert limited.Add(2)
+		assert limited.Add(3)
+		assert !limited.Add(4)
+		assert limited.GetCount() == (3 as uint)
+		assert limited.GetSum() == 6
+		assert limited.Finalize()
+		assert limited.GetMean() == 2
+	}
+}

@@ -1,0 +1,42 @@
+namespace Livt.Math.FixedPoint
+
+using Livt.Math.Arithmetic
+
+/**
+ * Computes rounded reciprocals for normalized unsigned Q1.15 inputs.
+ */
+component ReciprocalUQ15
+{
+	public const INPUT_SCALE: uint = 32768
+	public const MIN_INPUT: uint = 16384
+	public const MAX_INPUT: uint = 32768
+	public const MIN_OUTPUT: uint = 32768
+	public const MAX_OUTPUT: uint = 65535
+	public const DIVISION_BITS: int = 31
+
+	divider: UnsignedDivision<DIVISION_BITS>
+
+	new()
+	{
+		divider = new UnsignedDivision<DIVISION_BITS>()
+	}
+
+	/**
+	 * Returns round(2^30 / input), saturated to UQ1.15. Inputs outside
+	 * normalized [0.5, 1.0] return zero.
+	 */
+	public fn Compute(input: uint) uint
+	{
+		if (input < MIN_INPUT || input > MAX_INPUT) {
+			return 0 as uint
+		}
+
+		var dividend = (1073741824 as uint) + (input >> 1)
+		var value = divider.Divide(dividend, input)
+		if (value > MAX_OUTPUT) {
+			return MAX_OUTPUT
+		}
+
+		return value
+	}
+}

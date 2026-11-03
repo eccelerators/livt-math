@@ -2,6 +2,38 @@
 
 All notable changes to this package are documented here.
 
+## 1.5.0 - 2026-11-03
+
+### Added
+
+- `IntegerMath` context-free signed minimum, maximum, clamp, magnitude,
+  saturating absolute-value, addition, and subtraction helpers.
+- `UnsignedMath` context-free saturating uint addition and subtraction helpers.
+- Full-width boundary tests and usage documentation for the new integer helpers.
+- `CordicSinCosQ15`, a serialized 16-step rotation-mode worker for arbitrary
+  signed full-turn phases with Q1.15 sine/cosine outputs and a 4-LSB error bound.
+- Numeric and lifecycle documentation for `CordicSinCosQ15`.
+- A narrow resource-shared CORDIC primitive with reset and retained-result
+  behavior.
+- `CordicAtan2MagnitudeQ15`, a separate serialized vectoring worker for
+  canonical phase and full-range unsigned magnitude from Q1.15 coordinates.
+- FPGA-oriented fixed-point special functions: serialized Q15 interpolation,
+  normalized reciprocal, and paired base-2 logarithm/exponential components.
+- `StreamingMomentsInt16`, an exact bounded finite-stream accumulator for
+  signed-16 mean, population variance, and standard deviation.
+
+### Changed
+
+- `TanhQ15` reuses the serialized interpolation primitive used by the bounded
+  special-function components.
+
+### Compatibility
+
+- Existing `Livt.Math 1.4.0` APIs retain their public signatures and default
+  behavior. The new components and helpers are additive.
+- Moving-window statistics and median filters remain outside this package and
+  are reserved for `Livt.Signal`.
+
 ## 1.4.0
 
 ### Added

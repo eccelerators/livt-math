@@ -1,0 +1,161 @@
+namespace Livt.Math.Tests.Trigonometry
+
+using Livt.Math.Trigonometry
+
+/**
+ * Exercises the CORDIC phase, accuracy, retention, and failure contracts.
+ */
+@Test
+component CordicSinCosQ15Test
+{
+	// Shared serialized worker used by each independent scenario.
+	cordic: CordicSinCosQ15
+
+	/**
+	 * Creates the shared CORDIC fixture.
+	 */
+	new()
+	{
+		cordic = new CordicSinCosQ15()
+	}
+
+	/**
+	 * Checks the four axes against their saturated Q1.15 values.
+	 */
+	@Test
+	fn ComputesCardinalAngles()
+	{
+		assert cordic.Compute(CordicSinCosQ15.MIN_PHASE)
+		AssertNear(cordic.GetSin(), 0)
+		AssertNear(cordic.GetCos(), -32768)
+
+		assert cordic.Compute(0 - CordicSinCosQ15.HALF_PI)
+		AssertNear(cordic.GetSin(), -32768)
+		AssertNear(cordic.GetCos(), 0)
+
+		assert cordic.Compute(0)
+		AssertNear(cordic.GetSin(), 0)
+		AssertNear(cordic.GetCos(), 32767)
+
+		assert cordic.Compute(CordicSinCosQ15.HALF_PI)
+		AssertNear(cordic.GetSin(), 32767)
+		AssertNear(cordic.GetCos(), 0)
+	}
+
+	/**
+	 * Checks each quadrant at the eighth-turn points.
+	 */
+	@Test
+	fn ComputesEighthTurns()
+	{
+		AssertResult(CordicSinCosQ15.QUARTER_PI, 23170, 23170)
+		AssertResult(3 * CordicSinCosQ15.QUARTER_PI, 23170, -23170)
+		AssertResult(0 - CordicSinCosQ15.QUARTER_PI, -23170, 23170)
+		AssertResult(0 - 3 * CordicSinCosQ15.QUARTER_PI, -23170, -23170)
+	}
+
+	/**
+	 * Checks values adjacent to zero, quadrant boundaries, and phase wrapping.
+	 */
+	@Test
+	fn ComputesBoundaryAdjacentPhases()
+	{
+		AssertResult(-1, -3, 32767)
+		AssertResult(1, 3, 32767)
+		AssertResult(CordicSinCosQ15.HALF_PI - 1, 32767, 3)
+		AssertResult(CordicSinCosQ15.HALF_PI + 1, 32767, -3)
+		AssertResult(0 - CordicSinCosQ15.HALF_PI + 1, -32768, 3)
+		AssertResult(0 - CordicSinCosQ15.HALF_PI - 1, -32768, -3)
+		AssertResult(CordicSinCosQ15.MIN_PHASE + 1, -3, -32768)
+		AssertResult(CordicSinCosQ15.MAX_PHASE, 3, -32768)
+	}
+
+	/**
+	 * Checks sine odd symmetry and cosine even symmetry at representative phases.
+	 */
+	@Test
+	fn PreservesTrigonometricSymmetry()
+	{
+		AssertSymmetry(1234)
+		AssertSymmetry(CordicSinCosQ15.QUARTER_PI)
+		AssertSymmetry(CordicSinCosQ15.HALF_PI - 1)
+		AssertSymmetry(3 * CordicSinCosQ15.QUARTER_PI)
+	}
+
+	/**
+	 * Checks that a successful result remains observable until another request.
+	 */
+	@Test
+	fn RetainsCompletedResult()
+	{
+		assert cordic.Compute(CordicSinCosQ15.QUARTER_PI)
+		var firstSin = cordic.GetSin()
+		var firstCos = cordic.GetCos()
+
+		assert cordic.GetSin() == firstSin
+		assert cordic.GetCos() == firstCos
+	}
+
+	/**
+	 * Checks that invalid requests fail, clear observations, and permit recovery.
+	 */
+	@Test
+	fn RejectsInvalidPhaseAndRecovers()
+	{
+		assert cordic.Compute(CordicSinCosQ15.QUARTER_PI)
+		assert !cordic.Compute(CordicSinCosQ15.MIN_PHASE - 1)
+		assert cordic.GetSin() == 0
+		assert cordic.GetCos() == 0
+
+		assert !cordic.Compute(CordicSinCosQ15.MAX_PHASE + 1)
+		assert cordic.GetSin() == 0
+		assert cordic.GetCos() == 0
+
+		AssertResult(CordicSinCosQ15.QUARTER_PI, 23170, 23170)
+	}
+
+	/**
+	 * Computes one result and checks it against an independent expected pair.
+	 */
+	fn AssertResult(phase: int, expectedSin: int, expectedCos: int)
+	{
+		assert cordic.Compute(phase)
+		AssertNear(cordic.GetSin(), expectedSin)
+		AssertNear(cordic.GetCos(), expectedCos)
+	}
+
+	/**
+	 * Checks one Q1.15 result against the component's documented LSB bound.
+	 */
+	fn AssertNear(actual: int, expected: int)
+	{
+		AssertWithin(actual, expected, CordicSinCosQ15.MAX_ERROR_LSB)
+	}
+
+	/**
+	 * Checks sine/cosine symmetry for one positive phase and its negative.
+	 */
+	fn AssertSymmetry(phase: int)
+	{
+		assert cordic.Compute(phase)
+		var positiveSin = cordic.GetSin()
+		var positiveCos = cordic.GetCos()
+
+		assert cordic.Compute(0 - phase)
+		AssertWithin(cordic.GetSin(), 0 - positiveSin, 2 * CordicSinCosQ15.MAX_ERROR_LSB)
+		AssertWithin(cordic.GetCos(), positiveCos, 2 * CordicSinCosQ15.MAX_ERROR_LSB)
+	}
+
+	/**
+	 * Checks one signed result against an explicit absolute tolerance.
+	 */
+	fn AssertWithin(actual: int, expected: int, tolerance: int)
+	{
+		var difference = actual - expected
+		if (difference < 0) {
+			difference = 0 - difference
+		}
+
+		assert difference <= tolerance
+	}
+}

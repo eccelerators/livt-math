@@ -1,0 +1,20 @@
+namespace Livt.Math.Trigonometry
+
+/**
+ * Narrow native vectoring CORDIC datapath owned by CordicAtan2MagnitudeQ15.
+ */
+@Opaque
+component CordicAtan2MagnitudeQ15Primitive
+{
+	// Request inputs are held until the matching acknowledgment toggle.
+	public request: in logic
+	public xBits: in logic[16]
+	public yBits: in logic[16]
+	public valid: in bool
+
+	// Completion toggle, retained outputs, and request status.
+	public acknowledge: out logic
+	public phase: out int
+	public magnitude: out uint
+	public success: out bool
+}

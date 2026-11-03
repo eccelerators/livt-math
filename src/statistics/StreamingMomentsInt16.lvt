@@ -1,0 +1,169 @@
+namespace Livt.Math.Statistics
+
+using Livt.Math.Arithmetic
+
+/**
+ * Exact bounded moments for a finite stream of signed 16-bit samples.
+ * The component stores count, sum, and sum of squares; it never stores samples.
+ * Accepted samples invalidate the finalized result. Rejected samples do not
+ * change either the accumulator or a previously finalized result.
+ * Finalize returns the nearest-even mean, floor population variance, and floor
+ * standard deviation. Calls that change state must be serialized by the owner.
+ */
+component StreamingMomentsInt16<MAX_SAMPLES: int = 1024>
+{
+	static assert MAX_SAMPLES >= 1 && MAX_SAMPLES <= 65535, "maximum samples must be 1..65535"
+
+	// One shared worker keeps all wide accumulation and finalization arithmetic exact.
+	math: WideArithmetic<31, 15>
+	count: uint
+	sum: int
+	sumSquares: logic[64]
+	mean: int
+	variance: uint
+	standardDeviation: uint
+	resultValid: bool
+
+	new()
+	{
+		math = new WideArithmetic<31, 15>()
+	}
+
+	/** Clears accumulated samples and all finalized observations. */
+	public fn Reset()
+	{
+		count = 0
+		sum = 0
+		sumSquares = 0
+		mean = 0
+		variance = 0
+		standardDeviation = 0
+		resultValid = false
+	}
+
+	/**
+	 * Adds one signed 16-bit sample. Returns false without mutation when the sample
+	 * is outside -32768..32767 or the compile-time capacity has been reached.
+	 */
+	public fn Add(sample: int) bool
+	{
+		if (sample < -32768 || sample > 32767 || count >= (MAX_SAMPLES as uint)) {
+			return false
+		}
+
+		var sampleWide: logic[64] = sample as logic[64]
+		var square: logic[64] = math.Multiply(sampleWide, sampleWide)
+		if (math.Failed()) {
+			return false
+		}
+
+		var nextSquares: logic[64] = math.Add(sumSquares, square)
+		if (math.Failed()) {
+			return false
+		}
+
+		sumSquares = nextSquares
+		sum = sum + sample
+		count = count + 1
+		mean = 0
+		variance = 0
+		standardDeviation = 0
+		resultValid = false
+		return true
+	}
+
+	/**
+	 * Finalizes population moments. Empty streams return false with cleared result
+	 * fields. A successful result remains readable until reset or the next accepted
+	 * sample.
+	 */
+	public fn Finalize() bool
+	{
+		mean = 0
+		variance = 0
+		standardDeviation = 0
+		resultValid = false
+
+		if (count == 0) {
+			return false
+		}
+
+		var countWide: logic[64] = count as logic[64]
+		var sumWide: logic[64] = sum as logic[64]
+		var meanWide: logic[64] = math.DivideEven(sumWide, countWide)
+		if (math.Failed()) {
+			return false
+		}
+
+		var weightedSquares: logic[64] = math.Multiply(countWide, sumSquares)
+		if (math.Failed()) {
+			return false
+		}
+
+		var squaredSum: logic[64] = math.Multiply(sumWide, sumWide)
+		if (math.Failed()) {
+			return false
+		}
+
+		var negativeSquaredSum: logic[64] = math.Multiply(squaredSum, (-1) as logic[64])
+		if (math.Failed()) {
+			return false
+		}
+
+		var numerator: logic[64] = math.Add(weightedSquares, negativeSquaredSum)
+		if (math.Failed()) {
+			return false
+		}
+
+		var denominator: logic[64] = math.Multiply(countWide, countWide)
+		if (math.Failed()) {
+			return false
+		}
+
+		var varianceWide: logic[64] = math.DivideFloor(numerator, denominator)
+		if (math.Failed()) {
+			return false
+		}
+
+		var rootWide: logic[64] = math.Sqrt(varianceWide)
+		if (math.Failed()) {
+			return false
+		}
+
+		mean = meanWide as int
+		variance = varianceWide as uint
+		standardDeviation = rootWide as uint
+		resultValid = true
+		return true
+	}
+
+	public fn HasResult() bool
+	{
+		return resultValid
+	}
+
+	public fn GetCount() uint
+	{
+		return count
+	}
+
+	public fn GetSum() int
+	{
+		return sum
+	}
+
+	public fn GetMean() int
+	{
+		return mean
+	}
+
+	public fn GetVariance() uint
+	{
+		return variance
+	}
+
+	public fn GetStdDev() uint
+	{
+		return standardDeviation
+	}
+}

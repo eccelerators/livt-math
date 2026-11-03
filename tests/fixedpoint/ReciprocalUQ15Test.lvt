@@ -1,0 +1,31 @@
+namespace Livt.Math.Tests.FixedPoint
+
+using Livt.Math.FixedPoint
+
+@Test
+component ReciprocalUQ15Test
+{
+	reciprocal: ReciprocalUQ15
+
+	new()
+	{
+		reciprocal = new ReciprocalUQ15()
+	}
+
+	@Test
+	fn ComputesNormalizedReciprocals()
+	{
+		assert reciprocal.Compute(16384 as uint) == (65535 as uint)
+		assert reciprocal.Compute(19661 as uint) == (54613 as uint)
+		assert reciprocal.Compute(24576 as uint) == (43691 as uint)
+		assert reciprocal.Compute(32768 as uint) == (32768 as uint)
+	}
+
+	@Test
+	fn RejectsInputsOutsideNormalizedDomain()
+	{
+		assert reciprocal.Compute(0 as uint) == (0 as uint)
+		assert reciprocal.Compute(16383 as uint) == (0 as uint)
+		assert reciprocal.Compute(32769 as uint) == (0 as uint)
+	}
+}

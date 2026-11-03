@@ -1,0 +1,39 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Provides context-free saturating addition and subtraction for unsigned
+ * 32-bit integers. Functions have no stored state or scheduling contract; each
+ * call describes a combinational result.
+ */
+component UnsignedMath
+{
+	// Inclusive bounds of Livt's unsigned 32-bit uint type.
+	public const MIN_VALUE: uint = 0 as uint
+	public const MAX_VALUE: uint = 0xffffffff as uint
+
+	/**
+	 * Adds a and b and returns MAX_VALUE when the uint sum wraps.
+	 */
+	public static fn AddSaturating[](a: uint, b: uint) uint
+	{
+		var sum: uint = a + b
+
+		if (sum < a) {
+			return UnsignedMath.MAX_VALUE
+		}
+
+		return sum
+	}
+
+	/**
+	 * Subtracts b from a and returns zero when b is greater than a.
+	 */
+	public static fn SubSaturating[](a: uint, b: uint) uint
+	{
+		if (a < b) {
+			return UnsignedMath.MIN_VALUE
+		}
+
+		return a - b
+	}
+}

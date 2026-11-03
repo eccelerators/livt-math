@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "1.4.0"
+version = "1.5.0"
 path = "src"
 outdir = "out"
 
@@ -10,6 +10,8 @@ components = [
     "WideArithmeticTest",
     "WideArithmeticPipelineTest",
     "IntegerDivisionTest",
+    "IntegerMathTest",
+    "UnsignedMathTest",
     "SqrtLUTTest",
     "SqrtNewtonRaphsonTest",
     "MacUnitTest",
@@ -20,11 +22,16 @@ components = [
     "UQ8Test",
     "ComplexQ15Test",
     "TrigQ15Test",
+    "CordicSinCosQ15Test",
+    "CordicAtan2MagnitudeQ15Test",
     "Lcg16Test",
     "Xorshift24Test",
     "SqrtInt32Test",
     "ReciprocalSqrtQ15Test",
-    "TanhQ15Test"
+    "ReciprocalUQ15Test",
+    "TanhQ15Test",
+    "SpecialFunctionsTest",
+    "StreamingMomentsInt16Test"
 ]
 
 [dependencies]

@@ -9,7 +9,7 @@ processing.
 
 ```toml
 [dependencies]
-Livt.Math = "1.4.0"
+Livt.Math = "1.5.0"
 ```
 
 `Livt.Math` depends on `Livt.Base 1.2.0`. See
@@ -24,22 +24,38 @@ The package surface is intentionally small and practical:
   multiply-accumulate helper.
 - `Livt.Math.Arithmetic.MacInt32`: non-saturating signed-int32 accumulator for
   bounded dot products whose mathematical sum is proven to fit.
+- `Livt.Math.Arithmetic.IntegerMath`: context-free signed min/max, clamp,
+  magnitude, absolute-value, and saturating add/subtract helpers.
+- `Livt.Math.Arithmetic.UnsignedMath`: context-free uint saturating add/subtract
+  helpers.
 - `Livt.Math.Sqrt.SqrtInt32`: floor square root across the non-negative signed
   int32 range.
 - `Livt.Math.FixedPoint.ReciprocalSqrtQ15`: reciprocal square root scaled by
   32768 for normalization datapaths.
 - `Livt.Math.Approximation.TanhQ15`: interpolated Q8.8-input/Q1.15-output tanh.
+- `Livt.Math.Approximation.LinearInterpolationQ15`: serialized Q0.15 linear
+  interpolation for bounded signed endpoints.
+- `Livt.Math.Approximation.Log2UQ15`: bounded UQ1.15-to-Q5.11 base-2 logarithm.
+- `Livt.Math.Approximation.Exp2Q11`: bounded Q5.11-to-UQ1.15 base-2 exponential.
 - `Livt.Math.FixedPoint.Q7`: compact signed Q1.7 fixed-point helpers.
 - `Livt.Math.FixedPoint.Q15`: signed Q1.15 fixed-point helpers for normalized
   DSP coefficients.
 - `Livt.Math.FixedPoint.UQ8`: unsigned Q0.8 fixed-point helpers for normalized
   values.
+- `Livt.Math.FixedPoint.ReciprocalUQ15`: rounded reciprocal for normalized
+  unsigned Q1.15 values.
 - `Livt.Math.Complex.ComplexQ15`: reusable Q15 complex arithmetic helper.
 - `Livt.Math.Lookup.TrigQ15`: small Q15 sine/cosine lookup for common angles.
+- `Livt.Math.Trigonometry.CordicSinCosQ15`: scheduled 16-step Q15 sine/cosine
+  for arbitrary signed full-turn phases.
+- `Livt.Math.Trigonometry.CordicAtan2MagnitudeQ15`: scheduled Cartesian-to-polar
+  conversion for signed Q1.15 vectors.
 - `Livt.Math.Random.Lcg16`: 16-bit linear congruential generator (period 65 536).
 - `Livt.Math.Random.Xorshift24`: 24-bit xorshift generator (period 2^24 − 1).
 - `Livt.Math.Arithmetic.WideArithmetic`: exact scheduled 64-bit
   multiply/add/divide/root service with configurable timing tradeoffs.
+- `Livt.Math.Statistics.StreamingMomentsInt16`: exact bounded count, sum, mean,
+  population variance, and standard deviation for signed 16-bit samples.
 
 ## Package API Shape
 
@@ -65,9 +81,24 @@ quantized dot products when the caller has established that every intermediate
 sum fits Livt's signed `int`. `SqrtInt32` and `ReciprocalSqrtQ15` provide the
 wider normalization path required by 64-value LayerNorm implementations.
 
+`IntegerMath` and `UnsignedMath` expose direct context-free helpers without
+stored component state. `IntegerMath.Magnitude` returns `uint`, so it represents
+the magnitude of signed `int` minimum exactly; `AbsSaturating` instead returns
+`int` and maps that one unrepresentable magnitude to signed maximum. A reversed
+`Clamp` range deterministically returns its supplied minimum. Saturating add and
+subtract detect boundary crossings before evaluating their final signed result.
+
 `TanhQ15.Apply(input)` accepts Q8.8 values, saturates outside `[-4, 4]`, and
 linearly interpolates a 0.25-spaced lookup table. It is generic arithmetic;
 model-specific GELU composition remains in `Livt.ML.Activation`.
+
+The bounded special-function components target common FPGA scaling paths.
+`Log2UQ15` and `Exp2Q11` form a paired logarithmic conversion path,
+`ReciprocalUQ15` handles normalized reciprocal scaling, and
+`LinearInterpolationQ15` provides their reusable serialized interpolation
+mechanism. See [fixed-point special functions](docs/SpecialFunctions.md) for
+formats, domains, and failure behavior. Generic `Pow`, unrestricted `Log` and
+`Exp`, and model-level activations are intentionally outside this API.
 
 Fixed-point helpers use explicit named formats instead of a generic framework:
 
@@ -102,6 +133,20 @@ composition.
 size-4 and size-8 examples. Unsupported table sizes fall back to `cos = 1` and
 `sin = 0` in Q15 form. Larger transform orchestration belongs in a
 signal-processing package rather than in `Livt.Math`.
+
+`CordicSinCosQ15` complements that small lookup with an iterative full-circle
+worker. Its signed phase maps 32768 units to π radians and returns both Q1.15
+outputs from one scheduled call. Valid calls use 16 shared shift/add iterations,
+retain their result until the next call or reset, and guarantee at most 4 LSB
+error. See [CORDIC sine and cosine](docs/CordicSinCosQ15.md) for the complete
+numeric and lifecycle contracts.
+
+`CordicAtan2MagnitudeQ15` provides the inverse Cartesian operation without
+changing the sine/cosine worker. It returns canonical `Atan2` phase and an
+unsigned magnitude that preserves the full Q1.15 diagonal range. The zero
+vector and coordinates outside Q1.15 are rejected. See
+[CORDIC phase and magnitude](docs/CordicAtan2MagnitudeQ15.md) for the complete
+numeric and lifecycle contracts.
 
 `SqrtNewtonRaphson` uses the scheduled unsigned divider for its Newton steps.
 It preserves floor-square-root results while trading additional cycles for a
@@ -147,6 +192,18 @@ semantics and configuration tradeoffs.
 Compute quotient and remainder together, or use the `Divide` and `Remainder`
 convenience calls. `ModuloEuclidean` explicitly requests nonnegative modulo.
 
+### Bounded stream statistics
+
+`StreamingMomentsInt16<MAX_SAMPLES>` summarizes a finite signed-16 stream
+without sample storage. It retains exact count, sum, and sum of squares, then
+finalizes a nearest-even integer mean, floor population variance, and floor
+standard deviation through one shared scheduled arithmetic worker. See
+[streaming signed-16 moments](docs/StreamingMomentsInt16.md) for its numeric and
+lifecycle contract.
+
+Moving-window statistics and median filters are intentionally reserved for
+`Livt.Signal`, where storage and stream timing form part of the public API.
+
 ## Package Boundary
 
 Good candidates for `Livt.Math` are low-level arithmetic primitives that other
@@ -178,6 +235,8 @@ src/fixedpoint/   named fixed-point formats
 src/approximation/ bounded reusable function approximations
 src/complex/      fixed-point complex arithmetic
 src/lookup/       small reusable lookup constants
+src/trigonometry/ iterative trigonometric workers
+src/statistics/   bounded finite-stream statistics
 src/random/       pseudo-random number generators
 tests/sqrt/       tests mirroring the source domain
 tests/arithmetic/
@@ -185,6 +244,8 @@ tests/fixedpoint/
 tests/approximation/
 tests/complex/
 tests/lookup/
+tests/trigonometry/
+tests/statistics/
 tests/random/
 docs/             short usage examples and package notes
 ```

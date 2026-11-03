@@ -1,0 +1,105 @@
+namespace Livt.Math.Tests.Trigonometry
+
+using Livt.Math.Trigonometry
+
+/**
+ * Exercises vectoring CORDIC phase, magnitude, retention, and failure contracts.
+ */
+@Test
+component CordicAtan2MagnitudeQ15Test
+{
+	cordic: CordicAtan2MagnitudeQ15
+
+	new()
+	{
+		cordic = new CordicAtan2MagnitudeQ15()
+	}
+
+	@Test
+	fn ComputesCardinalVectors()
+	{
+		AssertResult(32767, 0, 0, 32767)
+		AssertResult(0, 32767, CordicAtan2MagnitudeQ15.HALF_PI, 32767)
+		AssertResult(-32768, 0, CordicAtan2MagnitudeQ15.MIN_PHASE, 32768)
+		AssertResult(0, -32768, 0 - CordicAtan2MagnitudeQ15.HALF_PI, 32768)
+	}
+
+	@Test
+	fn ComputesDiagonalVectors()
+	{
+		AssertResult(23170, 23170, CordicAtan2MagnitudeQ15.QUARTER_PI, 32767)
+		AssertResult(-23170, 23170, 3 * CordicAtan2MagnitudeQ15.QUARTER_PI, 32767)
+		AssertResult(-23170, -23170, 0 - 3 * CordicAtan2MagnitudeQ15.QUARTER_PI, 32767)
+		AssertResult(23170, -23170, 0 - CordicAtan2MagnitudeQ15.QUARTER_PI, 32767)
+	}
+
+	@Test
+	fn NormalizesSmallVectors()
+	{
+		AssertResult(1, 1, CordicAtan2MagnitudeQ15.QUARTER_PI, 1)
+		AssertResult(1, 2, 11548, 2)
+		AssertResult(-1, 2, 21220, 2)
+	}
+
+	@Test
+	fn SupportsFullScaleMagnitude()
+	{
+		AssertResult(-32768, 32767, 3 * CordicAtan2MagnitudeQ15.QUARTER_PI, 46340)
+		AssertResult(32767, 32767, CordicAtan2MagnitudeQ15.QUARTER_PI, 46340)
+	}
+
+	@Test
+	fn RetainsCompletedResult()
+	{
+		assert cordic.Compute(12345, -23456)
+		var phase = cordic.GetPhase()
+		var magnitude = cordic.GetMagnitude()
+
+		assert cordic.GetPhase() == phase
+		assert cordic.GetMagnitude() == magnitude
+	}
+
+	@Test
+	fn RejectsInvalidVectorsAndRecovers()
+	{
+		assert cordic.Compute(1, 1)
+		assert !cordic.Compute(0, 0)
+		assert cordic.GetPhase() == 0
+		assert cordic.GetMagnitude() == (0 as uint)
+
+		assert !cordic.Compute(CordicAtan2MagnitudeQ15.MAX_COORDINATE + 1, 0)
+		assert cordic.GetPhase() == 0
+		assert cordic.GetMagnitude() == (0 as uint)
+
+		AssertResult(1, 1, CordicAtan2MagnitudeQ15.QUARTER_PI, 1)
+	}
+
+	fn AssertResult(x: int, y: int, expectedPhase: int, expectedMagnitude: uint)
+	{
+		assert cordic.Compute(x, y)
+		AssertPhaseNear(cordic.GetPhase(), expectedPhase)
+		AssertMagnitudeNear(cordic.GetMagnitude(), expectedMagnitude)
+	}
+
+	fn AssertPhaseNear(actual: int, expected: int)
+	{
+		var difference = actual - expected
+		if (difference < 0) {
+			difference = 0 - difference
+		}
+
+		assert difference <= CordicAtan2MagnitudeQ15.MAX_PHASE_ERROR
+	}
+
+	fn AssertMagnitudeNear(actual: uint, expected: uint)
+	{
+		var difference: uint = 0
+		if (actual >= expected) {
+			difference = actual - expected
+		} else {
+			difference = expected - actual
+		}
+
+		assert difference <= CordicAtan2MagnitudeQ15.MAX_MAGNITUDE_ERROR
+	}
+}

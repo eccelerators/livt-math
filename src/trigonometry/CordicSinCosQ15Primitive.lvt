@@ -1,0 +1,19 @@
+namespace Livt.Math.Trigonometry
+
+/**
+ * Narrow native CORDIC datapath owned by CordicSinCosQ15.
+ */
+@Opaque
+component CordicSinCosQ15Primitive
+{
+	// Request inputs are held until the matching acknowledgment toggle.
+	public request: in logic
+	public phaseBits: in logic[16]
+	public valid: in bool
+
+	// Completion toggle, retained Q1.15 outputs, and request status.
+	public acknowledge: out logic
+	public sine: out int
+	public cosine: out int
+	public success: out bool
+}

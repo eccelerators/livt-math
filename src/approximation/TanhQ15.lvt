@@ -15,12 +15,14 @@ component TanhQ15
 
 	// Owned approximation table in the component numeric scale.
 	lut: int[17]
+	interpolator: LinearInterpolationQ15<false>
 
 	/**
 	 * Loads the owned Q1.15 approximation table used by Apply.
 	 */
 	new()
 	{
+		interpolator = new LinearInterpolationQ15<false>()
 		lut[0] = 0
 		lut[1] = 8025
 		lut[2] = 15142
@@ -60,11 +62,12 @@ component TanhQ15
 			return lut[LAST_INDEX]
 		}
 
-		var index = magnitude / STEP
-		var remainder = magnitude % STEP
+		var index = magnitude >> 6
+		var remainder = magnitude & 63
 		var lower = lut[index]
 		var upper = lut[index + 1]
-		var value = lower + (upper - lower) * remainder / STEP
+		var fraction = remainder << 9
+		var value = interpolator.Compute(lower, upper, fraction)
 
 		if (negative) {
 			return 0 - value

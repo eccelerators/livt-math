@@ -1,0 +1,68 @@
+namespace Livt.Math.Trigonometry
+
+/**
+ * Computes Q1.15 sine and cosine with a resource-shared 16-step CORDIC worker.
+ * Phase is signed turns where 32768 represents pi radians. Calls are serialized;
+ * reset cancels an active request and clears the retained results.
+ */
+component CordicSinCosQ15
+{
+	// Public phase, result, iteration, and accuracy contract.
+	public const MIN_PHASE: int = -32768
+	public const MAX_PHASE: int = 32767
+	public const HALF_PI: int = 16384
+	public const QUARTER_PI: int = 8192
+	public const ITERATIONS: int = 16
+	public const MAX_ERROR_LSB: int = 4
+
+	// Owned narrow native worker and its request/acknowledgment toggle.
+	primitive: CordicSinCosQ15Primitive
+	request: logic
+
+	/**
+	 * Owns one narrow CORDIC worker in the caller clock/reset context.
+	 */
+	new()
+	{
+		primitive = new CordicSinCosQ15Primitive()
+	}
+
+	/**
+	 * Computes sine and cosine for phase in [-32768, 32767]. Invalid phase
+	 * returns false and clears both results. A successful call retains its
+	 * results until the next request or reset.
+	 */
+	public fn Compute(phase: int) bool
+	{
+		state {
+			primitive.phaseBits = phase as logic[16]
+			primitive.valid = phase >= MIN_PHASE && phase <= MAX_PHASE
+		}
+
+		request = !request
+		primitive.request = request
+
+		while (primitive.acknowledge != request) {
+			state {
+			}
+		}
+
+		return primitive.success
+	}
+
+	/**
+	 * Returns the Q1.15 sine retained by the latest completed request.
+	 */
+	public fn GetSin() int
+	{
+		return primitive.sine
+	}
+
+	/**
+	 * Returns the Q1.15 cosine retained by the latest completed request.
+	 */
+	public fn GetCos() int
+	{
+		return primitive.cosine
+	}
+}

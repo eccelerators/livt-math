@@ -1,0 +1,89 @@
+namespace Livt.Math.Tests.Approximation
+
+using Livt.Math.Approximation
+
+@Test
+component SpecialFunctionsTest
+{
+	logarithm: Log2UQ15
+	exponential: Exp2Q11
+	interpolator: LinearInterpolationQ15
+
+	new()
+	{
+		logarithm = new Log2UQ15()
+		exponential = new Exp2Q11()
+		interpolator = new LinearInterpolationQ15()
+	}
+
+	@Test
+	fn InterpolatesSignedEndpoints()
+	{
+		assert interpolator.Compute(-100, 100, 0) == -100
+		assert interpolator.Compute(-100, 100, 16384) == 0
+		assert interpolator.Compute(-100, 100, 32768) == 100
+		assert interpolator.Compute(100, -100, 8192) == 50
+		assert interpolator.Compute(0, 100, -1) == 0
+		assert interpolator.Compute(0, 100, 40000) == 100
+	}
+
+	@Test
+	fn ComputesLogarithmReferencePoints()
+	{
+		AssertLog(1, -30720)
+		AssertLog(8192, -4096)
+		AssertLog(16384, -2048)
+		AssertLog(32768, 0)
+		AssertLog(46341, 1024)
+		AssertLog(65535, 2048)
+	}
+
+	@Test
+	fn RejectsZeroLogarithm()
+	{
+		assert logarithm.Compute(32768 as uint)
+		assert !logarithm.Compute(0 as uint)
+		assert logarithm.GetResult() == 0
+	}
+
+	@Test
+	fn ComputesExponentialReferencePoints()
+	{
+		AssertExp(-30720, 1)
+		AssertExp(-2048, 16384)
+		AssertExp(0, 32768)
+		AssertExp(1024, 46341)
+		AssertExp(2048, 65535)
+	}
+
+	@Test
+	fn RejectsExponentialInputsOutsideDomain()
+	{
+		assert exponential.Compute(0)
+		assert !exponential.Compute(Exp2Q11.MIN_INPUT - 1)
+		assert exponential.GetResult() == (0 as uint)
+		assert !exponential.Compute(Exp2Q11.MAX_INPUT + 1)
+		assert exponential.GetResult() == (0 as uint)
+	}
+
+	fn AssertLog(input: int, expected: int)
+	{
+		assert logarithm.Compute(input as uint)
+		var difference = logarithm.GetResult() - expected
+		if (difference < 0) {
+			difference = 0 - difference
+		}
+		assert difference <= Log2UQ15.MAX_ERROR
+	}
+
+	fn AssertExp(input: int, expected: int)
+	{
+		assert exponential.Compute(input)
+		var actual = exponential.GetResult() as int
+		var difference = actual - expected
+		if (difference < 0) {
+			difference = 0 - difference
+		}
+		assert difference <= (Exp2Q11.MAX_ERROR as int)
+	}
+}

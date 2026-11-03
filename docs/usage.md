@@ -3,6 +3,67 @@
 `Livt.Math` exposes fixed-size arithmetic components. These examples show the
 basic call order and boundary behavior expected by the package.
 
+## Bounded Stream Statistics
+
+Use `StreamingMomentsInt16` when a finite block needs integer mean, population
+variance, and standard deviation without retaining its samples. Finalize after
+the block has been added, and check its Boolean result before reading the
+finalized fields.
+
+```livt
+namespace Example
+
+using Livt.Math.Statistics
+
+component BlockStatisticsExample
+{
+    statistics: StreamingMomentsInt16<256>
+
+    new()
+    {
+        statistics = new StreamingMomentsInt16<256>()
+    }
+
+    public fn Summarize()
+    {
+        statistics.Reset()
+        statistics.Add(-12)
+        statistics.Add(4)
+        statistics.Add(20)
+
+        if (statistics.Finalize()) {
+            var mean: int = statistics.GetMean()
+            var variance: uint = statistics.GetVariance()
+            var deviation: uint = statistics.GetStdDev()
+        }
+    }
+}
+```
+
+## Integer Helpers
+
+Use the context-free integer helpers for reusable combinational selection,
+magnitude, and saturating arithmetic. `Magnitude` returns `uint` so the magnitude
+of signed `int` minimum remains representable. `AbsSaturating` returns `int` and
+saturates that one value to signed maximum.
+
+```livt
+namespace Example
+
+using Livt.Math.Arithmetic
+
+component IntegerMathExample
+{
+	public fn Run()
+	{
+		var bounded: int = IntegerMath.Clamp(120, -100, 100)
+		var magnitude: uint = IntegerMath.Magnitude(-2147483647 - 1)
+		var signedSum: int = IntegerMath.AddSaturating(2147483647, 1)
+		var unsignedDifference: uint = UnsignedMath.SubSaturating(3, 7)
+	}
+}
+```
+
 ## Integer Square Root
 
 Use `SqrtLUT` for 8-bit inputs when a small table is a better fit than an
@@ -196,3 +257,120 @@ component LookupExample
     }
 }
 ```
+
+## Arbitrary Q15 Sine and Cosine
+
+Use the scheduled CORDIC worker when the phase is not one of the common values
+provided by `TrigQ15`. Phase units map 32768 to π radians, so 8192 represents
+π/4. A successful call retains both Q1.15 results.
+
+```livt
+namespace Example
+
+using Livt.Math.Trigonometry
+
+component CordicExample
+{
+    cordic: CordicSinCosQ15
+
+    new()
+    {
+        cordic = new CordicSinCosQ15()
+    }
+
+    public fn Run() bool
+    {
+        if (!cordic.Compute(CordicSinCosQ15.QUARTER_PI)) {
+            return false
+        }
+
+        var sine: int = cordic.GetSin()
+        var cosine: int = cordic.GetCos()
+        return true
+    }
+}
+```
+
+See [`CordicSinCosQ15.md`](CordicSinCosQ15.md) for the numeric error and
+lifecycle contract.
+
+## Q15 Vector Phase and Magnitude
+
+Use the vectoring CORDIC worker to convert a nonzero Cartesian Q1.15 vector into
+canonical phase and unsigned magnitude. Magnitude keeps 15 fractional bits and
+can represent the complete diagonal range.
+
+```livt
+namespace Example
+
+using Livt.Math.Trigonometry
+
+component VectoringExample
+{
+    cordic: CordicAtan2MagnitudeQ15
+
+    new()
+    {
+        cordic = new CordicAtan2MagnitudeQ15()
+    }
+
+    public fn Run() bool
+    {
+        if (!cordic.Compute(23170, 23170)) {
+            return false
+        }
+
+        var phase: int = cordic.GetPhase()
+        var magnitude: uint = cordic.GetMagnitude()
+        return true
+    }
+}
+```
+
+See [`CordicAtan2MagnitudeQ15.md`](CordicAtan2MagnitudeQ15.md) for the numeric
+and lifecycle contracts.
+
+## Fixed-Point Logarithm, Exponential, and Reciprocal
+
+The special-function components use paired, bounded formats suitable for FPGA
+gain and compression paths.
+
+```livt
+namespace Example
+
+using Livt.Math.Approximation
+using Livt.Math.FixedPoint
+
+component SpecialFunctionExample
+{
+    logarithm: Log2UQ15
+    exponential: Exp2Q11
+    reciprocal: ReciprocalUQ15
+
+    new()
+    {
+        logarithm = new Log2UQ15()
+        exponential = new Exp2Q11()
+        reciprocal = new ReciprocalUQ15()
+    }
+
+    public fn Run() bool
+    {
+        if (!logarithm.Compute(46341 as uint)) {
+            return false
+        }
+
+        var logValue: int = logarithm.GetResult()
+        if (!exponential.Compute(logValue)) {
+            return false
+        }
+
+        var restored: uint = exponential.GetResult()
+        var inverse: uint = reciprocal.Compute(24576 as uint)
+        return restored > (0 as uint) && inverse > (0 as uint)
+    }
+}
+```
+
+See [`SpecialFunctions.md`](SpecialFunctions.md) for the numeric and lifecycle
+contracts.

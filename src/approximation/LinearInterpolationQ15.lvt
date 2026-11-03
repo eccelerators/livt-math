@@ -1,0 +1,79 @@
+namespace Livt.Math.Approximation
+
+/**
+ * Linearly interpolates signed integer endpoints with a Q0.15 fraction.
+ */
+component LinearInterpolationQ15<ROUND_NEAREST: bool = true>
+{
+	public const FRACTION_SCALE: int = 32768
+	public const MIN_FRACTION: int = 0
+	public const MAX_FRACTION: int = 32768
+	public const MIN_ENDPOINT: int = -32768
+	public const MAX_ENDPOINT: int = 32768
+
+	/**
+	 * Returns lower at fraction zero and upper at fraction 32768. Fractions
+	 * outside the supported interval are clamped before interpolation.
+	 */
+	public fn Compute(lower: int, upper: int, fraction: int) int
+	{
+		var boundedLower = lower
+		if (boundedLower < MIN_ENDPOINT) {
+			boundedLower = MIN_ENDPOINT
+		} elif (boundedLower > MAX_ENDPOINT) {
+			boundedLower = MAX_ENDPOINT
+		}
+
+		var boundedUpper = upper
+		if (boundedUpper < MIN_ENDPOINT) {
+			boundedUpper = MIN_ENDPOINT
+		} elif (boundedUpper > MAX_ENDPOINT) {
+			boundedUpper = MAX_ENDPOINT
+		}
+
+		var bounded = fraction
+		if (bounded < MIN_FRACTION) {
+			bounded = MIN_FRACTION
+		} elif (bounded > MAX_FRACTION) {
+			bounded = MAX_FRACTION
+		}
+
+		if (bounded == MIN_FRACTION) {
+			return boundedLower
+		}
+
+		if (bounded == MAX_FRACTION) {
+			return boundedUpper
+		}
+
+		var multiplicand = boundedUpper - boundedLower
+		var multiplier = bounded
+		var product = 0
+		for (var bit = 0; bit < 15; bit++) {
+			state {
+				if ((multiplier & 1) != 0) {
+					product = product + multiplicand
+				}
+				multiplicand = multiplicand << 1
+				multiplier = multiplier >> 1
+			}
+		}
+
+		var adjustment: int = 0
+		if (product >= 0) {
+			if (ROUND_NEAREST) {
+				adjustment = (product + 16384) >> 15
+			} else {
+				adjustment = product >> 15
+			}
+		} else {
+			if (ROUND_NEAREST) {
+				adjustment = 0 - ((0 - product + 16384) >> 15)
+			} else {
+				adjustment = 0 - ((0 - product) >> 15)
+			}
+		}
+
+		return boundedLower + adjustment
+	}
+}

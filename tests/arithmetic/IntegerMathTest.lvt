@@ -1,0 +1,123 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+/**
+ * Verifies signed selection, magnitude, and saturation across ordinary and
+ * full-width boundary values.
+ */
+@Test
+component IntegerMathTest
+{
+	/**
+	 * Selects ordered, equal, and full-width minimum and maximum values.
+	 */
+	@Test
+	fn SelectsMinimumAndMaximumValues()
+	{
+		assert IntegerMath.Minimum(-4, 9) == -4
+		assert IntegerMath.Minimum(7, 7) == 7
+		assert IntegerMath.Minimum(IntegerMath.MIN_VALUE, IntegerMath.MAX_VALUE)
+			== IntegerMath.MIN_VALUE
+		assert IntegerMath.Maximum(-4, 9) == 9
+		assert IntegerMath.Maximum(7, 7) == 7
+		assert IntegerMath.Maximum(IntegerMath.MIN_VALUE, IntegerMath.MAX_VALUE)
+			== IntegerMath.MAX_VALUE
+	}
+
+	/**
+	 * Clamps values below, inside, and above an inclusive range.
+	 */
+	@Test
+	fn ClampsToInclusiveRange()
+	{
+		assert IntegerMath.Clamp(-11, -10, 10) == -10
+		assert IntegerMath.Clamp(-10, -10, 10) == -10
+		assert IntegerMath.Clamp(3, -10, 10) == 3
+		assert IntegerMath.Clamp(10, -10, 10) == 10
+		assert IntegerMath.Clamp(11, -10, 10) == 10
+	}
+
+	/**
+	 * Returns the minimum bound when the supplied range is reversed.
+	 */
+	@Test
+	fn UsesMinimumForInvalidClampRange()
+	{
+		assert IntegerMath.Clamp(-100, 10, -10) == 10
+		assert IntegerMath.Clamp(0, 10, -10) == 10
+		assert IntegerMath.Clamp(100, 10, -10) == 10
+	}
+
+	/**
+	 * Represents every signed magnitude, including the unrepresentable signed
+	 * absolute value of MIN_VALUE.
+	 */
+	@Test
+	fn RepresentsFullUnsignedMagnitude()
+	{
+		assert IntegerMath.Magnitude(0) == (0 as uint)
+		assert IntegerMath.Magnitude(123) == (123 as uint)
+		assert IntegerMath.Magnitude(-123) == (123 as uint)
+		assert IntegerMath.Magnitude(IntegerMath.MAX_VALUE) == (0x7fffffff as uint)
+		assert IntegerMath.Magnitude(IntegerMath.MIN_VALUE) == (0x80000000 as uint)
+	}
+
+	/**
+	 * Saturates only the signed minimum absolute value.
+	 */
+	@Test
+	fn SaturatesUnrepresentableAbsoluteValue()
+	{
+		assert IntegerMath.AbsSaturating(0) == 0
+		assert IntegerMath.AbsSaturating(123) == 123
+		assert IntegerMath.AbsSaturating(-123) == 123
+		assert IntegerMath.AbsSaturating(IntegerMath.MAX_VALUE) == IntegerMath.MAX_VALUE
+		assert IntegerMath.AbsSaturating(IntegerMath.MIN_VALUE) == IntegerMath.MAX_VALUE
+	}
+
+	/**
+	 * Preserves representable sums and saturates positive and negative overflow.
+	 */
+	@Test
+	fn SaturatesSignedAdditionAtTypeBounds()
+	{
+		assert IntegerMath.AddSaturating(20, 22) == 42
+		assert IntegerMath.AddSaturating(-20, -22) == -42
+		assert IntegerMath.AddSaturating(IntegerMath.MAX_VALUE, 0)
+			== IntegerMath.MAX_VALUE
+		assert IntegerMath.AddSaturating(IntegerMath.MIN_VALUE, 0)
+			== IntegerMath.MIN_VALUE
+		assert IntegerMath.AddSaturating(IntegerMath.MAX_VALUE, 1)
+			== IntegerMath.MAX_VALUE
+		assert IntegerMath.AddSaturating(IntegerMath.MAX_VALUE - 4, 5)
+			== IntegerMath.MAX_VALUE
+		assert IntegerMath.AddSaturating(IntegerMath.MIN_VALUE, -1)
+			== IntegerMath.MIN_VALUE
+		assert IntegerMath.AddSaturating(IntegerMath.MIN_VALUE + 4, -5)
+			== IntegerMath.MIN_VALUE
+	}
+
+	/**
+	 * Preserves representable differences and saturates positive and negative
+	 * overflow.
+	 */
+	@Test
+	fn SaturatesSignedSubtractionAtTypeBounds()
+	{
+		assert IntegerMath.SubSaturating(50, 8) == 42
+		assert IntegerMath.SubSaturating(-50, -8) == -42
+		assert IntegerMath.SubSaturating(IntegerMath.MAX_VALUE, 0)
+			== IntegerMath.MAX_VALUE
+		assert IntegerMath.SubSaturating(IntegerMath.MIN_VALUE, 0)
+			== IntegerMath.MIN_VALUE
+		assert IntegerMath.SubSaturating(IntegerMath.MAX_VALUE, -1)
+			== IntegerMath.MAX_VALUE
+		assert IntegerMath.SubSaturating(IntegerMath.MAX_VALUE - 4, -5)
+			== IntegerMath.MAX_VALUE
+		assert IntegerMath.SubSaturating(IntegerMath.MIN_VALUE, 1)
+			== IntegerMath.MIN_VALUE
+		assert IntegerMath.SubSaturating(IntegerMath.MIN_VALUE + 4, 5)
+			== IntegerMath.MIN_VALUE
+	}
+}

@@ -1,0 +1,77 @@
+namespace Livt.Math.Approximation
+
+using Livt.Bits
+
+/**
+ * Approximates base-2 logarithms from unsigned Q1.15 to signed Q5.11.
+ */
+component Log2UQ15
+{
+	public const INPUT_SCALE: uint = 32768
+	public const OUTPUT_SCALE: int = 2048
+	public const MIN_INPUT: uint = 1
+	public const MAX_INPUT: uint = 65535
+	public const MIN_OUTPUT: int = -30720
+	public const MAX_OUTPUT: int = 2048
+	public const MAX_ERROR: int = 3
+
+	bits: Bits
+	interpolator: LinearInterpolationQ15
+	table: int[17]
+	result: int
+
+	new()
+	{
+		bits = new Bits()
+		interpolator = new LinearInterpolationQ15()
+		table[0] = 0
+		table[1] = 179
+		table[2] = 348
+		table[3] = 508
+		table[4] = 659
+		table[5] = 803
+		table[6] = 941
+		table[7] = 1072
+		table[8] = 1198
+		table[9] = 1319
+		table[10] = 1435
+		table[11] = 1546
+		table[12] = 1653
+		table[13] = 1757
+		table[14] = 1857
+		table[15] = 1954
+		table[16] = 2048
+	}
+
+	/**
+	 * Computes log2(input / 32768). Zero returns false and clears the result.
+	 */
+	public fn Compute(input: uint) bool
+	{
+		if (input < MIN_INPUT || input > MAX_INPUT) {
+			result = 0
+			return false
+		}
+
+		var raw = input as int
+		var highestBit = bits.RequiredBits(raw) - 1
+		var exponent = highestBit - 15
+		var normalized = raw << (15 - highestBit)
+		var offset = normalized - 32768
+		var index = offset >> 11
+		var remainder = offset & 2047
+		var fraction = remainder << 4
+		var fractional = interpolator.Compute(
+			table[index], table[index + 1], fraction)
+		result = (exponent << 11) + fractional
+		return true
+	}
+
+	/**
+	 * Returns the retained signed Q5.11 result.
+	 */
+	public fn GetResult() int
+	{
+		return result
+	}
+}

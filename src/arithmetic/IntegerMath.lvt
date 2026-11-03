@@ -1,0 +1,131 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Provides context-free helpers for signed 32-bit integer selection, magnitude,
+ * and saturating arithmetic. Functions have no stored state or scheduling
+ * contract; each call describes a combinational result.
+ */
+component IntegerMath
+{
+	// Inclusive bounds of Livt's signed 32-bit int type.
+	public const MIN_VALUE: int = -2147483647 - 1
+	public const MAX_VALUE: int = 2147483647
+
+	/**
+	 * Returns the smaller of a and b. Equal inputs are returned unchanged.
+	 */
+	public static fn Minimum[](a: int, b: int) int
+	{
+		if (a < b) {
+			return a
+		}
+
+		return b
+	}
+
+	/**
+	 * Returns the larger of a and b. Equal inputs are returned unchanged.
+	 */
+	public static fn Maximum[](a: int, b: int) int
+	{
+		if (a > b) {
+			return a
+		}
+
+		return b
+	}
+
+	/**
+	 * Restricts value to the inclusive minimum..maximum range. When minimum is
+	 * greater than maximum, returns minimum as the deterministic invalid-range
+	 * result.
+	 */
+	public static fn Clamp[](value: int, minimum: int, maximum: int) int
+	{
+		if (minimum > maximum) {
+			return minimum
+		}
+
+		if (value < minimum) {
+			return minimum
+		}
+
+		if (value > maximum) {
+			return maximum
+		}
+
+		return value
+	}
+
+	/**
+	 * Returns the unsigned magnitude of value. The uint result represents the
+	 * magnitude of MIN_VALUE exactly as 0x80000000.
+	 */
+	public static fn Magnitude[](value: int) uint
+	{
+		if (value >= 0) {
+			return value as uint
+		}
+
+		return (0 as uint) - (value as uint)
+	}
+
+	/**
+	 * Returns the absolute value as an int. MIN_VALUE saturates to MAX_VALUE
+	 * because its positive mathematical magnitude is not representable as int.
+	 */
+	public static fn AbsSaturating[](value: int) int
+	{
+		if (value == IntegerMath.MIN_VALUE) {
+			return IntegerMath.MAX_VALUE
+		}
+
+		if (value < 0) {
+			return -value
+		}
+
+		return value
+	}
+
+	/**
+	 * Adds a and b and saturates signed overflow to MIN_VALUE or MAX_VALUE.
+	 * Overflow is detected before evaluating the final sum.
+	 */
+	public static fn AddSaturating[](a: int, b: int) int
+	{
+		if (b > 0) {
+			if (a > IntegerMath.MAX_VALUE - b) {
+				return IntegerMath.MAX_VALUE
+			}
+		}
+
+		if (b < 0) {
+			if (a < IntegerMath.MIN_VALUE - b) {
+				return IntegerMath.MIN_VALUE
+			}
+		}
+
+		return a + b
+	}
+
+	/**
+	 * Subtracts b from a and saturates signed overflow to MIN_VALUE or
+	 * MAX_VALUE. Overflow is detected before evaluating the final difference.
+	 */
+	public static fn SubSaturating[](a: int, b: int) int
+	{
+		if (b < 0) {
+			if (a > IntegerMath.MAX_VALUE + b) {
+				return IntegerMath.MAX_VALUE
+			}
+		}
+
+		if (b > 0) {
+			if (a < IntegerMath.MIN_VALUE + b) {
+				return IntegerMath.MIN_VALUE
+			}
+		}
+
+		return a - b
+	}
+}

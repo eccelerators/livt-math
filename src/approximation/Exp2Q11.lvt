@@ -1,0 +1,84 @@
+namespace Livt.Math.Approximation
+
+/**
+ * Approximates base-2 exponentials from signed Q5.11 to unsigned Q1.15.
+ */
+component Exp2Q11
+{
+	public const INPUT_SCALE: int = 2048
+	public const OUTPUT_SCALE: uint = 32768
+	public const MIN_INPUT: int = -30720
+	public const MAX_INPUT: int = 2048
+	public const MAX_OUTPUT: uint = 65535
+	public const MAX_ERROR: uint = 16
+
+	interpolator: LinearInterpolationQ15
+	table: int[17]
+	result: uint
+
+	new()
+	{
+		interpolator = new LinearInterpolationQ15()
+		table[0] = 16384
+		table[1] = 17109
+		table[2] = 17867
+		table[3] = 18658
+		table[4] = 19484
+		table[5] = 20347
+		table[6] = 21247
+		table[7] = 22188
+		table[8] = 23170
+		table[9] = 24196
+		table[10] = 25268
+		table[11] = 26386
+		table[12] = 27554
+		table[13] = 28774
+		table[14] = 30048
+		table[15] = 31379
+		table[16] = 32768
+	}
+
+	/**
+	 * Computes 2^(input / 2048). Inputs outside [-15, 1] return false and
+	 * clear the result; the upper endpoint saturates to unsigned Q1.15 maximum.
+	 */
+	public fn Compute(input: int) bool
+	{
+		if (input < MIN_INPUT || input > MAX_INPUT) {
+			result = 0 as uint
+			return false
+		}
+
+		var exponent = input >> 11
+		var remainder = input - (exponent << 11)
+		var index = remainder >> 7
+		var substep = remainder & 127
+		var fraction = substep << 8
+		var value = interpolator.Compute(
+			table[index], table[index + 1], fraction)
+		value = value << 1
+
+		if (exponent < 0) {
+			var shift = 0 - exponent
+			value = (value + (1 << (shift - 1))) >> shift
+		} elif (exponent > 0) {
+			value = value << exponent
+		}
+
+		if (value > 65535) {
+			result = MAX_OUTPUT
+		} else {
+			result = value as uint
+		}
+
+		return true
+	}
+
+	/**
+	 * Returns the retained unsigned Q1.15 result.
+	 */
+	public fn GetResult() uint
+	{
+		return result
+	}
+}

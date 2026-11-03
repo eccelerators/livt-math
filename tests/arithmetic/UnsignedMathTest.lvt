@@ -1,0 +1,41 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+/**
+ * Verifies unsigned saturating addition and subtraction across ordinary and
+ * full-width boundary values.
+ */
+@Test
+component UnsignedMathTest
+{
+	/**
+	 * Preserves representable sums and saturates sums that wrap uint.
+	 */
+	@Test
+	fn SaturatesUnsignedAdditionAtMaximum()
+	{
+		assert UnsignedMath.AddSaturating(0, 0) == (0 as uint)
+		assert UnsignedMath.AddSaturating(20, 22) == (42 as uint)
+		assert UnsignedMath.AddSaturating(UnsignedMath.MAX_VALUE, 0)
+			== UnsignedMath.MAX_VALUE
+		assert UnsignedMath.AddSaturating(UnsignedMath.MAX_VALUE, 1)
+			== UnsignedMath.MAX_VALUE
+		assert UnsignedMath.AddSaturating(0xfffffffb as uint, 5)
+			== UnsignedMath.MAX_VALUE
+	}
+
+	/**
+	 * Preserves representable differences and saturates underflow to zero.
+	 */
+	@Test
+	fn SaturatesUnsignedSubtractionAtZero()
+	{
+		assert UnsignedMath.SubSaturating(42, 0) == (42 as uint)
+		assert UnsignedMath.SubSaturating(50, 8) == (42 as uint)
+		assert UnsignedMath.SubSaturating(42, 42) == UnsignedMath.MIN_VALUE
+		assert UnsignedMath.SubSaturating(0, 1) == UnsignedMath.MIN_VALUE
+		assert UnsignedMath.SubSaturating(1, UnsignedMath.MAX_VALUE)
+			== UnsignedMath.MIN_VALUE
+	}
+}

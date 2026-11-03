@@ -1,0 +1,74 @@
+namespace Livt.Math.Trigonometry
+
+/**
+ * Computes Atan2 phase and vector magnitude with a serialized vectoring CORDIC.
+ * Inputs are signed Q1.15 coordinates. Phase uses 32768 units per pi radians;
+ * magnitude is unsigned with 15 fractional bits.
+ */
+component CordicAtan2MagnitudeQ15
+{
+	// Public coordinate, phase, magnitude, iteration, and accuracy contract.
+	public const MIN_COORDINATE: int = -32768
+	public const MAX_COORDINATE: int = 32767
+	public const MIN_PHASE: int = -32768
+	public const MAX_PHASE: int = 32767
+	public const HALF_PI: int = 16384
+	public const QUARTER_PI: int = 8192
+	public const MAX_MAGNITUDE: uint = 46341
+	public const ITERATIONS: int = 16
+	public const MAX_PHASE_ERROR: int = 4
+	public const MAX_MAGNITUDE_ERROR: uint = 4
+
+	// Owned narrow native worker and its request/acknowledgment toggle.
+	primitive: CordicAtan2MagnitudeQ15Primitive
+	request: logic
+
+	/**
+	 * Owns one narrow vectoring worker in the caller clock/reset context.
+	 */
+	new()
+	{
+		primitive = new CordicAtan2MagnitudeQ15Primitive()
+	}
+
+	/**
+	 * Computes Atan2(y, x) and sqrt(x*x + y*y). Coordinates outside Q1.15
+	 * or the zero vector return false and clear both results.
+	 */
+	public fn Compute(x: int, y: int) bool
+	{
+		state {
+			primitive.xBits = x as logic[16]
+			primitive.yBits = y as logic[16]
+			primitive.valid = x >= MIN_COORDINATE && x <= MAX_COORDINATE
+				&& y >= MIN_COORDINATE && y <= MAX_COORDINATE
+				&& (x != 0 || y != 0)
+		}
+
+		request = !request
+		primitive.request = request
+
+		while (primitive.acknowledge != request) {
+			state {
+			}
+		}
+
+		return primitive.success
+	}
+
+	/**
+	 * Returns the retained canonical phase in [-32768, 32767].
+	 */
+	public fn GetPhase() int
+	{
+		return primitive.phase
+	}
+
+	/**
+	 * Returns the retained unsigned magnitude with 15 fractional bits.
+	 */
+	public fn GetMagnitude() uint
+	{
+		return primitive.magnitude
+	}
+}
