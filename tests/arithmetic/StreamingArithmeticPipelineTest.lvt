@@ -1,0 +1,146 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+using Livt.Math.Sqrt
+using Livt.Math.Statistics
+
+/** Exposes the direct arithmetic pipelines to scheduled test methods. */
+component StreamingArithmeticPipelineFixture
+{
+	divider: UnsignedDivisionPipelinePrimitive
+	root: UnsignedSqrt32PipelinePrimitive
+	variance: PopulationVarianceNumeratorPipelinePrimitive
+
+	public divisionValid: in bool
+	public dividend: in logic[64]
+	public divisor: in logic[64]
+	public divisionTag: in logic[64]
+	public divisionReady: out bool
+	public divisionOutputValid: out bool
+	public quotient: out logic[64]
+	public remainder: out logic[64]
+	public divisionOutputTag: out logic[64]
+	public divisionFailed: out bool
+
+	public rootValid: in bool
+	public radicand: in logic[32]
+	public rootTag: in logic[64]
+	public rootReady: out bool
+	public rootOutputValid: out bool
+	public rootValue: out logic[32]
+	public rootOutputTag: out logic[64]
+
+	public varianceValid: in bool
+	public sum: in int
+	public sumSquares: in logic[64]
+	public count: in int
+	public varianceTag: in logic[64]
+	public varianceReady: out bool
+	public varianceOutputValid: out bool
+	public numerator: out logic[64]
+	public denominator: out logic[64]
+	public varianceOutputTag: out logic[64]
+
+	new()
+	{
+		divider = new UnsignedDivisionPipelinePrimitive()
+		root = new UnsignedSqrt32PipelinePrimitive()
+		variance = new PopulationVarianceNumeratorPipelinePrimitive()
+	}
+
+	process Connect[]()
+	{
+		divider.inputValid = divisionValid
+		divider.dividend = dividend
+		divider.divisor = divisor
+		divider.inputTag = divisionTag
+		divider.outputReady = false
+		divisionReady = divider.inputReady
+		divisionOutputValid = divider.outputValid
+		quotient = divider.quotient
+		remainder = divider.remainder
+		divisionOutputTag = divider.outputTag
+		divisionFailed = divider.failed
+
+		root.inputValid = rootValid
+		root.radicand = radicand
+		root.inputTag = rootTag
+		root.outputReady = false
+		rootReady = root.inputReady
+		rootOutputValid = root.outputValid
+		rootValue = root.root
+		rootOutputTag = root.outputTag
+
+		variance.inputValid = varianceValid
+		variance.sum = sum
+		variance.sumSquares = sumSquares
+		variance.count = count
+		variance.inputTag = varianceTag
+		variance.outputReady = false
+		varianceReady = variance.inputReady
+		varianceOutputValid = variance.outputValid
+		numerator = variance.numerator
+		denominator = variance.denominator
+		varianceOutputTag = variance.outputTag
+	}
+}
+
+/** Verifies exact values, latency flow, and tag transport of streaming arithmetic. */
+@Test
+component StreamingArithmeticPipelineTest
+{
+	fixture: StreamingArithmeticPipelineFixture
+
+	new()
+	{
+		fixture = new StreamingArithmeticPipelineFixture()
+	}
+
+	@Test
+	fn DividesAndPreservesTag()
+	{
+		fixture.dividend = 100
+		fixture.divisor = 7
+		fixture.divisionTag = 0x1234
+		fixture.divisionValid = true
+		Simulation.Wait(1)
+		fixture.divisionValid = false
+		Simulation.Wait(64)
+		assert fixture.divisionOutputValid
+		assert fixture.quotient == 14
+		assert fixture.remainder == 2
+		assert fixture.divisionOutputTag == 0x1234
+		assert !fixture.divisionFailed
+	}
+
+	@Test
+	fn ComputesFloorSquareRootAndPreservesTag()
+	{
+		fixture.radicand = 1073741824 as logic[32]
+		fixture.rootTag = 0x5678
+		fixture.rootValid = true
+		Simulation.Wait(1)
+		fixture.rootValid = false
+		Simulation.Wait(16)
+		assert fixture.rootOutputValid
+		assert fixture.rootValue == 32768
+		assert fixture.rootOutputTag == 0x5678
+	}
+
+	@Test
+	fn PreparesExactPopulationVarianceOperands()
+	{
+		fixture.sum = 10
+		fixture.sumSquares = 30
+		fixture.count = 4
+		fixture.varianceTag = 0x9ABC
+		fixture.varianceValid = true
+		Simulation.Wait(1)
+		fixture.varianceValid = false
+		Simulation.Wait(2)
+		assert fixture.varianceOutputValid
+		assert fixture.numerator == 20
+		assert fixture.denominator == 16
+		assert fixture.varianceOutputTag == 0x9ABC
+	}
+}

@@ -2,6 +2,22 @@
 
 All notable changes to this package are documented here.
 
+## 1.6.0 - 2026-11-03
+
+### Added
+
+- A globally stallable 64-stage unsigned division pipeline with exact quotient,
+  remainder, divide-by-zero status, tag transport, and initiation interval one.
+- A globally stallable 16-stage unsigned floor square-root pipeline with tag
+  transport and initiation interval one.
+- A two-stage exact population-variance numerator and denominator preparation
+  pipeline for continuous moving-statistics datapaths.
+
+### Compatibility
+
+- Existing scheduled arithmetic APIs remain unchanged. The new direct
+  valid/ready primitives are additive and intended for cycle-sensitive owners.
+
 ## 1.5.0 - 2026-11-03
 
 ### Added

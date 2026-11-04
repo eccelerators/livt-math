@@ -1,0 +1,23 @@
+namespace Livt.Math.Statistics
+
+/**
+ * Two-stage exact population-variance numerator and denominator preparation.
+ * It computes N*Q-S*S and N*N from a signed sum S, unsigned square sum Q, and
+ * positive count N while carrying owner-defined tag bits unchanged.
+ */
+@Opaque
+component PopulationVarianceNumeratorPipelinePrimitive
+{
+	public inputValid: in bool
+	public inputReady: out bool
+	public sum: in int
+	public sumSquares: in logic[64]
+	public count: in int
+	public inputTag: in logic[64]
+
+	public outputValid: out bool
+	public outputReady: in bool
+	public numerator: out logic[64]
+	public denominator: out logic[64]
+	public outputTag: out logic[64]
+}

@@ -9,7 +9,7 @@ processing.
 
 ```toml
 [dependencies]
-Livt.Math = "1.5.0"
+Livt.Math = "1.6.0"
 ```
 
 `Livt.Math` depends on `Livt.Base 1.2.0`. See
@@ -54,8 +54,14 @@ The package surface is intentionally small and practical:
 - `Livt.Math.Random.Xorshift24`: 24-bit xorshift generator (period 2^24 − 1).
 - `Livt.Math.Arithmetic.WideArithmetic`: exact scheduled 64-bit
   multiply/add/divide/root service with configurable timing tradeoffs.
+- `Livt.Math.Arithmetic.UnsignedDivisionPipelinePrimitive`: direct valid/ready
+  64-bit division with initiation interval one and owner-defined tag transport.
+- `Livt.Math.Sqrt.UnsignedSqrt32PipelinePrimitive`: direct valid/ready 32-bit
+  floor square root with initiation interval one.
 - `Livt.Math.Statistics.StreamingMomentsInt16`: exact bounded count, sum, mean,
   population variance, and standard deviation for signed 16-bit samples.
+- `Livt.Math.Statistics.PopulationVarianceNumeratorPipelinePrimitive`: exact
+  pipelined preparation of `N*Q-S*S` and `N*N` for population variance.
 
 ## Package API Shape
 

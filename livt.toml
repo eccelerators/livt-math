@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "1.5.0"
+version = "1.6.0"
 path = "src"
 outdir = "out"
 
@@ -31,7 +31,8 @@ components = [
     "ReciprocalUQ15Test",
     "TanhQ15Test",
     "SpecialFunctionsTest",
-    "StreamingMomentsInt16Test"
+    "StreamingMomentsInt16Test",
+    "StreamingArithmeticPipelineTest"
 ]
 
 [dependencies]

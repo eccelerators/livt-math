@@ -1,0 +1,24 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Fully pipelined unsigned 64-bit restoring division with valid/ready flow control.
+ * The pipeline accepts one operand pair per clock, has a nominal latency of 64
+ * clocks, and freezes every stage while its output is blocked. Tag bits are
+ * transported unchanged for owner-defined metadata.
+ */
+@Opaque
+component UnsignedDivisionPipelinePrimitive
+{
+	public inputValid: in bool
+	public inputReady: out bool
+	public dividend: in logic[64]
+	public divisor: in logic[64]
+	public inputTag: in logic[64]
+
+	public outputValid: out bool
+	public outputReady: in bool
+	public quotient: out logic[64]
+	public remainder: out logic[64]
+	public outputTag: out logic[64]
+	public failed: out bool
+}

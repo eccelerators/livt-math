@@ -1,0 +1,20 @@
+namespace Livt.Math.Sqrt
+
+/**
+ * Sixteen-stage floor square-root pipeline for unsigned 32-bit radicands.
+ * It accepts one value per clock and globally freezes under output backpressure.
+ * Tag bits are transported unchanged for owner-defined metadata.
+ */
+@Opaque
+component UnsignedSqrt32PipelinePrimitive
+{
+	public inputValid: in bool
+	public inputReady: out bool
+	public radicand: in logic[32]
+	public inputTag: in logic[64]
+
+	public outputValid: out bool
+	public outputReady: in bool
+	public root: out logic[32]
+	public outputTag: out logic[64]
+}
