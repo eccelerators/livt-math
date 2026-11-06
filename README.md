@@ -9,7 +9,7 @@ processing.
 
 ```toml
 [dependencies]
-Livt.Math = "1.6.0"
+Livt.Math = "1.7.0"
 ```
 
 `Livt.Math` depends on `Livt.Base 1.2.0`. See
@@ -24,6 +24,8 @@ The package surface is intentionally small and practical:
   multiply-accumulate helper.
 - `Livt.Math.Arithmetic.MacInt32`: non-saturating signed-int32 accumulator for
   bounded dot products whose mathematical sum is proven to fit.
+- `Livt.Math.Arithmetic.CheckedBlockMac32`: checked block dot products and
+  retained weighted sums with configurable numeric ranges and product stages.
 - `Livt.Math.Arithmetic.IntegerMath`: context-free signed min/max, clamp,
   magnitude, absolute-value, and saturating add/subtract helpers.
 - `Livt.Math.Arithmetic.UnsignedMath`: context-free uint saturating add/subtract
@@ -318,6 +320,32 @@ Domain-specific math should remain in its owning package: ML layer operations in
 `Livt.Crypto`, and FFT or FIR orchestration in signal-processing packages.
 `Livt.Math` should provide the reusable primitives those packages build on, such
 as Q15 arithmetic, complex multiply parts, lookup constants, and MAC units.
+
+## Checked block arithmetic
+
+`Arithmetic.CheckedBlockMac32<A_BITS, B_BITS, ACC_BITS, PRODUCT_STAGES>`
+processes sixteen signed int32 lanes per packed 512-bit block. It retains a
+32-element left vector and 32 independent weighted sums. Input widths are
+checked ranges from 2 to 32 bits; accumulator width is 2 to 64 bits. Results
+carry a failure flag in bit 64 and a sign-extended value in bits 63..0.
+
+Set `PRODUCT_STAGES` to 1 (default) or 2 to select the product pipeline without
+changing numeric behavior. Dot sums check every prefix for overflow; weighted
+update failure poisons the bank until clear/reset. Calls are serialized, and
+native input fields must remain stable until completion. The weighted bank uses
+BRAM inference with logical zeroing and forwarding for immediate reads. Actual
+resources and timing must be measured in the consumer design.
+
+The worker performs no fixed-point scaling, rounding or saturation. Existing
+arithmetic APIs remain unchanged. See [the block MAC contract](docs/CheckedBlockMac.md)
+for packing, ownership, overflow, reset and result-lifetime details.
+
+Validation commands (Livt compiler/simulator and GHDL respectively):
+
+```sh
+livt test --run CheckedBlockMac32Test
+python3 tests/rtl/test_checked_block_mac.py
+```
 
 ## 📄 License
 

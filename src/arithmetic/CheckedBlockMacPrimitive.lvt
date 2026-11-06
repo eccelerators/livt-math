@@ -1,0 +1,27 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Single-owner checked vector arithmetic. Commands and payload remain stable until
+ * completion acknowledgment. Hardware reset cancels work and resets both toggles.
+ */
+@Opaque
+component CheckedBlockMacPrimitive
+{
+	// Constant numeric bounds and product register count supplied by the wrapper.
+	public aBits: in int
+	public bBits: in int
+	public accumulatorBits: in int
+	public productStages: in int
+
+	// Commands: load=0, dot=1, clear=2, weighted update=3, read=4.
+	public request: in logic
+	public operation: in int
+	public index: in int
+	public values: in logic[512]
+	public scalar: in int
+	public seed: in logic[64]
+
+	// Retained completion: bit 64 indicates failure, bits 63..0 hold the result.
+	public acknowledge: out logic
+	public result: out logic[65]
+}

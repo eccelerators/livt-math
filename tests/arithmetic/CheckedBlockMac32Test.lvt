@@ -1,0 +1,58 @@
+namespace Livt.Math.Tests
+
+using Livt.Math.Arithmetic
+
+/** Exercises the generated scheduled wrapper and packed status transport. */
+@Test
+component CheckedBlockMac32Test
+{
+	mac: CheckedBlockMac32<32, 32, 64, 1>
+	staged: CheckedBlockMac32<32, 32, 64, 2>
+
+	new()
+	{
+		mac = new CheckedBlockMac32<32, 32, 64, 1>()
+		staged = new CheckedBlockMac32<32, 32, 64, 2>()
+	}
+
+	fn Repeated(value: int) logic[512]
+	{
+		var row: logic[512] = 0
+
+		for (var i = 0; i < 16; i++) {
+			row = (row << 32) | ((value as logic[32]) as logic[512])
+		}
+
+		return row
+	}
+
+	@Test
+	fn BlocksAndRecovery()
+	{
+		var ones = Repeated(1)
+		var negatives = Repeated(-3)
+		assert (mac.Dot(0, ones, 0) >> 64) != 0
+		assert mac.LoadLeft(0, negatives)
+		assert staged.LoadLeft(0, negatives)
+		assert mac.Dot(0, ones, 100) == 52
+		assert staged.Dot(0, ones, 100) == 52
+		assert mac.Clear()
+		assert mac.Accumulate(0, 7, negatives)
+		assert mac.Accumulate(0, -2, ones)
+		assert mac.Accumulate(1, 11, ones)
+
+		for (var i = 0; i < 16; i++) {
+			var value = mac.Read(i)
+			assert (value >> 64) == 0
+			assert (value as logic[64]) == ((-23) as logic[64])
+			assert mac.Read(16 + i) == 11
+		}
+
+		assert !mac.Accumulate(2, 1, ones)
+		assert (mac.Read(0) >> 64) != 0
+		assert mac.Clear()
+		assert mac.Read(0) == 0
+		assert mac.Dot(0, ones, 100) == 52
+		assert (mac.Read(32) >> 64) != 0
+	}
+}

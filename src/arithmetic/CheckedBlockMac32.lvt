@@ -1,0 +1,103 @@
+namespace Livt.Math.Arithmetic
+
+/**
+ * Checked integer dot products and weighted vector sums, in sixteen-lane blocks.
+ * Packed lanes are little-endian signed int32. One owner serializes every call.
+ * Widths check ranges without truncation; product stages change latency only.
+ * See docs/CheckedBlockMac.md for poisoning, retention and reset contracts.
+ */
+component CheckedBlockMac32<A_BITS: int = 32, B_BITS: int = 32, ACC_BITS: int = 64, PRODUCT_STAGES: int = 1>
+{
+	static assert A_BITS >= 2 && A_BITS <= 32, "A width must be 2..32"
+
+	static assert B_BITS >= 2 && B_BITS <= 32, "B width must be 2..32"
+
+	static assert ACC_BITS >= 2 && ACC_BITS <= 64, "accumulator width must be 2..64"
+
+	static assert PRODUCT_STAGES == 1 || PRODUCT_STAGES == 2, "product stages must be 1 or 2"
+
+	// Owned worker and its producer-side transaction phase.
+	primitive: CheckedBlockMacPrimitive
+	request: logic
+
+	new()
+	{
+		primitive = new CheckedBlockMacPrimitive()
+	}
+
+	/** Waits for completion; the owned core retains result/status until the next command. */
+	fn Submit(operation: int)
+	{
+		primitive.operation = operation
+		request = !request
+		primitive.request = request
+
+		while (primitive.acknowledge != request) {
+			state {
+			}
+		}
+
+	}
+
+	/** Loads block 0 or 1; failure invalidates the selected query block. */
+	public fn LoadLeft(block: int, values: logic[512]) bool
+	{
+		state {
+			primitive.index = block
+			primitive.values = values
+		}
+
+		Submit(0)
+		return (primitive.result >> 64) == 0
+	}
+
+	/** Reduces sixteen products in order; bit 64 reports failure, low 64 bits the sum. */
+	public fn Dot(block: int, right: logic[512], seed: logic[64]) logic[65]
+	{
+		state {
+			primitive.index = block
+			primitive.values = right
+			primitive.seed = seed
+		}
+
+		Submit(1)
+		return primitive.result
+	}
+
+	/** Clears all weighted sums and their poison flag, preserving loaded query blocks. */
+	public fn Clear() bool
+	{
+		Submit(2)
+		return (primitive.result >> 64) == 0
+	}
+
+	/** Updates sixteen independent sums. Any failure poisons reads until Clear/reset. */
+	public fn Accumulate(block: int, scalar: int, right: logic[512]) bool
+	{
+		state {
+			primitive.index = block
+			primitive.scalar = scalar
+			primitive.values = right
+		}
+
+		Submit(3)
+		return (primitive.result >> 64) == 0
+	}
+
+	/** Reads a sum at index 0..31 with failure in bit 64; failed results contain zero. */
+	public fn Read(index: int) logic[65]
+	{
+		primitive.index = index
+		Submit(4)
+		return primitive.result
+	}
+	/** Immutable generic settings are wires, so native range checks can constant-fold. */
+	process ConnectConfiguration[]()
+	{
+		primitive.aBits = A_BITS
+		primitive.bBits = B_BITS
+		primitive.accumulatorBits = ACC_BITS
+		primitive.productStages = PRODUCT_STAGES
+	}
+
+}

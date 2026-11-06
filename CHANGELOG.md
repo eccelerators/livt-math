@@ -2,6 +2,31 @@
 
 All notable changes to this package are documented here.
 
+## 1.7.0 - 2026-11-06
+
+### Added
+
+- `Arithmetic.CheckedBlockMac32<A_BITS, B_BITS, ACC_BITS, PRODUCT_STAGES>`
+  and its native `CheckedBlockMacPrimitive`: checked dot products and retained
+  weighted sums for 32-element vectors processed in sixteen-int32 blocks.
+- Configurable signed input ranges (2..32 bits), accumulator range (2..64 bits),
+  and one- or two-stage product pipelines. Pipeline choice changes latency,
+  never arithmetic results or overflow checks.
+- Packed 65-bit result/status, ordered prefix-overflow detection, poisoned-bank
+  recovery, reset cancellation and retained completion results.
+- A BRAM-backed weighted accumulator bank with validity bits and immediate-read
+  forwarding; live input lane selection avoids redundant wide row registers.
+- Native integer-oracle and generated-wrapper tests covering numeric limits,
+  both product pipelines, reset, retention, failure and recovery.
+
+### Compatibility
+
+- Existing arithmetic APIs and defaults are unchanged. The new worker is
+  single-owner: serialize calls and hold native transaction inputs until
+  completion. No fixed-point scaling, rounding or saturation is introduced.
+- Timing, DSP usage and BRAM inference depend on the target and integration;
+  configured numeric ranges do not imply proportional hardware savings.
+
 ## 1.6.0 - 2026-11-03
 
 ### Added

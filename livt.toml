@@ -1,12 +1,13 @@
 [project]
 name = "Livt.Math"
-version = "1.6.0"
+version = "1.7.0"
 path = "src"
 outdir = "out"
 
 [tests]
 path = "tests"
 components = [
+    "CheckedBlockMac32Test",
     "WideArithmeticTest",
     "WideArithmeticPipelineTest",
     "IntegerDivisionTest",
