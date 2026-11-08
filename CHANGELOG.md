@@ -2,6 +2,23 @@
 
 All notable changes to this package are documented here.
 
+## 1.7.2 - 2026-11-08
+
+### Metadata
+
+- Add a package description, repository and homepage links, discovery keywords,
+  the MIT license identifier, and organization details to `livt.toml`.
+- Metadata-only release: no arithmetic API, implementation, timing, or
+  dependency changes from 1.7.1.
+
+## 1.7.1 - 2026-11-08
+
+### Packaging
+
+- Select the README, changelog, usage guide, and license in `livt.toml` so
+  they can be distributed alongside the package's source and tests.
+- No arithmetic API or implementation changes from 1.7.0.
+
 ## 1.7.0 - 2026-11-06
 
 ### Added

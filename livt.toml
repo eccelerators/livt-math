@@ -1,8 +1,18 @@
 [project]
 name = "Livt.Math"
-version = "1.7.0"
+version = "1.7.2"
+description = "Reusable integer and fixed-point arithmetic, complex numbers, trigonometry, and statistics for FPGA applications written in Livt."
+authors = ["Denis Vasilík"]
+repository = "https://github.com/eccelerators/livt-math"
+homepage = "https://github.com/eccelerators/livt-math"
+keywords = ["fpga", "math", "arithmetic", "fixed-point", "complex", "trigonometry", "statistics"]
+license = "MIT"
 path = "src"
 outdir = "out"
+
+[project.organization]
+name = "Eccelerators GmbH"
+website = "https://eccelerators.com"
 
 [tests]
 path = "tests"
@@ -35,6 +45,9 @@ components = [
     "StreamingMomentsInt16Test",
     "StreamingArithmeticPipelineTest"
 ]
+
+[publish]
+files = ["README.md", "CHANGELOG.md", "docs/usage.md", "LICENSE"]
 
 [dependencies]
 Livt.Base = "1.2.0"

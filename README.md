@@ -9,7 +9,7 @@ processing.
 
 ```toml
 [dependencies]
-Livt.Math = "1.7.0"
+Livt.Math = "1.7.2"
 ```
 
 `Livt.Math` depends on `Livt.Base 1.2.0`. See
