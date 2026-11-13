@@ -50,7 +50,7 @@ components = [
 files = ["README.md", "CHANGELOG.md", "docs/usage.md", "LICENSE"]
 
 [dependencies]
-Livt.Base = "1.2.0"
+Livt.Base = "1.2.1"
 
 [build.debug]
 warnings = ["all"]
