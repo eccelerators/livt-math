@@ -1,0 +1,206 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+component DivisionPipelineResetDomain
+{
+    worker: UnsignedDivisionPipelinePrimitive
+    valid: bool
+    ready: bool
+    a: logic[64]
+    b: logic[64]
+    tag: logic[64]
+    public inputReady: out bool
+    public outputValid: out bool
+    public failed: out bool
+    public quotient: out logic[64]
+    public remainder: out logic[64]
+    public outputTag: out logic[64]
+
+    new(clk: in clock, resetLine: in reset, valid: in bool, ready: in bool,
+        a: in logic[64], b: in logic[64], tag: in logic[64])
+    {
+        context.clk = clk
+        context.rst = resetLine
+        worker = new UnsignedDivisionPipelinePrimitive()
+        this.valid = valid
+        this.ready = ready
+        this.a = a
+        this.b = b
+        this.tag = tag
+    }
+
+    process Observe[]()
+    {
+        worker.inputValid = valid
+        worker.outputReady = ready
+        worker.dividend = a
+        worker.divisor = b
+        worker.inputTag = tag
+        inputReady = worker.inputReady
+        outputValid = worker.outputValid
+        failed = worker.failed
+        quotient = worker.quotient
+        remainder = worker.remainder
+        outputTag = worker.outputTag
+    }
+}
+
+/** One scoreboard step per edge, independent of scheduled test-call overhead. */
+component DivisionPipelineEdgeProbe
+{
+    divider: DivisionPipelineResetDomain
+    start: bool
+    phase: int
+    resetLine: logic
+    valid: bool
+    ready: bool
+    a: logic[64]
+    b: logic[64]
+    inputA: logic[64]
+    inputB: logic[64]
+    inputTag: logic[64]
+    expectedQuotient: logic[64]
+    expectedRemainder: logic[64]
+    expectedFailed: bool
+    inputReady: bool
+    outputValid: bool
+    outputFailed: bool
+    outputQuotient: logic[64]
+    outputRemainder: logic[64]
+    outputTag: logic[64]
+    public done: out bool
+
+    new(start: in bool)
+    {
+        this.start = start
+        divider = new DivisionPipelineResetDomain(context.clk, resetLine as reset,
+            valid, ready, inputA, inputB, inputTag)
+    }
+
+    process Drive[]()
+    {
+        resetLine = 0b0
+        if (!start || phase < 2 || phase == 140) { resetLine = 0b1 }
+        valid = start && phase < 270 && phase % 5 != 0
+        ready = !((phase >= 75 && phase <= 82) || (phase >= 220 && phase <= 227))
+        a = (phase * 17 + 100) as logic[64]
+        b = 7
+        expectedQuotient = ((phase * 17 + 100) / 7) as logic[64]
+        expectedRemainder = ((phase * 17 + 100) % 7) as logic[64]
+        expectedFailed = false
+        if (phase % 13 == 0) {
+            a = 0xffffffffffffffff
+            b = 1
+            expectedQuotient = 0xffffffffffffffff
+            expectedRemainder = 0
+        } elif (phase % 17 == 0) {
+            a = 0xffffffffffffffff
+            b = 0x8000000000000000
+            expectedQuotient = 1
+            expectedRemainder = 0x7fffffffffffffff
+        } elif (phase % 19 == 0) {
+            b = 0
+            expectedQuotient = 0
+            expectedRemainder = a
+            expectedFailed = true
+        }
+        inputA = a
+        inputB = b
+        inputTag = phase as logic[64]
+        if (!valid) {
+            inputA = 0bU as logic[64]
+            inputB = 0bX as logic[64]
+            inputTag = 0bU as logic[64]
+            if (phase % 10 == 0) { inputB = 0 }
+        }
+        inputReady = divider.inputReady
+        outputValid = divider.outputValid
+        outputFailed = divider.failed
+        outputQuotient = divider.quotient
+        outputRemainder = divider.remainder
+        outputTag = divider.outputTag
+    }
+
+    process CheckEdges()
+    {
+        var expectedValid: logic[64]
+        var expectedFailure: logic[64]
+        var quotients: logic[64,64]
+        var remainders: logic[64,64]
+        var tags: logic[64,64]
+        var slot = 0
+        var advances = 0
+        var accepted = 0
+        var completed = 0
+        var stalls = 0
+
+        state Tick {
+            if (start && !done) {
+                if (resetLine == 0b1) {
+                    assert !inputReady
+                    assert !outputValid
+                    slot = 0
+                    advances = 0
+                } else {
+                    var outputExpected = advances >= 64 && expectedValid[slot] == 0b1
+                    assert outputValid == outputExpected
+                    assert inputReady == (!outputExpected || ready)
+                    if (outputExpected) {
+                        assert outputQuotient == quotients[slot]
+                        assert outputRemainder == remainders[slot]
+                        assert outputTag == tags[slot]
+                        assert outputFailed == (expectedFailure[slot] == 0b1)
+                    } else {
+                        assert !outputFailed
+                    }
+                    if (!outputExpected || ready) {
+                        if (outputExpected) { completed++ }
+                        expectedValid[slot] = valid as logic
+                        expectedFailure[slot] = (valid && expectedFailed) as logic
+                        quotients[slot] = expectedQuotient
+                        remainders[slot] = expectedRemainder
+                        tags[slot] = phase as logic[64]
+                        if (valid) { accepted++ }
+                        slot++
+                        if (slot == 64) { slot = 0 }
+                        advances++
+                    } else {
+                        stalls++
+                    }
+                }
+                if (phase == 359) {
+                    assert accepted > 100
+                    assert completed > 100
+                    assert stalls > 0
+                    assert !outputValid
+                    done = true
+                } else {
+                    phase++
+                }
+            }
+            goto Tick
+        }
+    }
+}
+
+@Test
+@Context(ClockFrequency = 100MHz)
+component DivisionPipelineEdgeTest
+{
+    start: bool
+    probe: DivisionPipelineEdgeProbe
+
+    new()
+    {
+        probe = new DivisionPipelineEdgeProbe(start)
+    }
+
+    @Test
+    fn ChecksEveryTransferEdge()
+    {
+        start = true
+        Simulation.Wait(400)
+        assert probe.done
+    }
+}

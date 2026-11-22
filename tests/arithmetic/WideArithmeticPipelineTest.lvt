@@ -2,6 +2,43 @@ namespace Livt.Math.Tests.Arithmetic
 
 using Livt.Math.Arithmetic
 
+/** Independent exact power-of-two cases across the full positive 64-bit range. */
+component WideArithmeticConfigurationCases<STAGES: int, FAST: bool>
+{
+    worker: WideArithmetic<31, 31, STAGES, FAST>
+
+    new()
+    {
+        worker = new WideArithmetic<31, 31, STAGES, FAST>()
+    }
+
+    public fn Check()
+    {
+        for (var exponent = 0; exponent < 63; exponent++) {
+            var divisor = (1 as logic[64]) << exponent
+            var expected = (1 as logic[64]) << (62 - exponent)
+            assert worker.DivideEven(0x4000000000000000, divisor) == expected
+            assert !worker.Failed()
+            assert worker.DivideFloor(0x4000000000000000, divisor) == expected
+            assert !worker.Failed()
+        }
+        assert worker.DivideEven(5, 2) == 2
+        assert worker.DivideEven(7, 2) == 4
+        assert worker.DivideEven(0xfffffffffffffffb, 2) == 0xfffffffffffffffe
+        assert worker.DivideEven(0xfffffffffffffff9, 2) == 0xfffffffffffffffc
+        assert worker.DivideEven(0x8000000000000000, 3) == 0xd555555555555555
+        assert worker.DivideEven(0x7fffffffffffffff, 3) == 0x2aaaaaaaaaaaaaaa
+        assert worker.Add(0x7fffffffffffffff, 1) == 0
+        assert worker.Failed()
+        assert worker.Multiply(0x8000000000000000, 0xffffffffffffffff) == 0
+        assert worker.Failed()
+        assert worker.DivideEven(7, 0) == 0
+        assert worker.Failed()
+        assert worker.DivideEven(8, 4) == 2
+        assert !worker.Failed()
+    }
+}
+
 /** Checks generic configuration through the scheduled Livt wrapper. */
 @Test
 component WideArithmeticPipelineTest
@@ -11,12 +48,29 @@ component WideArithmeticPipelineTest
 
 	// Default rounding and division-only capability specialization.
 	standard: WideArithmetic<24, 4, 3, true>
+    standard3: WideArithmeticConfigurationCases<3, false>
+    standard4: WideArithmeticConfigurationCases<4, false>
+    fast3: WideArithmeticConfigurationCases<3, true>
+    fast4: WideArithmeticConfigurationCases<4, true>
 
 	new()
 	{
 		fast = new WideArithmetic<31, 31, 4, true, true>()
 		standard = new WideArithmetic<24, 4, 3, true>()
+        standard3 = new WideArithmeticConfigurationCases<3, false>()
+        standard4 = new WideArithmeticConfigurationCases<4, false>()
+        fast3 = new WideArithmeticConfigurationCases<3, true>()
+        fast4 = new WideArithmeticConfigurationCases<4, true>()
 	}
+
+    @Test
+    fn CoversAllRoundingAndFastPathConfigurations()
+    {
+        standard3.Check()
+        standard4.Check()
+        fast3.Check()
+        fast4.Check()
+    }
 
 	@Test
 	fn ConfiguredDivision()

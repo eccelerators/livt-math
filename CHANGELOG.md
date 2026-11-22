@@ -2,6 +2,27 @@
 
 All notable changes to this package are documented here.
 
+## 1.7.3 - 2026-11-22
+
+### Improved
+
+- The unsigned division pipeline ignores undefined operand and tag values during
+  invalid input cycles, avoiding unnecessary numeric simulation warnings.
+
+### Testing
+
+- Use the package's Livt test components through `livt test`. Standalone
+  RTL testbenches and Python test runners are no longer included.
+- Add Livt-native edge monitors for unsigned division, wide arithmetic, and
+  CORDIC timing, backpressure where applicable, retained results, and reset recovery.
+- Extend arithmetic configuration and independent numerical reference cases,
+  including synchronous/asynchronous reset recovery for scheduled division.
+
+### Compatibility
+
+- Public ports, valid/ready handshakes, 64-stage latency, and initiation interval
+  are unchanged. Numeric diagnostics remain enabled for valid transactions.
+
 ## 1.7.2 - 2026-11-08
 
 ### Metadata
@@ -33,8 +54,6 @@ All notable changes to this package are documented here.
   recovery, reset cancellation and retained completion results.
 - A BRAM-backed weighted accumulator bank with validity bits and immediate-read
   forwarding; live input lane selection avoids redundant wide row registers.
-- Native integer-oracle and generated-wrapper tests covering numeric limits,
-  both product pipelines, reset, retention, failure and recovery.
 
 ### Compatibility
 
@@ -103,8 +122,6 @@ All notable changes to this package are documented here.
   selector fan-in.
 - Scheduled wrapper tests for configured division, disabled operations, failure
   reporting and recovery.
-- Native RTL oracle coverage across every rounding/fast-path combination,
-  including exact results, latency, reset cancellation and retained output.
 
 ### Changed
 
@@ -130,8 +147,6 @@ All notable changes to this package are documented here.
 
 - The package test suite covers the public scheduled API and existing arithmetic
   components.
-- The native RTL oracle runs 5,232 exact comparisons across four configurations,
-  including boundary values, random operands, reset cancellation and recovery.
 
 ## Earlier releases
 

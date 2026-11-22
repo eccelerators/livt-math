@@ -1,0 +1,199 @@
+namespace Livt.Math.Tests.Trigonometry
+
+using Livt.Math.Trigonometry
+
+component CordicResetDomain
+{
+    rotation: CordicSinCosQ15Primitive
+    vectoring: CordicAtan2MagnitudeQ15Primitive
+    request: logic
+    valid: bool
+    angle: logic[16]
+    x: logic[16]
+    y: logic[16]
+    public rotationAck: out logic
+    public vectoringAck: out logic
+    public sine: out int
+    public cosine: out int
+    public phase: out int
+    public magnitude: out uint
+    public rotationSuccess: out bool
+    public vectoringSuccess: out bool
+
+    new(clk: in clock, resetLine: in reset, request: in logic, valid: in bool,
+        angle: in logic[16], x: in logic[16], y: in logic[16])
+    {
+        context.clk = clk
+        context.rst = resetLine
+        rotation = new CordicSinCosQ15Primitive()
+        vectoring = new CordicAtan2MagnitudeQ15Primitive()
+        this.request = request
+        this.valid = valid
+        this.angle = angle
+        this.x = x
+        this.y = y
+    }
+
+    process Observe[]()
+    {
+        rotation.request = request
+        rotation.valid = valid
+        rotation.phaseBits = angle
+        vectoring.request = request
+        vectoring.valid = valid
+        vectoring.xBits = x
+        vectoring.yBits = y
+        rotationAck = rotation.acknowledge
+        vectoringAck = vectoring.acknowledge
+        sine = rotation.sine
+        cosine = rotation.cosine
+        phase = vectoring.phase
+        magnitude = vectoring.magnitude
+        rotationSuccess = rotation.success
+        vectoringSuccess = vectoring.success
+    }
+}
+
+component CordicLifecycleProbe
+{
+    worker: CordicResetDomain
+    start: bool
+    tick: int
+    resetLine: logic
+    request: logic
+    valid: bool
+    angle: logic[16]
+    x: logic[16]
+    y: logic[16]
+    scenario: int
+    age: int
+    rotationAck: logic
+    vectoringAck: logic
+    sine: int
+    cosine: int
+    phase: int
+    magnitude: uint
+    rotationSuccess: bool
+    vectoringSuccess: bool
+    expectedSin: int
+    expectedCos: int
+    expectedPhase: int
+    expectedMagnitude: int
+    public done: out bool
+
+    new(start: in bool)
+    {
+        this.start = start
+        worker = new CordicResetDomain(context.clk, resetLine as reset,
+            request, valid, angle, x, y)
+    }
+
+    process Drive[]()
+    {
+        resetLine = 0b0
+        if (!start || tick < 2 || tick == 10 || tick == 11) { resetLine = 0b1 }
+        request = 0b0
+        valid = true
+        angle = 8192 as logic[16]
+        x = 1
+        y = 2
+        scenario = 0
+        age = 0
+        expectedSin = 23170
+        expectedCos = 23170
+        expectedPhase = 11548
+        expectedMagnitude = 2
+        if (tick >= 2 && tick < 10) { request = 0b1 }
+        if (tick >= 30) {
+            scenario = (tick - 30) / 80
+            age = (tick - 30) % 80
+            request = 0b1
+            if (scenario % 2 == 1) { request = 0b0 }
+            if (scenario == 1) {
+                angle = 24576 as logic[16]
+                x = 32767 as logic[16]
+                y = 32767 as logic[16]
+                expectedCos = -23170
+                expectedPhase = 8192
+                expectedMagnitude = 46340
+            } elif (scenario == 2) {
+                valid = false
+                expectedSin = 0
+                expectedCos = 0
+                expectedPhase = 0
+                expectedMagnitude = 0
+            } elif (scenario == 3) {
+                angle = 0xE000
+                x = 0xFFFF
+                y = 0xFFFE
+                expectedSin = -23170
+                expectedPhase = -21220
+                expectedMagnitude = 2
+            }
+        }
+        rotationAck = worker.rotationAck
+        vectoringAck = worker.vectoringAck
+        sine = worker.sine
+        cosine = worker.cosine
+        phase = worker.phase
+        magnitude = worker.magnitude
+        rotationSuccess = worker.rotationSuccess
+        vectoringSuccess = worker.vectoringSuccess
+    }
+
+    process CheckEdges()
+    {
+        state Check {
+            if (start && !done) {
+                if (tick >= 3 && tick < 10) {
+                    assert rotationAck == 0b0 && vectoringAck == 0b0
+                }
+                if (tick >= 12 && tick < 30) {
+                    assert rotationAck == 0b0 && vectoringAck == 0b0
+                    assert sine == 0 && cosine == 0 && phase == 0 && magnitude == 0n0
+                    assert !rotationSuccess && !vectoringSuccess
+                }
+                if (tick >= 30) {
+                    if (valid) {
+                        assert (rotationAck == request) == (age >= 19)
+                        assert (vectoringAck == request) == (age >= 54)
+                    } else {
+                        assert (rotationAck == request) == (age >= 1)
+                        assert (vectoringAck == request) == (age >= 1)
+                    }
+                    if (age >= 60) {
+                        assert rotationSuccess == valid && vectoringSuccess == valid
+                        assert sine >= expectedSin - 4 && sine <= expectedSin + 4
+                        assert cosine >= expectedCos - 4 && cosine <= expectedCos + 4
+                        assert phase >= expectedPhase - 4 && phase <= expectedPhase + 4
+                        assert magnitude as int >= expectedMagnitude - 4
+                        assert magnitude as int <= expectedMagnitude + 4
+                    }
+                }
+                if (tick == 349) { done = true } else { tick++ }
+            }
+            goto Check
+        }
+    }
+}
+
+@Test
+@Context(ClockFrequency = 100MHz)
+component CordicLifecycleTest
+{
+    start: bool
+    probe: CordicLifecycleProbe
+
+    new()
+    {
+        probe = new CordicLifecycleProbe(start)
+    }
+
+    @Test
+    fn ChecksTimingRetentionAndResetRecovery()
+    {
+        start = true
+        Simulation.Wait(380)
+        assert probe.done
+    }
+}

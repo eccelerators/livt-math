@@ -1,0 +1,6 @@
+version = '1.0'
+generated = '2026-11-22T18:42:35.895702741Z'
+dependencies.'Livt.Base'.version = '1.2.1'
+dependencies.'Livt.Base'.source = 'https://api.packages.livt.eccelerators.com'
+dependencies.'Livt.Base'.checksum = 'sha256:d627d287e79403f2139eaee6cb64e18f5f8d88adcda644104d419e84c11f1106'
+dependencies.'Livt.Base'.archive_sha256 = '56c49752b2a54b25435b8a35afbbe7c5f83038e7249ac41feaa907d90fa468d2'

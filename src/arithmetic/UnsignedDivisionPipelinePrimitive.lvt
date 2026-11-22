@@ -5,6 +5,7 @@ namespace Livt.Math.Arithmetic
  * The pipeline accepts one operand pair per clock, has a nominal latency of 64
  * clocks, and freezes every stage while its output is blocked. Tag bits are
  * transported unchanged for owner-defined metadata.
+ * Payloads may be undefined when inputValid is false; they are not evaluated.
  */
 @Opaque
 component UnsignedDivisionPipelinePrimitive

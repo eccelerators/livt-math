@@ -1,0 +1,147 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+/** Caller and worker reset together so cancellation cannot leave a waiting caller. */
+component IntegerDivisionResetScenario
+{
+    divider: UnsignedDivision<32>
+    start: bool
+    public done: out bool
+
+    new(clk: in clock, resetLine: in reset, start: in bool)
+    {
+        context.clk = clk
+        context.rst = resetLine
+        this.start = start
+        divider = new UnsignedDivision<32>()
+    }
+
+    process Run()
+    {
+        while (!start) {
+            state { }
+        }
+        assert divider.Compute(0n100, 0n7)
+        assert divider.GetQuotient() == 0n14
+        assert divider.GetRemainder() == 0n2
+        assert !divider.Failed()
+        done = true
+        state Hold {
+            goto Hold
+        }
+    }
+}
+
+@Context(ResetStyle = ResetStyle.Asynchronous)
+component AsyncIntegerDivisionResetScenario
+{
+    divider: UnsignedDivision<32>
+    start: bool
+    public done: out bool
+
+    new(clk: in clock, resetLine: in reset, start: in bool)
+    {
+        context.clk = clk
+        context.rst = resetLine
+        this.start = start
+        divider = new UnsignedDivision<32>()
+    }
+
+    process Run()
+    {
+        while (!start) {
+            state { }
+        }
+        assert divider.Compute(0n100, 0n7)
+        assert divider.GetQuotient() == 0n14
+        assert divider.GetRemainder() == 0n2
+        assert !divider.Failed()
+        done = true
+        state Hold {
+            goto Hold
+        }
+    }
+}
+
+@Test
+@Context(ClockFrequency = 100MHz)
+component IntegerDivisionResetTest
+{
+    resetLine: logic
+    start: bool
+    done: bool
+    scenario: IntegerDivisionResetScenario
+
+    new()
+    {
+        scenario = new IntegerDivisionResetScenario(context.clk, resetLine as reset, start)
+    }
+
+    process Observe[]()
+    {
+        done = scenario.done
+    }
+
+    @Test
+    fn CancelsPendingCallAndRecovers()
+    {
+        resetLine = 0b1
+        start = false
+        Simulation.Wait(5)
+        resetLine = 0b0
+        start = true
+        Simulation.Wait(20)
+        assert !done
+        start = false
+        resetLine = 0b1
+        Simulation.Wait(5)
+        resetLine = 0b0
+        Simulation.Wait(200)
+        assert !done
+        start = true
+        Simulation.Wait(1000)
+        assert done
+    }
+}
+
+@Test
+@Context(ClockFrequency = 100MHz, ResetStyle = ResetStyle.Asynchronous)
+component AsyncIntegerDivisionResetTest
+{
+    resetLine: logic
+    start: bool
+    done: bool
+    scenario: AsyncIntegerDivisionResetScenario
+
+    new()
+    {
+        scenario = new AsyncIntegerDivisionResetScenario(context.clk, resetLine as reset, start)
+    }
+
+    process Observe[]()
+    {
+        done = scenario.done
+    }
+
+    @Test
+    fn CancelsPendingCallAndRecovers()
+    {
+        resetLine = 0b1
+        start = false
+        Simulation.Wait(5)
+        resetLine = 0b0
+        start = true
+        Simulation.Wait(20)
+        assert !done
+        start = false
+        resetLine = 0b1
+        Simulation.Wait(5)
+        resetLine = 0b0
+        Simulation.Wait(200)
+        assert !done
+        start = true
+        Simulation.Wait(1000)
+        assert done
+    }
+}

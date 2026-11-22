@@ -1,0 +1,187 @@
+namespace Livt.Math.Tests.Arithmetic
+
+using Livt.Math.Arithmetic
+
+component WideArithmeticResetDomain<STAGES: int, FAST: bool>
+{
+    worker: WideArithmeticPrimitive
+    request: logic
+    operation: int
+    a: logic[64]
+    b: logic[64]
+    public acknowledge: out logic
+    public result: out logic[64]
+    public failed: out bool
+
+    new(clk: in clock, resetLine: in reset, request: in logic,
+        operation: in int, a: in logic[64], b: in logic[64])
+    {
+        context.clk = clk
+        context.rst = resetLine
+        worker = new WideArithmeticPrimitive()
+        this.request = request
+        this.operation = operation
+        this.a = a
+        this.b = b
+    }
+
+    process Observe[]()
+    {
+        worker.roundingStages = STAGES
+        worker.powerOfTwoFastPath = FAST
+        worker.operations = 31
+        worker.outputBits = 31
+        worker.request = request
+        worker.operation = operation
+        worker.a = a
+        worker.b = b
+        acknowledge = worker.acknowledge
+        result = worker.result
+        failed = worker.failed
+    }
+}
+
+/** Checks the direct component contract without scheduled-call timing overhead. */
+component WideArithmeticLifecycleProbe<STAGES: int, FAST: bool>
+{
+    worker: WideArithmeticResetDomain<STAGES, FAST>
+    resetLine: logic
+    start: bool
+    phase: int
+    scenario: int
+    age: int
+    request: logic
+    operation: int
+    a: logic[64]
+    b: logic[64]
+    expected: logic[64]
+    expectedFailed: bool
+    latency: int
+    acknowledge: logic
+    result: logic[64]
+    failed: bool
+    public done: out bool
+
+    new(start: in bool)
+    {
+        this.start = start
+        worker = new WideArithmeticResetDomain<STAGES, FAST>(context.clk, resetLine as reset,
+            request, operation, a, b)
+    }
+
+    process Drive[]()
+    {
+        resetLine = 0b0
+        if (!start || phase < 2 || phase == 14 || phase == 15) { resetLine = 0b1 }
+        request = 0b0
+        scenario = 0
+        age = 0
+        operation = 2
+        a = 7
+        b = 3
+        expected = 4
+        expectedFailed = false
+        latency = 64 + STAGES
+        if (FAST) { latency = 2 + STAGES }
+        if (phase >= 2 && phase < 14) { request = 0b1 }
+        if (phase >= 30) {
+            scenario = (phase - 30) / 100
+            age = (phase - 30) % 100
+            request = 0b1
+            if (scenario % 2 == 1) { request = 0b0 }
+            b = 2
+            if (scenario == 1) {
+                a = 0xfffffffffffffff9
+                expected = 0xfffffffffffffffc
+            } elif (scenario == 2) {
+                a = 20
+                b = 3
+                expected = 7
+            } elif (scenario == 3) {
+                a = 0x7fffffffffffffff
+                b = 3
+                expected = 0x2aaaaaaaaaaaaaaa
+            } elif (scenario == 4) {
+                b = 0
+                expected = 0
+                expectedFailed = true
+            } elif (scenario == 5) {
+                operation = 0
+                a = 0xfffffffffffffff9
+                b = 9
+                expected = 0xffffffffffffffc1
+            } elif (scenario == 6) {
+                operation = 8
+                expected = 0
+                expectedFailed = true
+            } elif (scenario == 7) {
+                operation = 5
+                expected = 3
+            }
+            if (scenario == 2 || scenario == 3) {
+                latency = 64 + STAGES
+                if (FAST) { latency = 65 + STAGES }
+            }
+        }
+        acknowledge = worker.acknowledge
+        result = worker.result
+        failed = worker.failed
+    }
+
+    process CheckEdges()
+    {
+        state Tick {
+            if (start && !done) {
+                if (phase >= 3 && phase < 14) { assert acknowledge == 0b0 }
+                if (phase >= 16 && phase < 30) {
+                    assert acknowledge == 0b0
+                    assert result == 0
+                    assert !failed
+                }
+                if (phase >= 30) {
+                    if (scenario < 4 || scenario == 7) {
+                        if (age <= latency) {
+                            assert acknowledge != request
+                        } else {
+                            assert acknowledge == request
+                        }
+                    }
+                    if (age >= 90) {
+                        assert acknowledge == request
+                        assert result == expected
+                        assert failed == expectedFailed
+                    }
+                }
+                if (phase == 829) { done = true } else { phase++ }
+            }
+            goto Tick
+        }
+    }
+}
+
+@Test
+@Context(ClockFrequency = 100MHz)
+component WideArithmeticLifecycleTest
+{
+    start: bool
+    standard3: WideArithmeticLifecycleProbe<3, false>
+    standard4: WideArithmeticLifecycleProbe<4, false>
+    fast3: WideArithmeticLifecycleProbe<3, true>
+    fast4: WideArithmeticLifecycleProbe<4, true>
+
+    new()
+    {
+        standard3 = new WideArithmeticLifecycleProbe<3, false>(start)
+        standard4 = new WideArithmeticLifecycleProbe<4, false>(start)
+        fast3 = new WideArithmeticLifecycleProbe<3, true>(start)
+        fast4 = new WideArithmeticLifecycleProbe<4, true>(start)
+    }
+
+    @Test
+    fn ChecksConfigurationsAndResetRecovery()
+    {
+        start = true
+        Simulation.Wait(850)
+        assert standard3.done && standard4.done && fast3.done && fast4.done
+    }
+}

@@ -44,8 +44,13 @@ Division clocks after acceptance (excluding Livt wrapper scheduling):
 
 Run `livt test --run WideArithmeticTest` for the existing contract and
 `livt test --run WideArithmeticPipelineTest` for generic wrapper integration.
-After a Livt build generates context packages, run
-`python tests/rtl/test_wide_pipeline.py` for 5,232 independent integer-oracle
-checks across all four configurations, including reset cancellation and retention.
-The RTL test also instantiates the default native interface without the new
-optional ports to check compatibility with existing native consumers.
+The tests are written in Livt and run through the same compiler and simulation
+flow as consumer projects. Extend these test components when adding arithmetic
+configurations or lifecycle coverage.
+
+`WideArithmeticPipelineTest` checks all 63 positive power-of-two divisors with
+three/four rounding stages and the fast path enabled/disabled, plus signed
+rounding, limits and recovery. Run `livt test --run WideArithmeticLifecycleTest`
+for exact primitive latency, reset cancellation, unknown-operation rejection,
+held requests and result retention across all four configurations. Its clocked
+monitor measures the primitive interface, not public scheduled-call overhead.

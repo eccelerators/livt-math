@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Math"
-version = "1.7.2"
+version = "1.7.3"
 description = "Reusable integer and fixed-point arithmetic, complex numbers, trigonometry, and statistics for FPGA applications written in Livt."
 authors = ["Denis Vasilík"]
 repository = "https://github.com/eccelerators/livt-math"
@@ -43,7 +43,12 @@ components = [
     "TanhQ15Test",
     "SpecialFunctionsTest",
     "StreamingMomentsInt16Test",
-    "StreamingArithmeticPipelineTest"
+    "StreamingArithmeticPipelineTest",
+    "DivisionPipelineEdgeTest",
+    "WideArithmeticLifecycleTest",
+    "CordicLifecycleTest",
+    "IntegerDivisionResetTest",
+    "AsyncIntegerDivisionResetTest"
 ]
 
 [publish]

@@ -9,7 +9,7 @@ processing.
 
 ```toml
 [dependencies]
-Livt.Math = "1.7.2"
+Livt.Math = "1.7.3"
 ```
 
 `Livt.Math` depends on `Livt.Base 1.2.0`. See
@@ -58,6 +58,9 @@ The package surface is intentionally small and practical:
   multiply/add/divide/root service with configurable timing tradeoffs.
 - `Livt.Math.Arithmetic.UnsignedDivisionPipelinePrimitive`: direct valid/ready
   64-bit division with initiation interval one and owner-defined tag transport.
+  Invalid input cycles may carry undefined payloads; only accepted valid inputs
+  are evaluated. Its 64-stage latency and global backpressure behavior are
+  unchanged.
 - `Livt.Math.Sqrt.UnsignedSqrt32PipelinePrimitive`: direct valid/ready 32-bit
   floor square root with initiation interval one.
 - `Livt.Math.Statistics.StreamingMomentsInt16`: exact bounded count, sum, mean,
@@ -290,6 +293,45 @@ livt test
 The test list is defined in `livt.toml`. Short call-order examples live in
 [`docs/usage.md`](docs/usage.md).
 
+Run focused arithmetic tests through Livt:
+
+```bash
+livt test --run StreamingArithmeticPipelineTest
+livt test --run WideArithmeticPipelineTest
+livt test --run IntegerDivisionTest
+livt test --run DivisionPipelineEdgeTest
+livt test --run WideArithmeticLifecycleTest
+livt test --run CordicLifecycleTest
+livt test --run IntegerDivisionResetTest
+livt test --run AsyncIntegerDivisionResetTest
+```
+
+Tests are written in Livt alongside the package sources. The streaming tests
+check division results and tag transport; the wide-arithmetic and integer
+division tests check configured operations, numeric boundaries, and failure
+recovery. Add new behavioral coverage as Livt test components and run it through
+`livt test`.
+
+The lifecycle probes use context-free wiring and clocked monitors so their cycle
+counts exclude scheduled test-call overhead. Their clocks come from test
+contexts, and the reset controller stays outside the reset domain under test.
+
+| Area | Livt coverage |
+| --- | --- |
+| Streaming unsigned division | 64-stage scoreboard, bubbles (including `U`/`X` payloads), consecutive transfers, tags, full-width operands, zero divisors, backpressure, reset and recovery |
+| Wide arithmetic | All four rounding-stage/fast-path configurations; all 63 positive power-of-two divisors; ties-to-even, signed limits, overflow and failure recovery; primitive latency, retained results and held requests |
+| Rotation and vectoring CORDIC | Public API boundary tests plus 64 independent reference vectors each; primitive timing, invalid requests, retained outputs and reset recovery |
+| Scheduled integer division | Existing exhaustive four-bit arithmetic and boundary tests; caller/worker cancellation and recovery under synchronous and asynchronous reset policies |
+| Special functions | Existing domain tests plus 32 independent logarithm and 32 exponential reference values |
+
+These are behavioral regressions, not synthesis measurements. They do not replace
+the removed exhaustive Python numerical sweeps or checks of register counts,
+operator structure, resource use and physical timing. Raw generated call-port
+overlap behavior and an expected-failure check of numeric warnings for undefined
+**valid** operands also remain outside this package's positive Livt test suite.
+The invalid-payload test exercises undefined data but does not itself intercept
+simulator warnings; inspect those diagnostics when reviewing changes.
+
 ## Development Notes
 
 - Keep reusable arithmetic components in a domain folder under `src/` and place
@@ -340,11 +382,10 @@ The worker performs no fixed-point scaling, rounding or saturation. Existing
 arithmetic APIs remain unchanged. See [the block MAC contract](docs/CheckedBlockMac.md)
 for packing, ownership, overflow, reset and result-lifetime details.
 
-Validation commands (Livt compiler/simulator and GHDL respectively):
+Run the block MAC tests through Livt:
 
 ```sh
 livt test --run CheckedBlockMac32Test
-python3 tests/rtl/test_checked_block_mac.py
 ```
 
 ## 📄 License

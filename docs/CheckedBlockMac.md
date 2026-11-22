@@ -60,11 +60,11 @@ probability×V, leaving softmax, scaling and division to the calling model.
 Metis retains Q20 activations, checked int64 sums and its existing rounding
 boundaries. Model layout and DDR access remain in the application.
 
-Test independent integer oracles over mixed signs, signed extremes, small-width
+Extend the Livt tests with expected results over mixed signs, signed extremes, small-width
 configurations, both pipeline depths, overflow-before-cancellation, invalid
 indexes/unloaded queries, partial-bank poisoning, recovery, result retention and
-reset during every command type. Test generated Livt wrappers separately from
-the native RTL. Before integration, compare complete scalar and block workflows
+reset during every command type. Run `livt test --run CheckedBlockMac32Test`
+to exercise the public component API. Before integration, compare complete scalar and block workflows
 with identical loading and output consumption. Later synthesis must establish
 100 MHz closure and actual resources; lane throughput is not a timing guarantee.
 

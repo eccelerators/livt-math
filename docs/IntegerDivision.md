@@ -142,6 +142,10 @@ consumer contract; it does not claim that every historical `/` or `%` has gone.
 Run `livt test --run IntegerDivisionTest` for exhaustive four-bit signed and
 unsigned pairs, full-width signed/unsigned boundaries, failure/recovery, and
 remainder/modulo semantics. Run the entire math suite after migrating consumers.
-`tests/rtl/IntegerDivisionResetTb.vhd` checks cancellation and recovery against the
-generated 32-bit worker with synchronous and asynchronous resets. Focused Vivado
-synthesis assesses the full exposed API; no full FLAN-T5 build is implied.
+Run `livt test --run IntegerDivisionResetTest` and
+`livt test --run AsyncIntegerDivisionResetTest` for cancellation and recovery
+with synchronous and asynchronous reset policies. Each caller and divider share
+the controlled reset domain, while the test controller uses the generated test
+clock and remains outside that reset domain. Simulation checks behavior;
+physical timing and resource use require separate synthesis measurements in the
+consumer design.

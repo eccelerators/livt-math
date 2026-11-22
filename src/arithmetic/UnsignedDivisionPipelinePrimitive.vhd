@@ -50,19 +50,28 @@ begin
                 failed_pipe <= (others => '0');
             elsif advance then
                 valid_pipe(0) <= '1' when ctor_inputvalid else '0';
-                dividend_pipe(0) <= unsigned(ctor_dividend);
-                divisor_pipe(0) <= unsigned(ctor_divisor);
-                quotient_pipe(0) <= (others => '0');
-                tag_pipe(0) <= ctor_inputtag;
-                failed_pipe(0) <= '1' when unsigned(ctor_divisor) = 0 else '0';
-                next_remainder := (others => '0');
-                next_remainder(0) := ctor_dividend(63);
+                if ctor_inputvalid then
+                    dividend_pipe(0) <= unsigned(ctor_dividend);
+                    divisor_pipe(0) <= unsigned(ctor_divisor);
+                    quotient_pipe(0) <= (others => '0');
+                    tag_pipe(0) <= ctor_inputtag;
+                    failed_pipe(0) <= '1' when unsigned(ctor_divisor) = 0 else '0';
+                    next_remainder := (others => '0');
+                    next_remainder(0) := ctor_dividend(63);
 
-                if unsigned(ctor_divisor) /= 0 and next_remainder >= resize(unsigned(ctor_divisor), 65) then
-                    remainder_pipe(0) <= next_remainder - resize(unsigned(ctor_divisor), 65);
-                    quotient_pipe(0)(63) <= '1';
+                    if unsigned(ctor_divisor) /= 0 and next_remainder >= resize(unsigned(ctor_divisor), 65) then
+                        remainder_pipe(0) <= next_remainder - resize(unsigned(ctor_divisor), 65);
+                        quotient_pipe(0)(63) <= '1';
+                    else
+                        remainder_pipe(0) <= next_remainder;
+                    end if;
                 else
-                    remainder_pipe(0) <= next_remainder;
+                    dividend_pipe(0) <= (others => '0');
+                    divisor_pipe(0) <= (others => '0');
+                    quotient_pipe(0) <= (others => '0');
+                    remainder_pipe(0) <= (others => '0');
+                    tag_pipe(0) <= (others => '0');
+                    failed_pipe(0) <= '0';
                 end if;
 
                 for stage in 1 to 63 loop
